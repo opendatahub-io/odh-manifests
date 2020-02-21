@@ -1,0 +1,59 @@
+apiVersion: template.openshift.io/v1
+# This is a hack because the ansible operator-sdk has a bug when querying the apiGroup for template.openshift.io
+#   openshift will return multiple resources for "kind: Template" so we use "kind: templates" as a workaround
+kind: Template
+metadata:
+  name: jupyterhub-spark-operator-configmap
+  labels:
+    app: jupyterhub
+    component: spark-operator
+objects:
+- apiVersion: v1
+  data:
+    config: |-
+      worker:
+        instances: ${WORKER_NODES}
+        memoryLimit: ${WORKER_MEMORY_LIMIT}
+        cpuLimit: ${WORKER_CPU_LIMIT}
+        memoryRequest: ${WORKER_MEMORY_REQUEST}
+        cpuRequest: ${WORKER_CPU_REQUEST}
+      master:
+        instances: ${MASTER_NODES}
+        memoryLimit: ${MASTER_MEMORY_LIMIT}
+        cpuLimit: ${MASTER_CPU_LIMIT}
+        memoryRequest: ${MASTER_MEMORY_REQUEST}
+        cpuRequest: ${MASTER_CPU_REQUEST}
+      customImage: ${SPARK_IMAGE}
+      env:
+      - name: SPARK_METRICS_ON
+        value: prometheus
+  kind: ConfigMap
+  metadata:
+    labels:
+      radanalytics.io/kind: SparkCluster
+    name: spark-cluster-${USERNAME}
+parameters:
+- name: USERNAME
+  required: true
+- name: WORKER_NODES
+  value: "2"
+- name: MASTER_NODES
+  value: "1"
+- name: MASTER_MEMORY_LIMIT
+  value: 2Gi
+- name: MASTER_CPU_LIMIT
+  value: "2"
+- name: MASTER_MEMORY_REQUEST
+  value: 1Gi
+- name: MASTER_CPU_REQUEST
+  value: "1"
+- name: WORKER_MEMORY_LIMIT
+  value: 2Gi
+- name: WORKER_CPU_LIMIT
+  value: "2"
+- name: WORKER_MEMORY_REQUEST
+  value: 1Gi
+- name: WORKER_CPU_REQUEST
+  value: "1"
+- name: SPARK_IMAGE
+  value: jkremser/openshift-spark:2.3-latest

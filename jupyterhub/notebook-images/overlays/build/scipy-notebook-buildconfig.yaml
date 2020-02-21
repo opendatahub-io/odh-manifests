@@ -1,0 +1,24 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: s2i-scipy-notebook
+  name: s2i-scipy-notebook
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: s2i-scipy-notebook:3.6
+  source:
+    contextDir: scipy-notebook
+    git:
+      uri: https://github.com/vpavlin/jupyter-notebooks
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: s2i-minimal-notebook:3.6
+    type: Source
+  triggers:
+  - type: ConfigChange

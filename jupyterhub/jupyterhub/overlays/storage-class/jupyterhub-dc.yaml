@@ -1,0 +1,8 @@
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value: 
+    name: JUPYTERHUB_STORAGE_CLASS
+    valueFrom:
+      configMapKeyRef:
+        name: jupyterhub-cfg
+        key: storage_class
