@@ -13,7 +13,7 @@ spec:
     name: ai-library    
   repos:
   - name: manifests
-    uri: /home/croberts/src/manifests
+    uri: https://github.com/opendatahub-io/manifests/tarball/v0.7-branch-openshift
   - name: odh-manifests
-    uri: /home/croberts/src/odh-manifests
+    uri: https://github.com/opendatahub-io/odh-manifests/tarball/v0.7-branch-openshift
   version: v0.7-branch-openshift

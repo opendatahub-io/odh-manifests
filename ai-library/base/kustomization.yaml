@@ -6,7 +6,7 @@ resources:
 - role.yaml
 - role-binding.yaml
 - operator.yaml
-namespace: kubeflow
+namespace: opendatahub
 commonLabels:
   kustomize.component: ai-library
 images:
