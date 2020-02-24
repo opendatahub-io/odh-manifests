@@ -1,0 +1,19 @@
+
+apiVersion: kfdef.apps.kubeflow.org/v1beta1
+kind: KfDef
+metadata:
+  name: opendatahub
+  namespace: opendatahub
+spec:
+  applications:
+  - kustomizeConfig:
+      repoRef:
+        name: odh-manifests
+        path: ai-library
+    name: ai-library    
+  repos:
+  - name: manifests
+    uri: /home/croberts/src/manifests
+  - name: odh-manifests
+    uri: /home/croberts/src/odh-manifests
+  version: v0.7-branch-openshift
