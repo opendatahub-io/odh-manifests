@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- service-account.yaml
+- pvc.yaml
+- configmap.yaml
+- deploymentconfig.yaml
+- service.yaml
+- route.yaml
+namespace: opendatahub
+commonLabels:
+  opendatahub.io/component: "true"
+  component.opendatahub.io/name: superset
+images:
+- name: quay.io/aiops/superset
+  newTag: v0.30
+  newName: quay.io/aiops/superset
+configMapGenerator:
+- name: superset-parameters
+  envs:
+    - params.env
+configurations:
+  - params.yaml
+vars:
+- name: superset-admin-password
+  objref:
+    kind: ConfigMap
+    name: superset-parameters
+    version: v1
+  fieldref:
+    fieldpath: data.SUPERSET_ADMIN_PASSWORD
+generatorOptions:
+  disableNameSuffixHash: true
