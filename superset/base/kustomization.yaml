@@ -16,18 +16,18 @@ images:
   newTag: v0.30
   newName: quay.io/aiops/superset
 configMapGenerator:
-- name: superset-parameters
+- name: supersetparams
   envs:
     - params.env
 configurations:
   - params.yaml
 vars:
-- name: superset-admin-password
+- name: SUPERSET_ADMIN_PASSWORD
   objref:
     kind: ConfigMap
-    name: superset-parameters
+    name: supersetparams
     version: v1
   fieldref:
-    fieldpath: data.SUPERSET_ADMIN_PASSWORD
+    fieldpath: data.superset_admin_password
 generatorOptions:
   disableNameSuffixHash: true

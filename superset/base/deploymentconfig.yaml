@@ -25,7 +25,7 @@ spec:
           command:
             - /bin/sh
             - /usr/local/bin/superset-init
-            - --username $(SUPERSET_ADMIN_USER) --firstname $(SUPERSET_ADMIN_FNAME) --lastname $(SUPERSET_ADMIN_LNAME) --email $(SUPERSET_ADMIN_EMAIL) --password $(superset-admin-password)
+            - --username $(SUPERSET_ADMIN_USER) --firstname $(SUPERSET_ADMIN_FNAME) --lastname $(SUPERSET_ADMIN_LNAME) --email $(SUPERSET_ADMIN_EMAIL) --password $(SUPERSET_ADMIN_PASSWORD)
           volumeMounts:
             - mountPath: /var/lib/superset
               name: superset-data

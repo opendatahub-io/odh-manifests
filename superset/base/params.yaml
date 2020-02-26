@@ -1,3 +1,4 @@
 varReference:
-- path: data/SUPERSET_ADMIN_PASSWORD
+- path: data
   kind: ConfigMap
+ 
