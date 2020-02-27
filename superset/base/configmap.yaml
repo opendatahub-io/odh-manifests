@@ -4,6 +4,14 @@ metadata:
   name: superset
   namespace: opendatahub
 data:
+  superset_admin_password: 'admin'
+  SUPERSET_ADMIN_USER: 'admin'
+  SUPERSET_ADMIN_FNAME: 'admin'
+  SUPERSET_ADMIN_LNAME: 'admin'
+  SUPERSET_ADMIN_EMAIL: 'admin@fab.org'
+  SUPERSET_SECRET_KEY: 'thisISaSECRET_1234'
+  SUPERSET_VOLUME_SIZE: '512Mi'
+  SUPERSET_SQLALCHEMY_DB_URI: 'sqlite:////var/lib/superset/superset.db'
   FLASK_APP: superset
   SUPERSET_ADM_PWD: $(SUPERSET_ADMIN_PASSWORD)
   SUPERSET_CONFIG_PATH: /etc/superset/superset_config.py
@@ -11,7 +19,7 @@ data:
     import os
 
     MAPBOX_API_KEY = os.getenv('MAPBOX_API_KEY', '')
-    SQLALCHEMY_DATABASE_URI = '$(SUPERSET_SQLALCHEMY_DB_URI)'
+    SQLALCHEMY_DATABASE_URI = os.getenv('SUPERSET_SQLALCHEMY_DB_URI', '')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SECRET_KEY = os.getenv('SUPERSET_SECRET_KEY','$(SUPERSET_SECRET_KEY)')
     DATA_DIR = '/var/lib/superset'
