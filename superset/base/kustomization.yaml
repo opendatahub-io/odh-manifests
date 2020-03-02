@@ -9,9 +9,6 @@ resources:
 - service.yaml
 - route.yaml
 namespace: opendatahub
-commonLabels:
-  opendatahub.io/component: "true"
-  component.opendatahub.io/name: superset
 images:
 - name: quay.io/aiops/superset
   newTag: v0.30
