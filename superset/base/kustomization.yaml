@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - service-account.yaml
 - pvc.yaml
+- secret.yaml
 - configmap.yaml
 - deploymentconfig.yaml
 - service.yaml

@@ -20,6 +20,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: superset
+            - secretRef:
+                name: superset-secret
           image: quay.io/aiops/superset:v0.30
           imagePullPolicy: Always
           command:
@@ -39,6 +41,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: superset
+            - secretRef:
+                name: superset-secret
           image: quay.io/aiops/superset:v0.30
           imagePullPolicy: Always
           ports:
