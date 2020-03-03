@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: superset
   namespace: opendatahub
+  labels:
+    opendatahub.io/component: "true"
+    component.opendatahub.io/name: ailibrary
 data:
   SUPERSET_ADMIN_USER: 'admin'
   SUPERSET_ADMIN_FNAME: 'admin'

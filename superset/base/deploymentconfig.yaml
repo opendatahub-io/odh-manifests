@@ -5,6 +5,8 @@ metadata:
   namespace: opendatahub
   labels:
     app: superset
+    opendatahub.io/component: "true"
+    component.opendatahub.io/name: ailibrary
 spec:
   replicas: 1
   selector:
