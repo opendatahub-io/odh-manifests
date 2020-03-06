@@ -11,8 +11,8 @@ commonLabels:
   opendatahub.io/component: "true"
   component.opendatahub.io/name: ailibrary
 images:
-- name: quay.io/croberts/ai-library-operator
-  newName: quay.io/croberts/ai-library-operator
+- name: quay.io/opendatahub/ai-library-operator
+  newName: quay.io/opendatahub/ai-library-operator
   digest: sha256:5fbf0d49c30ae782cd6e0f75fbd5de60c01b399e60890530b4fdd68d333be162
 generatorOptions:
   disableNameSuffixHash: true
