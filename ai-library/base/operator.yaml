@@ -19,14 +19,14 @@ spec:
           - /usr/local/bin/ao-logs
           - /tmp/ansible-operator/runner
           - stdout
-          image: "quay.io/croberts/ai-library-operator"
+          image: "quay.io/opendatahub/ai-library-operator"
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner
             readOnly: true
         - name: ailibrary-operator
-          image: "quay.io/croberts/ai-library-operator"
+          image: "quay.io/opendatahub/ai-library-operator"
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
