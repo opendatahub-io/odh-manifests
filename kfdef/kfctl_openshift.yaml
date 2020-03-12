@@ -17,6 +17,7 @@ spec:
       repoRef:
         name: manifests
         path: ai-library
+    # Note:  In order to utilize ai-library, you also need to have Seldon installed    
     name: ai-library
   repos:
   - name: manifests
