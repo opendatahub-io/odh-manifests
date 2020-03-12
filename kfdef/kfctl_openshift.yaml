@@ -1,4 +1,3 @@
-
 apiVersion: kfdef.apps.kubeflow.org/v1beta1
 kind: KfDef
 metadata:
