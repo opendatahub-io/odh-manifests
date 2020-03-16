@@ -3,3 +3,6 @@ kind: Kustomization
 resources:
 - namespace.yaml
 namespace: opendatahub
+commonLabels:
+  opendatahub.io/component: "true"
+  component.opendatahub.io/name: odh-common
