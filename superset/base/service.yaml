@@ -6,7 +6,7 @@ metadata:
   labels:
     app: superset
     opendatahub.io/component: "true"
-    component.opendatahub.io/name: ailibrary
+    component.opendatahub.io/name: superset
 spec:
   ports:
     - name: 8088-tcp

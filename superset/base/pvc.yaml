@@ -5,7 +5,7 @@ metadata:
   namespace: opendatahub
   labels:
     opendatahub.io/component: "true"
-    component.opendatahub.io/name: ailibrary
+    component.opendatahub.io/name: superset
 spec:
   accessModes:
     - ReadWriteOnce
