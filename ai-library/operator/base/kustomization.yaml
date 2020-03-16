@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- service-account.yaml
+- role.yaml
+- role-binding.yaml
+- operator.yaml
+namespace: opendatahub
+commonLabels:
+  opendatahub.io/component: "true"
+  component.opendatahub.io/name: ailibrary
+images:
+- name: quay.io/opendatahub/ai-library-operator
+  newName: quay.io/opendatahub/ai-library-operator
+  digest: sha256:293879aec3cd52959a3b670eaf69bb2ac478847dfc4e498877984e63592f0fb1
+generatorOptions:
+  disableNameSuffixHash: true

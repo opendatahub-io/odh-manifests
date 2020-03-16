@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ailibrary-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: ailibrary-operator
+  template:
+    metadata:
+      labels:
+        name: ailibrary-operator
+    spec:
+      serviceAccountName: ailibrary-operator
+      containers:
+        - name: ansible
+          command:
+          - /usr/local/bin/ao-logs
+          - /tmp/ansible-operator/runner
+          - stdout
+          image: "quay.io/opendatahub/ai-library-operator"
+          imagePullPolicy: "Always"
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
+            readOnly: true
+        - name: ailibrary-operator
+          image: "quay.io/opendatahub/ai-library-operator"
+          imagePullPolicy: "Always"
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "ailibrary-operator"
+            - name: ANSIBLE_VERBOSITY
+              value: "4"
+      volumes:
+        - name: runner
+          emptyDir: {}

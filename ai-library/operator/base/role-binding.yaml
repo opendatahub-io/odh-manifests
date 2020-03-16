@@ -1,0 +1,11 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ailibrary-operator
+subjects:
+- kind: ServiceAccount
+  name: ailibrary-operator
+roleRef:
+  kind: Role
+  name: ailibrary-operator
+  apiGroup: rbac.authorization.k8s.io
