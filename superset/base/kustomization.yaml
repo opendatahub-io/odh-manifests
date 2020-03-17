@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
 - service-account.yaml
 - pvc.yaml
-- secret.yaml
 - configmap.yaml
 - deploymentconfig.yaml
 - service.yaml
@@ -13,5 +12,8 @@ images:
 - name: quay.io/aiops/superset
   newTag: v0.30
   newName: quay.io/aiops/superset
+secretGenerator:
+- name: superset-secret
+  env: params.env
 generatorOptions:
   disableNameSuffixHash: true

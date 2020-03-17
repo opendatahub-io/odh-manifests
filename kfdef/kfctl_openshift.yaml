@@ -25,6 +25,11 @@ spec:
     # Note:  In order to utilize ai-library, you also need to have Seldon installed    
     name: ai-library-operator
   - kustomizeConfig:
+      parameters:
+      - name: SUPERSET_ADMIN_PASSWORD
+        value: admin
+      - name: SUPERSET_SECRET_KEY
+        value: thisISaSECRET_1234
       repoRef:
         name: manifests
         path: superset
