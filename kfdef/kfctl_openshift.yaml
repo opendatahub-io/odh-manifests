@@ -26,10 +26,9 @@ spec:
     name: ai-library-operator
   - kustomizeConfig:
       parameters:
+      # Note: The admin username is admin
       - name: SUPERSET_ADMIN_PASSWORD
         value: admin
-      - name: SUPERSET_SECRET_KEY
-        value: thisISaSECRET_1234
       repoRef:
         name: manifests
         path: superset
