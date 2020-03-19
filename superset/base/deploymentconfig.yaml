@@ -1,0 +1,70 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: superset
+  namespace: opendatahub
+  labels:
+    app: superset
+    opendatahub.io/component: "true"
+    component.opendatahub.io/name: superset
+spec:
+  replicas: 1
+  selector:
+    deploymentconfig: superset
+  template:
+    metadata:
+      labels:
+        app: superset
+        deploymentconfig: superset
+    spec:
+      initContainers:
+        - name: superset-init
+          envFrom:
+            - configMapRef:
+                name: superset
+            - secretRef:
+                name: superset-secret
+          image: quay.io/aiops/superset:v0.30
+          imagePullPolicy: Always
+          command:
+            - /bin/sh
+            - /usr/local/bin/superset-init
+            - --username $(SUPERSET_ADMIN_USER) --firstname $(SUPERSET_ADMIN_FNAME) --lastname $(SUPERSET_ADMIN_LNAME) --email $(SUPERSET_ADMIN_EMAIL) --password $(SUPERSET_ADMIN_PASSWORD)
+          volumeMounts:
+            - mountPath: /var/lib/superset
+              name: superset-data
+            - mountPath: /etc/superset
+              name: superset-config
+      containers:
+        - name: superset
+          command:
+            - /bin/sh
+            - entrypoint.sh
+          envFrom:
+            - configMapRef:
+                name: superset
+            - secretRef:
+                name: superset-secret
+          image: quay.io/aiops/superset:v0.30
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8088
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/superset
+              name: superset-data
+            - mountPath: /etc/superset
+              name: superset-config
+      volumes:
+        - name: superset-data
+          persistentVolumeClaim:
+            claimName: superset-data
+        - configMap:
+            defaultMode: 420
+            items:
+              - key: superset_config.py
+                path: superset_config.py
+            name: superset
+          name: superset-config
+  triggers:
+    - type: ConfigChange

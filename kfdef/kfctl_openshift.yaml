@@ -24,6 +24,15 @@ spec:
         path: ai-library/operator
     # Note:  In order to utilize ai-library, you also need to have Seldon installed    
     name: ai-library-operator
+  - kustomizeConfig:
+      parameters:
+      # Note: The admin username is admin
+      - name: SUPERSET_ADMIN_PASSWORD
+        value: admin
+      repoRef:
+        name: manifests
+        path: superset
+    name: superset
   repos:
   - name: manifests
     uri: https://github.com/opendatahub-io/odh-manifests/tarball/v0.7-branch-openshift
