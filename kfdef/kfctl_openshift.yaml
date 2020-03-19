@@ -39,12 +39,12 @@ spec:
         value: openshift-operators
       repoRef:
         name: manifests
-        path: kafka/operator
+        path: kafka/cluster
     name: strimzi-operator
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: kafka/cluster
+        path: kafka/kafka
     name: kafka-cluster
   repos:
   - name: manifests
