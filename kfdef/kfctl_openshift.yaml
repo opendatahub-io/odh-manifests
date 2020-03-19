@@ -32,7 +32,20 @@ spec:
       repoRef:
         name: manifests
         path: superset
-    name: superset
+    name: superset  
+  - kustomizeConfig:
+      parameters:
+      - name: namespace
+        value: openshift-operators
+      repoRef:
+        name: manifests
+        path: kafka/operator
+    name: strimzi-operator
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: kafka/cluster
+    name: kafka-cluster
   repos:
   - name: manifests
     uri: https://github.com/opendatahub-io/odh-manifests/tarball/v0.7-branch-openshift
