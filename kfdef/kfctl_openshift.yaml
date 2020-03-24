@@ -10,29 +10,29 @@ spec:
         name: manifests
         path: odh-common
     name: odh-common
-  # - kustomizeConfig:
-  #     repoRef:
-  #       name: manifests
-  #       path: ai-library/cluster
-  #   name: ai-library-cluster
-  # - kustomizeConfig:
-  #     parameters:
-  #     - name: namespace
-  #       value: opendatahub
-  #     repoRef:
-  #       name: manifests
-  #       path: ai-library/operator
-  #   # Note:  In order to utilize ai-library, you also need to have Seldon installed    
-  #   name: ai-library-operator
-  # - kustomizeConfig:
-  #     parameters:
-  #     # Note: The admin username is admin
-  #     - name: SUPERSET_ADMIN_PASSWORD
-  #       value: admin
-  #     repoRef:
-  #       name: manifests
-  #       path: superset
-  #   name: superset
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: ai-library/cluster
+    name: ai-library-cluster
+  - kustomizeConfig:
+      parameters:
+      - name: namespace
+        value: opendatahub
+      repoRef:
+        name: manifests
+        path: ai-library/operator
+    # Note:  In order to utilize ai-library, you also need to have Seldon installed    
+    name: ai-library-operator
+  - kustomizeConfig:
+      parameters:
+      # Note: The admin username is admin
+      - name: SUPERSET_ADMIN_PASSWORD
+        value: admin
+      repoRef:
+        name: manifests
+        path: superset
+    name: superset
   - kustomizeConfig:
       parameters:
       repoRef:
@@ -56,7 +56,7 @@ spec:
     name: grafana-cluster
   repos:
   - name: manifests
-    uri: /home/croberts/src/odh-manifests
+    uri: https://github.com/opendatahub-io/odh-manifests/tarball/v0.7-branch-openshift
   - name: kf-manifests
     uri: https://github.com/opendatahub-io/manifests/tarball/v0.7-branch-openshift
   version: v0.7-branch-openshift
