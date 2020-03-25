@@ -32,7 +32,7 @@ spec:
       repoRef:
         name: manifests
         path: superset
-    name: superset  
+    name: superset
   - kustomizeConfig:
       parameters:
       - name: namespace
