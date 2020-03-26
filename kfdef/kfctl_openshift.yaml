@@ -66,6 +66,11 @@ spec:
   - kustomizeConfig:
       repoRef:
         name: manifests
+        path: grafana/grafana
+    name: grafana-instance
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
         path: radanalyticsio/spark/cluster
     name: radanalyticsio-cluster
   - kustomizeConfig:
