@@ -4,9 +4,9 @@ metadata:
   name: prometheus-operator
   namespace: opendatahub
 spec:
-  channel: alpha
+  channel: beta
   installPlanApproval: Automatic
-  name: prometheus-operator
+  name: prometheus
   source: community-operators
   sourceNamespace: openshift-marketplace
   startingCSV: prometheusoperator.0.32.0
