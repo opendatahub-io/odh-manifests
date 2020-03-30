@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - servicemonitor.yaml
 - prometheus.yaml
+- route.yaml
 namespace: opendatahub
 commonLabels:
   opendatahub.io/component: "true"
