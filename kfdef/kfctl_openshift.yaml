@@ -35,6 +35,42 @@ spec:
     name: superset
   - kustomizeConfig:
       parameters:
+      - name: namespace
+        value: openshift-operators
+      repoRef:
+        name: manifests
+        path: kafka/cluster
+    name: strimzi-operator
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: kafka/kafka
+    name: kafka-cluster 
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: ai-library/cluster
+    name: ai-library-cluster
+  - kustomizeConfig:
+      parameters:
+      - name: namespace
+        value: opendatahub
+      repoRef:
+        name: manifests
+        path: ai-library/operator
+    # Note:  In order to utilize ai-library, you also need to have Seldon installed    
+    name: ai-library-operator
+  - kustomizeConfig:
+      parameters:
+      # Note: The admin username is admin
+      - name: SUPERSET_ADMIN_PASSWORD
+        value: admin
+      repoRef:
+        name: manifests
+        path: superset
+    name: superset
+  - kustomizeConfig:
+      parameters:
       repoRef:
         name: manifests
         path: superset
@@ -72,7 +108,7 @@ spec:
     name: prometheus-operator
   repos:
   - name: manifests
-    uri: /Users/jnakfour/opendatahub/odh-kubeflow-manifest-code/odh-manifests
+    uri: https://github.com/opendatahub-io/odh-manifests/tarball/v0.7-branch-openshift
   - name: kf-manifests
     uri: https://github.com/opendatahub-io/manifests/tarball/v0.7-branch-openshift
   version: v0.7-branch-openshift
