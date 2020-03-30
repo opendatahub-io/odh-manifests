@@ -41,12 +41,6 @@ spec:
     name: superset
   - kustomizeConfig:
       parameters:
-      repoRef:
-        name: manifests
-        path: superset
-    name: superset
-  - kustomizeConfig:
-      parameters:
       - name: namespace
         value: openshift-operators
       repoRef:
