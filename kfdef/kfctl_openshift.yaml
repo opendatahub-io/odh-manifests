@@ -35,6 +35,12 @@ spec:
     name: superset
   - kustomizeConfig:
       parameters:
+      repoRef:
+        name: manifests
+        path: superset
+    name: superset
+  - kustomizeConfig:
+      parameters:
       - name: namespace
         value: openshift-operators
       repoRef:
@@ -46,6 +52,11 @@ spec:
         name: manifests
         path: kafka/kafka
     name: kafka-cluster
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: grafana/cluster
+    name: grafana-cluster
   repos:
   - name: manifests
     uri: https://github.com/opendatahub-io/odh-manifests/tarball/v0.7-branch-openshift
