@@ -57,9 +57,22 @@ spec:
         name: manifests
         path: grafana/cluster
     name: grafana-cluster
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: prometheus/cluster
+    name: prometheus-cluster
+  - kustomizeConfig:
+      parameters:
+      - name: namespace
+        value: opendatahub
+      repoRef:
+        name: manifests
+        path: prometheus/operator
+    name: prometheus-operator
   repos:
   - name: manifests
-    uri: https://github.com/opendatahub-io/odh-manifests/tarball/v0.7-branch-openshift
+    uri: /Users/jnakfour/opendatahub/odh-kubeflow-manifest-code/odh-manifests
   - name: kf-manifests
     uri: https://github.com/opendatahub-io/manifests/tarball/v0.7-branch-openshift
   version: v0.7-branch-openshift
