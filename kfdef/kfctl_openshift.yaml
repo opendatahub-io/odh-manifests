@@ -61,7 +61,13 @@ spec:
         name: manifests
         path: radanalyticsio/spark/operator
     name: radanalyticsio-spark-operator
-       path: prometheus/cluster
+  - kustomizeConfig:
+      parameters:
+      - name: namespace
+        value: opendatahub
+      repoRef:
+        name: manifests
+        path: prometheus/cluster
     name: prometheus-cluster
   - kustomizeConfig:
       parameters:
