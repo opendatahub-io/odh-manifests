@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-operator
+  labels: &default-labels
+    app.kubernetes.io/name: spark-operator
+    app.kubernetes.io/version: v1.0.7-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *default-labels
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels: *default-labels
+    spec:
+      serviceAccountName: spark-operator
+      containers:
+      - name: spark-operator
+        image: quay.io/radanalyticsio/spark-operator:1.0.7
+        env:
+        #- name: WATCH_NAMESPACE
+        #  value: "~"
+        - name: CRD
+          value: "true"
+        - name: FULL_RECONCILIATION_INTERVAL_S
+          value: "180"
+        - name: METRICS
+          value: "true"
+        - name: METRICS_PORT
+          value: "8080"
+        - name: METRICS_JVM
+          value: "false"
+        - name: COLORS
+          value: "false"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
+        imagePullPolicy: Always
+

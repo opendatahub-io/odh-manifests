@@ -57,6 +57,16 @@ spec:
         name: manifests
         path: grafana/cluster
     name: grafana-cluster
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: radanalyticsio/spark/cluster
+    name: radanalyticsio-cluster
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: radanalyticsio/spark/operator
+    name: radanalyticsio-spark-operator
   repos:
   - name: manifests
     uri: https://github.com/opendatahub-io/odh-manifests/tarball/v0.7-branch-openshift
