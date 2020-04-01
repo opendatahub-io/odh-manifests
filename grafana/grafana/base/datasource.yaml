@@ -1,0 +1,17 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDataSource
+metadata:
+  name: odh-datasources
+spec:
+  name: odh-prometheus.yaml
+  datasources:
+    - name: opendatahub
+      type: prometheus
+      access: proxy
+      url: http://prometheus-operated:9090
+      isDefault: true
+      version: 1
+      editable: true
+      jsonData:
+        tlsSkipVerify: true
+        timeInterval: "5s"
