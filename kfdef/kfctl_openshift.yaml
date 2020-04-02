@@ -45,7 +45,7 @@ spec:
       repoRef:
         name: manifests
         path: kafka/kafka
-    name: kafka-cluster 
+    name: kafka-cluster
   - kustomizeConfig:
       repoRef:
         name: manifests
