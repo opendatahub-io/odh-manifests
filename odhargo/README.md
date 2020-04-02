@@ -24,3 +24,14 @@ To install Argo add the following to the `kfctl` yaml file.
         path: odhargo
     name: odh-argo
 ```
+
+### Run a Workflow
+To run an example workflow, you can use the portal UI to run the example workflow, however the `serviceAccountName` has to be added to the workflow as shown below. We created this example `serviceAccount` as part of the installation to give basic permissions to a workflow. You can edit this `serviceAccount` and add more pemissions if your workflow requires that.
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: hello-world-
+spec:
+  serviceAccountName: argo-workflow
+```
