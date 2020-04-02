@@ -18,7 +18,7 @@ There are two main folders in the Prometheus component
 This installation creates a route to the Prometheus portal. To access the portal go to `Routes` and click on the `prometheus' route.
 
 
-#### Installation
+### Installation
 To install Prometheus add the following to the `kfctl` yaml file.
 
 ```
