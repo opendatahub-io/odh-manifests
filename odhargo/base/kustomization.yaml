@@ -15,6 +15,7 @@ resources:
 - service-workflow-controller.yaml
 - deployment-argo-server.yaml
 - deployment-workflow-controller.yaml
+- portal-route.yaml
 - argo-workflow-rbac.yaml
 namespace: opendatahub
 commonLabels:
