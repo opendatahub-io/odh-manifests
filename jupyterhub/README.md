@@ -74,3 +74,5 @@ Contains build manifests for Jupyter notebook images.
 #### cuda
 
 Contains build chain manifest for CUDA enabled ubi 7 based images, provides `tensorflow-gpu` enabled notebook image.
+
+*NOTE:* Builds in this overlay require 4 GB of memory and 4 cpus

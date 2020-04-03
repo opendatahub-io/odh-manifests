@@ -1,6 +1,4 @@
 apiVersion: template.openshift.io/v1
-# This is a hack because the ansible operator-sdk has a bug when querying the apiGroup for template.openshift.io
-#   openshift will return multiple resources for "kind: Template" so we use "kind: templates" as a workaround
 kind: Template
 metadata:
   name: jupyterhub-spark-operator-configmap
@@ -56,4 +54,4 @@ parameters:
 - name: WORKER_CPU_REQUEST
   value: "1"
 - name: SPARK_IMAGE
-  value: jkremser/openshift-spark:2.3-latest
+  value: quay.io/radanalyticsio/openshift-spark:2.4-latest
