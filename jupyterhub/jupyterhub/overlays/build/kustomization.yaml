@@ -3,6 +3,7 @@ kind: Kustomization
 bases:
 - ../../base
 resources:
+- jupyterhub-imagestream.yaml
 - jupyterhub-buildconfig.yaml
 - jupyterhub-dh-buildconfig.yaml
 
