@@ -1,0 +1,5 @@
+#!/bin/bash
+
+function header() {
+    os::text::print_blue $1
+}
