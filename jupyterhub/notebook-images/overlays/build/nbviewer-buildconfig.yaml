@@ -1,0 +1,29 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: jupyterhub
+    build: nbviewer
+  name: nbviewer
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: nbviewer:latest
+  resources:
+    limits:
+      cpu: '1'
+      memory: 1Gi
+  source:
+    git:
+      uri: https://github.com/vpavlin/nbviewer-quickstart.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: python:3.6
+        namespace: openshift
+    type: Source
+  triggers:
+  - type: ConfigChange

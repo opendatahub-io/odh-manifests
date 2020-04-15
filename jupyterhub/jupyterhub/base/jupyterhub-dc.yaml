@@ -1,0 +1,95 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: jupyterhub
+  name: jupyterhub
+spec:
+  replicas: 1
+  selector:
+    app: jupyterhub
+    deploymentconfig: jupyterhub
+  strategy:
+    recreateParams:
+      timeoutSeconds: 1200
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        alpha.image.policy.openshift.io/resolve-names: '*'
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: jupyterhub
+        deploymentconfig: jupyterhub
+        component: web
+        component.opendatahub.io/name: jupyterhub
+        opendatahub.io/component: 'true'
+    spec:
+      containers:
+      - env:
+        - name: JUPYTERHUB_SERVICE_NAME
+          value: jupyterhub
+        - name: JUPYTERHUB_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: jupyterhub
+              key: POSTGRESQL_PASSWORD
+        - name: JUPYTERHUB_DATABASE_HOST
+          value: jupyterhub-db
+        - name: JUPYTERHUB_COOKIE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: jupyterhub
+              key: COOKIE_SECRET
+        - name: APP_SCRIPT
+          value: /opt/app-root/builder/run
+        - name: GPU_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: jupyterhub-cfg
+              key: gpu_mode
+        - name: JUPYTERHUB_ADMIN_USERS
+          valueFrom:
+            configMapKeyRef:
+              name: jupyterhub-cfg
+              key: jupyterhub_admins
+        - name: SINGLEUSER_PVC_SIZE
+          valueFrom:
+            configMapKeyRef:
+              name: jupyterhub-cfg
+              key: singleuser_pvc_size
+        image: jupyterhub-img:latest
+        name: jupyterhub
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            memory: 1Gi
+        volumeMounts:
+        - mountPath: /opt/app-root/configs
+          name: config
+      initContainers:
+      - command:
+        - wait-for-database
+        env:
+        - name: JUPYTERHUB_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: jupyterhub
+              key: POSTGRESQL_PASSWORD
+        - name: JUPYTERHUB_DATABASE_HOST
+          value: jupyterhub-db
+        image: jupyterhub-img:latest
+        name: wait-for-database
+        resources:
+          limits:
+            memory: 1Gi
+      serviceAccountName: jupyterhub-hub
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: jupyterhub-cfg
+        name: config
+  triggers:
+  - type: ConfigChange

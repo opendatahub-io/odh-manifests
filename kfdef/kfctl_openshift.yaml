@@ -82,9 +82,25 @@ spec:
         name: manifests
         path: prometheus/operator
     name: prometheus-operator
+  - kustomizeConfig:
+      parameters:
+        - name: s3_endpoint_url
+          value: "s3.odh.com"
+      repoRef:
+        name: manifests
+        path: jupyterhub/jupyterhub
+    name: jupyterhub
+  - kustomizeConfig:
+      overlays:
+      #- cuda
+      - additional
+      repoRef:
+        name: manifests
+        path: jupyterhub/notebook-images
+    name: notebook-images
   repos:
-  - name: manifests
-    uri: https://github.com/opendatahub-io/odh-manifests/tarball/v0.7-branch-openshift
   - name: kf-manifests
-    uri: https://github.com/opendatahub-io/manifests/tarball/v0.7-branch-openshift
+    uri: https://github.com/opendatahub-io/manifests/tarball/v0.7-branch-openshift  
+  - name: manifests
+    uri: https://github.com/opendatahub-io/odh-manifests/tarball/master
   version: v0.7-branch-openshift

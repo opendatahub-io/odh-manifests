@@ -1,0 +1,4 @@
+- op: add
+  path: /metadata/annotations
+  value: 
+    volume.beta.kubernetes.io/storage-class: "$(storage_class)"

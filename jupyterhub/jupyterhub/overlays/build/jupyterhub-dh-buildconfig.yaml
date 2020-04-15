@@ -1,0 +1,23 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: jupyterhub
+  name: jupyterhub-img
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: jupyterhub-img:latest
+  source:
+    git:
+      uri: https://github.com/aicoe/jupyterhub-ocp-oauth
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: jupyterhub:latest
+    type: Source
+  triggers:
+  - type: ConfigChange

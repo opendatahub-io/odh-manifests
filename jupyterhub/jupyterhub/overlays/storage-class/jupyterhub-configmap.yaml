@@ -1,0 +1,3 @@
+- op: add
+  path: /data/storage_class
+  value: "$(storage_class)"

@@ -1,0 +1,26 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: jupyterhub
+    build: jupyterhub
+  name: jupyterhub
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: jupyterhub:latest
+  source:
+    git:
+      ref: 3.0.7
+      uri: https://github.com/jupyter-on-openshift/jupyterhub-quickstart.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      forcePull: true
+      from:
+        kind: DockerImage
+        name: registry.access.redhat.com/ubi7/python-36
+    type: Source
+  triggers:
+  - type: ConfigChange
