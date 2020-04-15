@@ -4,8 +4,7 @@ This test repository is meant to be used with the
 test runner [located here](https://github.com/tmckayus/peak),
 see the README.md there for complete information.
 
-The intial tests here verify deployment of an opendatahub
-instance including jupyterhub and the spark operator.
+The intial tests here verify deployment of a KFDef instance
 
 There is also a test that verifies the deployment of a
 notebook server and spark cluster. This test requires
