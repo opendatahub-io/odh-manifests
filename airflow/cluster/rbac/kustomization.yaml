@@ -1,0 +1,4 @@
+namePrefix: airflow-on-k8s-operator-
+resources:
+- role.yaml
+- role_binding.yaml
