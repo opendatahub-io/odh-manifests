@@ -54,7 +54,6 @@ spec:
   - kustomizeConfig:
       repoRef:
         name: manifests
-<<<<<<< HEAD
         path: grafana/grafana
     name: grafana-instance
   - kustomizeConfig:
