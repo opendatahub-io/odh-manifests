@@ -4,7 +4,6 @@
 resources:
 - airflow.apache.org_airflowbases.yaml
 - airflow.apache.org_airflowclusters.yaml
-- appcrd.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
 bases:
 - ../rbac
