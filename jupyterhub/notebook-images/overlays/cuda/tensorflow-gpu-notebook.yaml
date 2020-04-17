@@ -81,6 +81,7 @@ items:
   metadata:
     labels:
       build: s2i-tensorflow-notebook-gpu
+      opendatahub.io/notebook-image: "true"
     name: s2i-tensorflow-notebook-gpu
   spec:
     lookupPolicy:

@@ -7,49 +7,76 @@ data:
       profiles:
       - name: globals
         env:
-          S3_ENDPOINT_URL: $(s3_endpoint_url)
+          - name: S3_ENDPOINT_URL
+            value: $(s3_endpoint_url)
         resources:
-          mem_limit: 2Gi
-          cpu_limit: 1
+          requests:
+            memory: 1Gi
+            cpu: 500m
+          limits:
+            memory: 2Gi
+            cpu: 1
 
       - name: Spark Notebook
         images:
         - 's2i-spark-minimal-notebook:3.6'
         - 's2i-spark-scipy-notebook:3.6'
+        - 's2i-spark-minimal-notebook:py36-spark2.4.5-hadoop2.7.3'
         env:
-          PYSPARK_SUBMIT_ARGS: '--conf spark.cores.max=6 --conf spark.executor.instances=2 --conf spark.executor.memory=3G --conf spark.executor.cores=3 --conf spark.driver.memory=4G --packages com.amazonaws:aws-java-sdk:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3 pyspark-shell'
-          PYSPARK_DRIVER_PYTHON: 'jupyter'
-          PYSPARK_DRIVER_PYTHON_OPTS: 'notebook'
-          SPARK_HOME: '/opt/app-root/lib/python3.6/site-packages/pyspark/'
-          PYTHONPATH: '$PYTHONPATH:/opt/app-root/lib/python3.6/site-packages/:/opt/app-root/lib/python3.6/site-packages/pyspark/python/:/opt/app-root/lib/python3.6/site-packages/pyspark/python/lib/py4j-0.8.2.1-src.zip'
+          - name: PYSPARK_SUBMIT_ARGS
+            value: '--conf spark.cores.max=2 --conf spark.executor.instances=2 --conf spark.executor.memory=1G --conf spark.executor.cores=1 --conf spark.driver.memory=2G --packages com.amazonaws:aws-java-sdk:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3 pyspark-shell'
+          - name: PYSPARK_DRIVER_PYTHON
+            value: 'jupyter'
+          - name: PYSPARK_DRIVER_PYTHON_OPTS
+            value: 'notebook'
+          - name: SPARK_HOME
+            value: '/opt/app-root/lib/python3.6/site-packages/pyspark/'
+          - name: PYTHONPATH
+            value: '$PYTHONPATH:/opt/app-root/lib/python3.6/site-packages/:/opt/app-root/lib/python3.6/site-packages/pyspark/python/:/opt/app-root/lib/python3.6/site-packages/pyspark/python/lib/py4j-0.8.2.1-src.zip'
         services:
           spark:
-            template: 'jupyterhub-spark-operator-configmap'
-            parameters:
-              WORKER_NODES: '2'
-              MASTER_NODES: '1'
-              MASTER_MEMORY_LIMIT: '2Gi'
-              MASTER_CPU_LIMIT: '1'
-              MASTER_MEMORY_REQUEST: '2Gi'
-              MASTER_CPU_REQUEST: '1'
-              WORKER_MEMORY_LIMIT: '2Gi'
-              WORKER_CPU_LIMIT: '1'
-              WORKER_MEMORY_REQUEST: '2Gi'
-              WORKER_CPU_REQUEST: '1'
-              SPARK_IMAGE: 'quay.io/opendatahub/spark-cluster-image:spark22python36'
+            resources:
+            - name: spark-cluster-template
+              path: notebookPodServiceTemplate
+            - name: spark-cluster-template
+              path: sparkClusterTemplate
+            configuration:
+              worker_nodes: '2'
+              master_nodes: '1'
+              master_memory_limit: '2Gi'
+              master_cpu_limit: '1'
+              master_memory_request: '2Gi'
+              master_cpu_request: '1'
+              worker_memory_limit: '2Gi'
+              worker_cpu_limit: '1'
+              worker_memory_request: '2Gi'
+              worker_cpu_request: '1'
+              spark_image: 'quay.io/radanalyticsio/openshift-spark-py36:2.4.5-2'
             return:
               SPARK_CLUSTER: 'metadata.name'
 
       sizes:
       - name: Small
         resources:
-          mem_limit: 2Gi
-          cpu_limit: 2
+          requests:
+            memory: 1Gi
+            cpu: 1
+          limits:
+            memory: 2Gi
+            cpu: 2
       - name: Medium
         resources:
-          mem_limit: 4Gi
-          cpu_limit: 4
+          requests:
+            memory: 2Gi
+            cpu: 2
+          limits:
+            memory: 4Gi
+            cpu: 4
       - name: Large
         resources:
-          mem_limit: 8Gi
-          cpu_limit: 8
+          requests:
+            memory: 4Gi
+            cpu: 4
+          limits:
+            memory: 8Gi
+            cpu: 8

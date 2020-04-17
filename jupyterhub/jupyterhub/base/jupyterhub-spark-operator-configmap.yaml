@@ -1,57 +1,41 @@
-apiVersion: template.openshift.io/v1
-kind: Template
+kind: ConfigMap
+apiVersion: v1
 metadata:
-  name: jupyterhub-spark-operator-configmap
-  labels:
-    app: jupyterhub
-    component: spark-operator
-objects:
-- apiVersion: v1
-  data:
-    config: |-
+  name: spark-cluster-template
+data:
+  notebookPodServiceTemplate: |
+    apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+      name: "jupyterhub-nb-{{ user }}"
+    spec:
+      clusterIP: None
+      selector:
+        jupyterhub.opendatahub.io/user: "{{ user }}"
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+  sparkClusterTemplate: |
+    kind: SparkCluster
+    apiVersion: radanalytics.io/v1
+    metadata:
+      name: "spark-cluster-{{ user }}"
+    spec:
       worker:
-        instances: ${WORKER_NODES}
-        memoryLimit: ${WORKER_MEMORY_LIMIT}
-        cpuLimit: ${WORKER_CPU_LIMIT}
-        memoryRequest: ${WORKER_MEMORY_REQUEST}
-        cpuRequest: ${WORKER_CPU_REQUEST}
+        instances: "{{ worker_nodes }}"
+        memoryLimit: "{{ worker_memory_limit }}"
+        cpuLimit: "{{ worker_cpu_limit }}"
+        memoryRequest: "{{ worker_memory_request }}"
+        cpuRequest: "{{ worker_cpu_request }}"
       master:
-        instances: ${MASTER_NODES}
-        memoryLimit: ${MASTER_MEMORY_LIMIT}
-        cpuLimit: ${MASTER_CPU_LIMIT}
-        memoryRequest: ${MASTER_MEMORY_REQUEST}
-        cpuRequest: ${MASTER_CPU_REQUEST}
-      customImage: ${SPARK_IMAGE}
+        instances: "{{ master_nodes }}"
+        memoryLimit: "{{ master_memory_limit }}"
+        cpuLimit: "{{ master_cpu_limit }}"
+        memoryRequest: "{{ master_memory_request }}"
+        cpuRequest: "{{ master_cpu_request }}"
+      customImage: "{{ spark_image }}"
       env:
       - name: SPARK_METRICS_ON
         value: prometheus
-  kind: ConfigMap
-  metadata:
-    labels:
-      radanalytics.io/kind: SparkCluster
-    name: spark-cluster-${USERNAME}
-parameters:
-- name: USERNAME
-  required: true
-- name: WORKER_NODES
-  value: "2"
-- name: MASTER_NODES
-  value: "1"
-- name: MASTER_MEMORY_LIMIT
-  value: 2Gi
-- name: MASTER_CPU_LIMIT
-  value: "2"
-- name: MASTER_MEMORY_REQUEST
-  value: 1Gi
-- name: MASTER_CPU_REQUEST
-  value: "1"
-- name: WORKER_MEMORY_LIMIT
-  value: 2Gi
-- name: WORKER_CPU_LIMIT
-  value: "2"
-- name: WORKER_MEMORY_REQUEST
-  value: 1Gi
-- name: WORKER_CPU_REQUEST
-  value: "1"
-- name: SPARK_IMAGE
-  value: quay.io/radanalyticsio/openshift-spark:2.4-latest

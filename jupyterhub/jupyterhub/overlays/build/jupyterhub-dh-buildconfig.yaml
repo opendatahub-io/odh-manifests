@@ -21,3 +21,4 @@ spec:
     type: Source
   triggers:
   - type: ConfigChange
+  - type: ImageChange

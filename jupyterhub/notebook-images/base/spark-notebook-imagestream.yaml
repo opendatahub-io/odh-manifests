@@ -1,7 +1,8 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  labels: {}
+  labels:
+    opendatahub.io/notebook-image: "true"
   name: s2i-spark-minimal-notebook
 spec:
   lookupPolicy:
@@ -11,7 +12,7 @@ spec:
       openshift.io/imported-from: quay.io/odh-jupyterhub/s2i-spark-minimal-notebook
     from:
       kind: DockerImage
-      name: quay.io/odh-jupyterhub/s2i-spark-minimal-notebook:3.6
-    name: "3.6"
+      name: quay.io/odh-jupyterhub/s2i-spark-minimal-notebook:py36-spark2.4.5-hadoop2.7.3
+    name: "py36-spark2.4.5-hadoop2.7.3"
     referencePolicy:
       type: Source
