@@ -111,6 +111,16 @@ spec:
         name: manifests
         path: airflow/cluster
     name: airflow-cluster
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: odhargo/cluster
+    name: odhargo-cluster
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: odhargo/odhargo
+    name: odhargo
   repos:
   - name: kf-manifests
     uri: https://github.com/opendatahub-io/manifests/tarball/v0.7-branch-openshift  
