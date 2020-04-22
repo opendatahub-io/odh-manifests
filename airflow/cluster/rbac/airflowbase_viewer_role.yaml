@@ -1,20 +1,19 @@
-# permissions to do edit airflowbases.
+# permissions to do viewer airflowbases.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: airflowbase-editor-role
+  name: airflowbase-viewer-role
+  labels:
+    # Add these permissions to the "view" default role.
+    rbac.authorization.k8s.io/aggregate-to-view: "true"
 rules:
 - apiGroups:
   - airflow.apache.org
   resources:
   - airflowbases
   verbs:
-  - create
-  - delete
   - get
   - list
-  - patch
-  - update
   - watch
 - apiGroups:
   - airflow.apache.org
@@ -22,5 +21,3 @@ rules:
   - airflowbases/status
   verbs:
   - get
-  - patch
-  - update
