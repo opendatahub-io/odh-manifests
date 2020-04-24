@@ -16,9 +16,6 @@ spec:
         path: ai-library/cluster
     name: ai-library-cluster
   - kustomizeConfig:
-      parameters:
-      - name: namespace
-        value: opendatahub
       repoRef:
         name: manifests
         path: ai-library/operator
@@ -67,17 +64,11 @@ spec:
         path: radanalyticsio/spark/operator
     name: radanalyticsio-spark-operator
   - kustomizeConfig:
-      parameters:
-      - name: namespace
-        value: opendatahub
       repoRef:
         name: manifests
         path: prometheus/cluster
     name: prometheus-cluster
   - kustomizeConfig:
-      parameters:
-      - name: namespace
-        value: opendatahub
       repoRef:
         name: manifests
         path: prometheus/operator
@@ -99,9 +90,6 @@ spec:
         path: jupyterhub/notebook-images
     name: notebook-images
   - kustomizeConfig:
-      parameters:
-      - name: namespace
-        value: opendatahub
       repoRef:
         name: manifests
         path: airflow/operator
