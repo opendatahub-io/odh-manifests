@@ -7,3 +7,21 @@ namespace: opendatahub
 commonLabels:
   opendatahub.io/component: "true"
   component.opendatahub.io/name: odh-common
+
+configMapGenerator:
+- name: odh-common-config
+  env: params.env
+generatorOptions:
+  disableNameSuffixHash: true
+
+vars:
+- name: namespace
+  objref:
+    kind: ConfigMap
+    name: odh-common-config
+    apiVersion: v1
+  fieldref:
+    fieldpath: metadata.namespace
+
+configurations:
+- params.yaml
