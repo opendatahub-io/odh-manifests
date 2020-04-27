@@ -1,14 +1,13 @@
 # Each list is sorted alphabetically, additions should maintain that order
 approvers:
 - crobby
-- LaVLaS
+- lavlas
 - nakfour
 - vpavlin
 
 reviewers:
 - crobby
-- LaVLaS
+- lavlas
 - nakfour
 - VedantMahabaleshwarkar
 - vpavlin
-
