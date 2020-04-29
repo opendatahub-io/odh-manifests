@@ -20,6 +20,7 @@ rules:
   - configmaps
   - persistentvolumeclaims
   - pods
+  - services
   verbs:
   - create
   - delete
@@ -33,6 +34,7 @@ rules:
   - events
   - persistentvolumeclaims
   - pods
+  - services
   verbs:
   - get
   - list
