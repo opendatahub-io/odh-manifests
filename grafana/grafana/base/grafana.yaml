@@ -3,8 +3,16 @@ kind: Grafana
 metadata:
   name: odh-grafana
 spec:
+  service:
+    ports:
+      - name: grafana-proxy
+        port: 9091
+        protocol: TCP
+        targetPort: grafana-proxy
   ingress:
-    enabled: True
+    enabled: False
+    targetPort: grafana-proxy
+    termination: reencrypt
   config:
     log:
       mode: "console"
