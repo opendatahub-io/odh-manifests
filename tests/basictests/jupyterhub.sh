@@ -10,7 +10,7 @@ os::test::junit::declare_suite_start "$MY_SCRIPT"
 
 function test_jupyterhub() {
     header "Testing Jupyter Hub installation"
-    os::cmd::expect_success "oc project opendatahub"
+    os::cmd::expect_success "oc project ${ODHPROJECT}"
     os::cmd::expect_success_and_text "oc get deploymentconfig jupyterhub" "jupyterhub"
     os::cmd::expect_success_and_text "oc get deploymentconfig jupyterhub-db" "jupyterhub-db"
     runningpods=($(oc get pods -l deploymentconfig=jupyterhub --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Change this if your project is not named opendatahub
+export ODHPROJECT=opendatahub
+
 function header() {
     os::text::print_blue $1
 }

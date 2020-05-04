@@ -10,7 +10,7 @@ os::test::junit::declare_suite_start "$MY_SCRIPT"
 
 function test_grafana() {
     header "Testing ODH Grafana installation"
-    os::cmd::expect_success "oc project opendatahub"
+    os::cmd::expect_success "oc project ${ODHPROJECT}"
     os::cmd::expect_success_and_text "oc get deployment grafana-operator" "grafana-operator"
     runningpods=($(oc get pods -l name=grafana-operator --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
     os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
