@@ -82,3 +82,4 @@ spec:
   s3_secret: "s3SECRET"
   s3_bucket: "S3BUCKET"
   s3_region: "MYREGION"
+  
