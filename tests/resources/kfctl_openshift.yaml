@@ -1,10 +1,6 @@
 apiVersion: kfdef.apps.kubeflow.org/v1beta1
 kind: KfDef
 metadata:
-  annotations:
-    kfctl.kubeflow.io/force-delete: "false"
-  clusterName: api-croberts3-dev-datahub-redhat-com:6443
-  creationTimestamp: null
   name: opendatahub
   namespace: opendatahub
 spec:
@@ -116,9 +112,3 @@ spec:
   - name: manifests
     uri: https://github.com/opendatahub-io/odh-manifests/tarball/master
   version: v0.7-branch-openshift
-status:
-  reposCache:
-  - localPath: '".cache/kf-manifests/opendatahub-io-manifests-56a2615"'
-    name: kf-manifests
-  - localPath: '".cache/manifests/opendatahub-io-odh-manifests-d535dc9"'
-    name: manifests
