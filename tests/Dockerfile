@@ -22,4 +22,4 @@ COPY scripts/installandtest.sh /peak/
 # Note:  Do not push the image to a public repo with your kubeconfig
 # ADD kubeconfig /root/.kube/config
 
-ENTRYPOINT [ "/peak/installandtest.sh" ]
+CMD /peak/installandtest.sh
