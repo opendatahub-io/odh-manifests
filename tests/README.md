@@ -8,15 +8,28 @@ The intial tests here verify deployment of a KFDef instance
 
 # Quick start
 
+Note when running on a **mac** you may need to do the following:
+
+```
+brew install coreutils
+ln -s /usr/local/bin/greadlink /usr/local/bin/readlink
+```
+
 Make sure you have an OpenShift login, then do the following:
 
 ```bash
 git clone https://github.com/tmckayus/peak
 cd peak
 git submodule update --init
-echo opendatahub-kubeflow nil https://github.com/opendatahub-io/odh-manifests >> my-list
+echo opendatahub-kubeflow nil https://github.com/opendatahub-io/odh-manifests > my-list
 ./setup.sh my-list
-./operator-tests/run.sh tests/basictests
+./operator-tests/run.sh operator-tests/opendatahub-kubeflow/tests/basictests
+```
+
+Note, if you're looking to test another repo and/or branch, you can change the "echo" command from above to something of the following form where "your branch" is optional:
+
+```
+echo opendatahub-kubeflow nil <your repo> <your branch> > my-list
 ```
 
 If your installation is not in the opendatahub project, you will need to modify
