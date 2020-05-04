@@ -19,6 +19,9 @@ echo opendatahub-kubeflow nil https://github.com/opendatahub-io/odh-manifests >>
 ./operator-tests/run.sh tests/basictests
 ```
 
+If your installation is not in the opendatahub project, you will need to modify
+the export line in tests/util to set the value of ODHPROJECT to match name of the project you are using.
+
 You can run tests individually by passing a substring to run.sh to match:
 
 ```bash
