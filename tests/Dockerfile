@@ -18,6 +18,8 @@ COPY resources/kfctl_openshift.yaml /kfdef/
 COPY scripts/install.sh /peak/
 COPY scripts/installandtest.sh /peak/
 
+RUN chmod -R 777 /kfdef
+
 # For local testing, you can add your own kubeconfig to the image
 # Note:  Do not push the image to a public repo with your kubeconfig
 # ADD kubeconfig /root/.kube/config
