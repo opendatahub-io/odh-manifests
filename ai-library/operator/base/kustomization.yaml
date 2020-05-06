@@ -12,6 +12,6 @@ commonLabels:
 images:
 - name: quay.io/opendatahub/ai-library-operator
   newName: quay.io/opendatahub/ai-library-operator
-  digest: sha256:293879aec3cd52959a3b670eaf69bb2ac478847dfc4e498877984e63592f0fb1
+  newTag: v0.6
 generatorOptions:
   disableNameSuffixHash: true
