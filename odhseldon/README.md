@@ -3,7 +3,7 @@
 Seldon component subscribes to Seldon certified operator, which in turn issues an install of the Seldon certified operator in the namespace. 
  
 ### Folders
-There are is one main folders in the Seldon component
+There is one main folder in the Seldon component
 1. cluster: contains the subscription to the Seldon operator
 
 
