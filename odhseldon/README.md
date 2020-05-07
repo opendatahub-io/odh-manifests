@@ -9,7 +9,7 @@ There are is one main folders in the Seldon component
 
 
 ### Installation
-To install Prometheus add the following to the `kfctl` yaml file.
+To install Seldon add the following to the `kfctl` yaml file.
 
 ```
    - kustomizeConfig:
