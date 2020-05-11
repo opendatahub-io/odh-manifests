@@ -10,6 +10,12 @@ spec:
         name: manifests
         path: odh-common
     name: odh-common
+  #Note: AI Library components requires seldon do be deployed first, make sure to place seldon before AIlibrary
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: odhseldon/cluster
+    name: odhseldon
   - kustomizeConfig:
       repoRef:
         name: manifests
