@@ -6,7 +6,7 @@ Grafana dashboard instance in your project along with
 ## Folders
 There are two main folders in the Prometheus component
 1. cluster: contains the subscription to the operator
-2. operator: contains the routes and instances of the operator
+2. operator: contains installation of the Grafana instance, dashboard, and datasource
 
 ## Grafana Instance
 
