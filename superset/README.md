@@ -1,6 +1,6 @@
 # Apache Superset
 
-Apache Superset component installs Apache Superset tool which provides a portal for business intelligence. It provides tools for exploring and visualizing datasets and creating business intelligence dashboards. Super set can also connect to SQL databases for data access. For more information please visit [Apache Superset](https://superset.incubator.apache.org/)  
+Apache Superset component installs Apache Superset tool which provides a portal for business intelligence. It provides tools for exploring and visualizing datasets and creating business intelligence dashboards. Superset can also connect to SQL databases for data access. For more information please visit [Apache Superset](https://superset.incubator.apache.org/)  
  
 ### Folders
 There is one main folder in the Superset component
