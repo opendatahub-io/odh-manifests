@@ -1,10 +1,10 @@
 # Grafana
 
 The Grafana component subscribes to the Grafana operator.  It also creates a
-Grafana dashboard instance in your project along with 
+Grafana dashboard instance in your project along with a dashboard and a datasource.
  
 ## Folders
-There are two main folders in the Prometheus component
+There are two main folders in the Grafana component
 1. cluster: contains the subscription to the operator
 2. operator: contains installation of the Grafana instance, dashboard, and datasource
 
@@ -22,7 +22,7 @@ This instance creates a grafanadatasource instance that scrapes data from our Pr
 installation and is required for the grafanadashboard instance mentioned above.
 
 # Installation
-To install Prometheus add the following to the `kfctl` yaml file.
+To install Grafana add the following to the `kfctl` yaml file.
 
 ```
   - kustomizeConfig:
@@ -31,14 +31,14 @@ To install Prometheus add the following to the `kfctl` yaml file.
         value: opendatahub
       repoRef:
         name: manifests
-        path: prometheus/cluster
-    name: prometheus-cluster
+        path: grafana/cluster
+    name: grafana-cluster
   - kustomizeConfig:
       parameters:
       - name: namespace
         value: opendatahub
       repoRef:
         name: manifests
-        path: prometheus/operator
-    name: prometheus-operator
+        path: grafana/operator
+    name: grafana-operator
 ```
