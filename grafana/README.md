@@ -39,6 +39,6 @@ To install Grafana add the following to the `kfctl` yaml file.
         value: opendatahub
       repoRef:
         name: manifests
-        path: grafana/operator
+        path: grafana/grafana
     name: grafana-operator
 ```
