@@ -1,4 +1,4 @@
-apiVersion: kfdef.apps.kubeflow.org/v1beta1
+apiVersion: kfdef.apps.kubeflow.org/v1
 kind: KfDef
 metadata:
   name: opendatahub
@@ -10,6 +10,12 @@ spec:
         name: manifests
         path: odh-common
     name: odh-common
+  #Note: AI Library components requires seldon do be deployed first, make sure to place seldon before AIlibrary
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: odhseldon/cluster
+    name: odhseldon
   - kustomizeConfig:
       repoRef:
         name: manifests
@@ -19,9 +25,11 @@ spec:
       repoRef:
         name: manifests
         path: ai-library/operator
+    # Note:  In order to utilize ai-library, you also need to have Seldon installed
     name: ai-library-operator
   - kustomizeConfig:
       parameters:
+      # Note: The admin username is admin
       - name: SUPERSET_ADMIN_PASSWORD
         value: admin
       repoRef:
@@ -73,14 +81,15 @@ spec:
     name: prometheus-operator
   - kustomizeConfig:
       parameters:
-      - name: s3_endpoint_url
-        value: s3.odh.com
+        - name: s3_endpoint_url
+          value: "s3.odh.com"
       repoRef:
         name: manifests
         path: jupyterhub/jupyterhub
     name: jupyterhub
   - kustomizeConfig:
       overlays:
+      #- cuda
       - additional
       repoRef:
         name: manifests
@@ -108,7 +117,7 @@ spec:
     name: odhargo
   repos:
   - name: kf-manifests
-    uri: https://github.com/opendatahub-io/manifests/tarball/v0.7-branch-openshift
+    uri: https://github.com/opendatahub-io/manifests/tarball/v0.7-branch-openshift  
   - name: manifests
     uri: https://github.com/opendatahub-io/odh-manifests/tarball/master
   version: v0.7-branch-openshift
