@@ -13,21 +13,15 @@ There are two main folders in the Kafka component
 The installed Kafka instance is named odh-message-bus and is intended for general use within Open Data Hub
 
 # Installation
-To install Kafka add the following to the `kfctl` yaml file.
+To install Kafka add the following to the `KfDef` in your yaml file.
 
 ```
   - kustomizeConfig:
-      parameters:
-      - name: namespace
-        value: opendatahub
       repoRef:
         name: manifests
         path: kafka/cluster
     name: kafka-cluster
   - kustomizeConfig:
-      parameters:
-      - name: namespace
-        value: opendatahub
       repoRef:
         name: manifests
         path: kafka/kafka
