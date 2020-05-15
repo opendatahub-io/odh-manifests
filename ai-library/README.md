@@ -10,11 +10,17 @@ There are 2 folders that contain installation files:
 `operator/base` This folder includes the yaml files to set up the deployment for the operator in your namespace along with the service account, role, and role binding that is necessary.
 
 ### Installation
-To install AI Library add the following to the `kfctl` yaml file.
+To install AI Library add the following to the `KfDef` in your yaml file.
 
-Note, to use AI Library, you also need to have Seldon installed.
+Note, to use AI Library, you also need to have [Seldon](../odhseldon/README.md) installed.
+In addition, Seldon must be placed before ai-library in the KfDef.  This is shown in the example below.
 
 ```
+   - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: odhseldon/cluster
+    name: odhseldon
   - kustomizeConfig:
       repoRef:
         name: manifests
