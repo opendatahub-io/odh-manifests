@@ -16,7 +16,7 @@ Open Data Hub is an end-to-end AI/ML platform on top of OpenShift Container Plat
 * [Airflow](airflow/README.md)
 * [Argo](odhargo/README.md)
 * Grafana & [Prometheus](prometheus/README.md)
-* Spark Operator
+* [Spark Operator](radanalyticsio/README.md)
 * Kafka
 * Superset
 * AI Library
