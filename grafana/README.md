@@ -22,13 +22,10 @@ This instance creates a grafanadatasource instance that scrapes data from our Pr
 installation and is required for the grafanadashboard instance mentioned above.
 
 # Installation
-To install Grafana add the following to the `kfctl` yaml file.
+To install Grafana add the following to the `KfDef` in your yaml file.
 
 ```
   - kustomizeConfig:
-      parameters:
-      - name: namespace
-        value: opendatahub
       repoRef:
         name: manifests
         path: grafana/cluster
