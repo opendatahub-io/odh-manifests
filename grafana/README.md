@@ -31,9 +31,6 @@ To install Grafana add the following to the `KfDef` in your yaml file.
         path: grafana/cluster
     name: grafana-cluster
   - kustomizeConfig:
-      parameters:
-      - name: namespace
-        value: opendatahub
       repoRef:
         name: manifests
         path: grafana/grafana
