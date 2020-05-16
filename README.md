@@ -19,7 +19,7 @@ Open Data Hub is an end-to-end AI/ML platform on top of OpenShift Container Plat
 * [Spark Operator](radanalyticsio/README.md)
 * Kafka
 * Superset
-* AI Library
+* [AI Library](ai-library/README.md)
 
 
 Some components are still in process of conversion from Ansible Operator based version on [Gitlab](https://gitlab.com/opendatahub/opendatahub-operator/)
