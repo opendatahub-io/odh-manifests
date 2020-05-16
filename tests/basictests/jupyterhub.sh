@@ -13,10 +13,10 @@ function test_jupyterhub() {
     os::cmd::expect_success "oc project ${ODHPROJECT}"
     os::cmd::expect_success_and_text "oc get deploymentconfig jupyterhub" "jupyterhub"
     os::cmd::expect_success_and_text "oc get deploymentconfig jupyterhub-db" "jupyterhub-db"
-    runningpods=($(oc get pods -l deploymentconfig=jupyterhub --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
-    os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
-    runningpods=($(oc get pods -l deploymentconfig=jupyterhub-db --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
-    os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
+    # runningpods=($(oc get pods -l deploymentconfig=jupyterhub --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
+    # os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
+    # runningpods=($(oc get pods -l deploymentconfig=jupyterhub-db --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
+    # os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
 }
 
 test_jupyterhub
