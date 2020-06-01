@@ -5,7 +5,6 @@ echo "Installing kfDef from test directory"
 set -x
 ## Install the opendatahub-operator
 pushd /peak
-echo opendatahub-operator beta nil > operatorsetup
 echo "Here is the operatorsetup file:"
 cat operatorsetup
 ./setup.sh -o ./operatorsetup
