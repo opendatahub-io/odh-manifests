@@ -5,14 +5,16 @@ echo "Installing kfDef from test directory"
 set -x
 ## Install the opendatahub-operator
 pushd /peak
-echo "opendatahub-operator beta nil" > ./operatorsetup
-./setup.sh -o operatorsetup
+echo opendatahub-operator beta nil > operatorsetup
+echo "Here is the operatorsetup file:"
+cat operatorsetup
+./setup.sh -o ./operatorsetup
 echo "Pausing 20 seconds to allow operator to start"
 sleep 20s
 popd
 ## Grabbing and applying the patch in the PR we are testing
 pushd /src/odh-manifests
-curl -O https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/${PULL_NUMBER}.patch
+curl -O -L https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/${PULL_NUMBER}.patch
 echo "Applying followng patch:"
 cat ${PULL_NUMBER}.patch
 git apply ${PULL_NUMBER}.patch
