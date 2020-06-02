@@ -14,6 +14,6 @@ if [ "$?" -ne 0 ]; then
     echo "The tests failed"
     exit 1
 fi
-## Debugging pause
-echo "Debugging pause for 3 hours"
-sleep 180m
+## Debugging pause...uncomment below to be able to poke around the test pod post-test
+# echo "Debugging pause for 3 hours"
+# sleep 180m
