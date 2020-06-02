@@ -4,6 +4,9 @@ echo "Installing kfDef from test directory"
 
 set -x
 ## Install the opendatahub-operator
+## Debugging pause
+echo "Debugging pause for 3 hours"
+sleep 180m
 pushd /peak
 echo "Here is the operatorsetup file:"
 cat /peak/operatorsetup
