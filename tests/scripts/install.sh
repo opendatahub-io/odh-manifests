@@ -6,10 +6,10 @@ set -x
 ## Install the opendatahub-operator
 pushd /peak
 echo "Here is the operatorsetup file:"
-cat operatorsetup
-./setup.sh -o ./operatorsetup
-echo "Pausing 20 seconds to allow operator to start"
-sleep 20s
+cat /peak/operatorsetup
+./setup.sh -o /peak/operatorsetup 2>&1
+echo "Pausing 1 minute to allow operator to start"
+sleep 1m
 popd
 ## Grabbing and applying the patch in the PR we are testing
 pushd /src/odh-manifests
