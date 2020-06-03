@@ -38,5 +38,5 @@ if [ "$?" -ne 0 ]; then
 fi
 popd
 
-echo "Pausing 300 seconds to allow services to spin-up"
-sleep 300s
+echo "Pausing 7 minutes to allow services to spin-up"
+sleep 7m
