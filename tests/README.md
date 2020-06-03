@@ -22,8 +22,8 @@ git clone https://github.com/tmckayus/peak
 cd peak
 git submodule update --init
 echo opendatahub-kubeflow nil https://github.com/opendatahub-io/odh-manifests > my-list
-./setup.sh -t my-list
-./run.sh operator-tests/opendatahub-kubeflow/tests/basictests
+./setup.sh my-list
+./operator-tests/run.sh operator-tests/opendatahub-kubeflow/tests/basictests
 ```
 
 Note, if you're looking to test another repo and/or branch, you can change the "echo" command from above to something of the following form where "your branch" is optional:
@@ -38,7 +38,7 @@ the export line in tests/util to set the value of ODHPROJECT to match name of th
 You can run tests individually by passing a substring to run.sh to match:
 
 ```bash
-./run.sh ailibrary.sh
+./operator-tests/run.sh ailibrary.sh
 ```
 
 # Basic test
@@ -50,5 +50,5 @@ The steps to run this test are:
 * Run the tests
 
   ```bash
-  ./run.sh tests/basictests
+  ./operator-tests/run.sh tests/basictests
   ```
