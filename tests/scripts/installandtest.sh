@@ -11,6 +11,8 @@ oc new-project opendatahub
 /peak/install.sh
 /peak/run.sh odh-manifests
 if [ "$?" -ne 0 ]; then
+    echo "Here's a dump of the pods:"
+    oc get pods -o json -n opendatahub 
     echo "The tests failed"
     exit 1
 fi
