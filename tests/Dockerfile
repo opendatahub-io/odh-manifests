@@ -19,6 +19,7 @@ COPY functionalitytests /peak/operator-tests/odh-manifests/functionalitytests
 COPY util /peak/operator-tests/odh-manifests
 COPY resources/kfctl_openshift.yaml /kfdef/
 COPY resources/operatorsetup /peak/
+COPY resources/ai_library_cr.yaml /peak/operator-tests/odh-manifests/resources/
 COPY scripts/install.sh /peak/
 COPY scripts/installandtest.sh /peak/
 
