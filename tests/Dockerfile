@@ -14,7 +14,8 @@ ADD https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar
 RUN tar -C /usr/bin -xvf /peak/oc.tar.gz && \
     chmod +x /usr/bin/oc
 
-COPY basictests /peak/operator-tests/odh-manifests/tests
+COPY basictests /peak/operator-tests/odh-manifests/basictests
+COPY functionalitytests /peak/operator-tests/odh-manifests/functionalitytests
 COPY util /peak/operator-tests/odh-manifests
 COPY resources/kfctl_openshift.yaml /kfdef/
 COPY resources/operatorsetup /peak/
