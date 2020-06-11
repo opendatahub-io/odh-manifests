@@ -27,27 +27,13 @@ function delete_ai_lib_cr() {
 }
 
 function verify_functionality() {
-    header "Verifying that the predictor pods are up and running"
-    runningpods=($(oc get pods -l seldon-app=flakes-predict-predictor --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
-    retries=0
-    while [ ${#runningpods[@]} != 1 -a $retries -lt 60 ]; do
-        sleep 1s
-        runningpods=($(oc get pods -l seldon-app=flakes-predict-predictor --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
-        ((retries++))
-    done
-    os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
-    runningpods=($(oc get pods -l seldon-app=regression-predict-predictor --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
-    retries=0
-    while [ ${#runningpods[@]} != 1 -a $retries -lt 60 ]; do
-        sleep 1s
-        runningpods=($(oc get pods -l seldon-app=regression-predict-predictor --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
-        ((retries++))
-    done
-    os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
+    header "Verifying that the SeldonDeployments are up and running"
+    os::cmd::try_until_text 'oc get seldondeployment flakes-predict -o jsonpath="{$.status.state}"' "Available"
+    os::cmd::try_until_text 'oc get seldondeployment regression-predict -o jsonpath="{$.status.state}"' "Available"
 
     # Check that the UI is indeed up by curling the route
     uiroute=$(oc get route ui -o jsonpath="{$.status.ingress[0].host}")
-    os::cmd::expect_success_and_text "curl -k https://$uiroute" "AI Library"
+    os::cmd::try_until_text "curl -k https://$uiroute" "AI Library"
 }
 
 function test_ai_library_functionality() {
