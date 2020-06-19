@@ -71,8 +71,8 @@ spec:
     - enabled: true
       image: quay.io/opendatahub/ai-library-ui:latest
       endpoints:
-        regression: http://regression-predict-regression-predict-predictor:8000/
-        flakes: http://flakes-predict-flakes-predict-predictor:8000/
+        regression: http://regression-predict-predictor:8000/
+        flakes: http://flakes-predict-predictor:8000/
   sample-data:
     - enabled: true
       image: quay.io/opendatahub/ai-library-sample-data
