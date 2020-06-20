@@ -4,13 +4,13 @@ echo "Installing kfDef from test directory"
 
 set -x
 ## Install the opendatahub-operator
-pushd /peak
-./setup.sh -o /peak/operatorsetup 2>&1
+pushd ~/peak
+./setup.sh -o ~/peak/operatorsetup 2>&1
 echo "Pausing 20 seconds to allow operator to start"
 sleep 20s
 popd
 ## Grabbing and applying the patch in the PR we are testing
-pushd /src/odh-manifests
+pushd ~/src/odh-manifests
 if [ -z "$PULL_NUMBER" ]; then
   echo "No pull number, assuming nightly run"
 else
@@ -21,7 +21,7 @@ else
 fi
 popd
 ## Point kfctl_openshift.yaml to the manifests in the PR
-pushd /kfdef
+pushd ~/kfdef
 if [ -z "$PULL_NUMBER" ]; then
   echo "No pull number, not modifying kfctl_openshift.yaml"
 else
@@ -33,8 +33,8 @@ fi
 
 if [ -z "${OPENSHIFT_USER}" ] || [ -z "${OPENSHIFT_PASS}" ]; then
   echo "Creating HTPASSWD OAuth provider"
-  oc apply -f /peak/operator-tests/odh-manifests/resources/htpasswd.secret.yaml
-  oc apply -f /peak/operator-tests/odh-manifests/resources/oauth.htpasswd.yaml
+  oc apply -f $HOME/peak/operator-tests/odh-manifests/resources/htpasswd.secret.yaml
+  oc apply -f $HOME/peak/operator-tests/odh-manifests/resources/oauth.htpasswd.yaml
   export OPENSHIFT_USER=admin
   export OPENSHIFT_PASS=admin
 fi
