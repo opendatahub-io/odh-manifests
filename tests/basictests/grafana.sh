@@ -8,6 +8,17 @@ source ${MY_DIR}/../util
 
 os::test::junit::declare_suite_start "$MY_SCRIPT"
 
+function test_grafana_functionality() {
+    # Make sure that route is active and that the app responds as expected
+    os::cmd::try_until_text "oc get route grafana-route -o jsonpath='{$.status.ingress[0].conditions[0].type}'" "Admitted"
+    uiroute=$(oc get route grafana-route -o jsonpath="{$.status.ingress[0].host}")
+    os::cmd::try_until_text "curl -k https://$uiroute" "Grafana"
+    # Use the search api make sure that our dashboard is indeed there
+    os::cmd::try_until_text "curl -k https://$uiroute/api/search?query=Kafka | jq '.[].url'" "kafka-overview"
+    dashboardurl=$(curl -k https://$uiroute/api/search?query=Kafka | jq '.[].url' | tr -d '\"')
+    os::cmd::expect_success "curl -k https://${uiroute}${dashboardurl}"
+}
+
 function test_grafana() {
     header "Testing ODH Grafana installation"
     os::cmd::expect_success "oc project ${ODHPROJECT}"
@@ -23,5 +34,6 @@ function test_grafana() {
 }
 
 test_grafana
+test_grafana_functionality
 
 os::test::junit::declare_suite_end
