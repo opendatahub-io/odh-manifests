@@ -56,6 +56,6 @@ function test_ai_library_functionality() {
 }
 
 test_ai_library
-test_ai_library_functionality
+#test_ai_library_functionality
 
 os::test::junit::declare_suite_end
