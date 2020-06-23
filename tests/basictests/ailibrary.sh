@@ -13,8 +13,9 @@ OPERATOR_IMAGE="quay.io/opendatahub/ai-library-operator:v0.6"
 function test_ai_library() {
     header "Testing AI Library installation"
     os::cmd::expect_success "oc project ${ODHPROJECT}"
-    os::cmd::expect_success_and_text "oc get deployment ailibrary-operator" "ailibrary-operator"
-    os::cmd::expect_success_and_text "oc get deployment ailibrary-operator -o jsonpath='{$.spec.template.spec.containers[0].image}'" ${OPERATOR_IMAGE}
+    os::cmd::try_until_text "oc get deployment ailibrary-operator" "ailibrary-operator" odhdefaulttimeout
+    os::cmd::try_until_text "oc get deployment ailibrary-operator -o jsonpath='{$.spec.template.spec.containers[0].image}'" ${OPERATOR_IMAGE} odhdefaulttimeout
+    os::cmd::try_until_text "oc get pods -l name=ailibrary-operator --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "ailibrary-operator" odhdefaulttimeout
     runningpods=($(oc get pods -l name=ailibrary-operator --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
     os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
 }

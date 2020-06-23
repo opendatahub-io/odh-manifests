@@ -11,7 +11,8 @@ os::test::junit::declare_suite_start "$MY_SCRIPT"
 function test_airflow() {
     header "Testing Airflow installation"
     os::cmd::expect_success "oc project ${ODHPROJECT}"
-    os::cmd::expect_success_and_text "oc get deployment airflow-on-k8s-operator-controller-manager" "airflow-on-k8s-operator-controller-manager"
+    os::cmd::try_until_text "oc get deployment airflow-on-k8s-operator-controller-manager" "airflow-on-k8s-operator-controller-manager" odhdefaulttimeout
+    os::cmd::try_until_text "oc get pods -l control-plane=controller-manager --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "airflow-on-k8s-operator-controller-manager" odhdefaulttimeout
     runningpods=($(oc get pods -l control-plane=controller-manager --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
     os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
 }

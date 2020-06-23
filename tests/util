@@ -3,6 +3,12 @@
 # Change this if your project is not named opendatahub
 export ODHPROJECT=opendatahub
 
+millisecond=1
+second=$(( 1000 * millisecond ))
+minute=$(( 60 * second ))
+fiveminute=$(( 300 * second ))
+odhdefaulttimeout=$(( 1200 * second ))
+
 function header() {
     os::text::print_blue $1
 }
