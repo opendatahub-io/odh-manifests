@@ -15,10 +15,10 @@ RUN tar -C /usr/bin -xvf /peak/oc.tar.gz && \
     chmod +x /usr/bin/oc
 
 COPY basictests /peak/operator-tests/odh-manifests/basictests
+COPY resources /peak/operator-tests/odh-manifests/resources
 COPY util /peak/operator-tests/odh-manifests
-COPY resources/kfctl_openshift.yaml /kfdef/
-COPY resources/operatorsetup /peak/
-COPY resources/ai_library_cr.yaml /peak/operator-tests/odh-manifests/resources/
+COPY setup/kfctl_openshift.yaml /kfdef/
+COPY setup/operatorsetup /peak/
 COPY scripts/install.sh /peak/
 COPY scripts/installandtest.sh /peak/
 
@@ -29,6 +29,6 @@ RUN chmod -R 777 /kfdef && \
 
 # For local testing, you can add your own kubeconfig to the image
 # Note:  Do not push the image to a public repo with your kubeconfig
-# kubeconfig /root/.kube/config
+# ADD kubeconfig /root/.kube/config
 
 CMD /peak/installandtest.sh
