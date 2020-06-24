@@ -25,8 +25,10 @@ pushd /kfdef
 if [ -z "$PULL_NUMBER" ]; then
   echo "No pull number, not modifying kfctl_openshift.yaml"
 else
-  echo "Setting manifests in kfctl_openshift to use pull number: $PULL_NUMBER"
-  sed -i "s#uri: https://github.com/opendatahub-io/odh-manifests/tarball/master#uri: https://api.github.com/repos/opendatahub-io/odh-manifests/tarball/pull/${PULL_NUMBER}/head#" ./kfctl_openshift.yaml
+  if [ $REPO_NAME == "odh-manifests" ]; then
+    echo "Setting manifests in kfctl_openshift to use pull number: $PULL_NUMBER"
+    sed -i "s#uri: https://github.com/opendatahub-io/odh-manifests/tarball/master#uri: https://api.github.com/repos/opendatahub-io/odh-manifests/tarball/pull/${PULL_NUMBER}/head#" ./kfctl_openshift.yaml
+  fi
 fi
 echo "Creating the following KfDef"
 cat ./kfctl_openshift.yaml
@@ -37,6 +39,3 @@ if [ "$?" -ne 0 ]; then
     exit $?
 fi
 popd
-
-echo "Pausing 7 minutes to allow services to spin-up"
-sleep 7m
