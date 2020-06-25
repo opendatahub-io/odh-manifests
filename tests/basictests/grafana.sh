@@ -26,9 +26,6 @@ function test_grafana() {
     os::cmd::try_until_text "oc get pods -l name=grafana-operator --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "grafana-operator" $odhdefaulttimeout $odhdefaultinterval
     runningpods=($(oc get pods -l name=grafana-operator --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
     os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
-    os::cmd::try_until_text "oc get pods -l app=grafana --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "grafana-deployment" $odhdefaulttimeout $odhdefaultinterval
-    runningpods=($(oc get pods -l app=grafana --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
-    os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
     os::cmd::try_until_text "oc get grafanadashboard" "odh-kafka" $odhdefaulttimeout $odhdefaultinterval
     os::cmd::try_until_text "oc get grafanadatasource" "odh-datasource" $odhdefaulttimeout $odhdefaultinterval
 }
