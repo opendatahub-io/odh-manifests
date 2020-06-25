@@ -14,7 +14,7 @@ AI_LIBRARY_CR="${MY_DIR}/../resources/ai_library_cr.yaml"
 function test_ai_library() {
     header "Testing AI Library installation"
     os::cmd::expect_success "oc project ${ODHPROJECT}"
-    os::cmd::try_until_text "oc get deployment ailibrary-operator" "ailibrary-operator" $odhdefaulttimeout odhdefaultinterval
+    os::cmd::try_until_text "oc get deployment ailibrary-operator" "ailibrary-operator" $odhdefaulttimeout $odhdefaultinterval
     os::cmd::try_until_text "oc get deployment ailibrary-operator -o jsonpath='{$.spec.template.spec.containers[0].image}'" ${OPERATOR_IMAGE} $odhdefaulttimeout $odhdefaultinterval
     os::cmd::try_until_text "oc get pods -l name=ailibrary-operator --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "ailibrary-operator" $odhdefaulttimeout $odhdefaultinterval
     runningpods=($(oc get pods -l name=ailibrary-operator --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
