@@ -5,6 +5,10 @@ RUN dnf install -y bc git go-toolset && \
     cd /peak && \
     git submodule update --init
 
+# install jq to help with parsing json
+RUN curl -o /usr/local/bin/jq http://stedolan.github.io/jq/download/linux64/jq && \
+    chmod +x /usr/local/bin/jq
+
 RUN mkdir -p /src && \
     cd /src && \
     git clone https://github.com/opendatahub-io/odh-manifests && \
