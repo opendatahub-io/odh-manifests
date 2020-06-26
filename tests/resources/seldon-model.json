@@ -1,0 +1,53 @@
+{
+    "apiVersion": "machinelearning.seldon.io/v1alpha2",
+    "kind": "SeldonDeployment",
+    "metadata": {
+        "labels": {
+            "app": "seldon"
+        },
+        "name": "modelfull"
+    },
+    "spec": {
+        "annotations": {
+            "project_name": "seldon",
+            "deployment_version": "0.1"
+        },
+        "name": "modelfull",
+        "oauth_key": "oauth-key",
+        "oauth_secret": "oauth-secret",
+        "predictors": [
+            {
+                "componentSpecs": [{
+                    "spec": {
+                        "containers": [
+                            {
+                                "image": "nakfour/modelfull:0.1",
+                                "imagePullPolicy": "Always",
+                                "name": "modelfull",
+                                "resources": {
+                                    "requests": {
+                                        "memory": "10Mi"
+                                    }
+                                }
+                            }
+                        ],
+                        "terminationGracePeriodSeconds": 20
+                    }
+                }],
+                "graph": {
+                    "children": [],
+                    "name": "modelfull",
+                    "endpoint": {
+                        "type" : "REST"
+                    },
+                    "type": "MODEL"
+                },
+                "name": "modelfull",
+                "replicas": 1,
+                "annotations": {
+                "predictor_version" : "0.1"
+                }
+            }
+        ]
+    }
+}
