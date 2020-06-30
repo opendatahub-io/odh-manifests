@@ -22,7 +22,7 @@ function test_routes(){
   header "Testing Flower and AirflowUI Routes"
   airflowuiroute=$(oc get route pc-cluster-airflowui -o jsonpath="{$.status.ingress[0].host}")
   flowerroute=$(oc get route pc-cluster-flower -o jsonpath="{$.status.ingress[0].host}")
-  os::cmd::try_until_text "curl -k http://$flowerroute/admin/" "Airflow - DAGs"
+  os::cmd::try_until_text "curl -k http://$airflowuiroute/admin/" "Airflow - DAGs"
   os::cmd::try_until_text "curl -k http://$flowerroute" "Flower"
 }
 
