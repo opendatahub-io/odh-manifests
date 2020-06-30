@@ -38,6 +38,12 @@ function verify_airflow(){
   os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-worker-1 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-worker-1"
 }
 
+function delete_airflow(){
+  header "Deleting Airflow Cluster"
+  os::cmd::expect_success "oc delete -f ${AIRFLOWBASE_CR}"
+  os::cmd::expect_success "oc delete -f ${AIRFLOWCLUSTER_CR}"
+}
+
 function test_airflow() {
     header "Testing Airflow installation"
     os::cmd::expect_success "oc project ${ODHPROJECT}"
@@ -45,6 +51,10 @@ function test_airflow() {
     os::cmd::try_until_text "oc get pods -l control-plane=controller-manager --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "airflow-on-k8s-operator-controller-manager" $odhdefaulttimeout $odhdefaultinterval
     runningpods=($(oc get pods -l control-plane=controller-manager --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
     os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
+    create_airflow
+    verify_airflow
+    test_routes
+    delete_airflow
 }
 
 test_airflow
