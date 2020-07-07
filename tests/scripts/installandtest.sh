@@ -9,7 +9,7 @@ export KUBECONFIG=~/.kube/config
 # This is needed to avoid `oc status` failing inside openshift-ci
 oc new-project opendatahub
 /peak/install.sh
-#/peak/run.sh basictests
+/peak/run.sh grafana.sh
 # if [ "$?" -ne 0 ]; then
 #     echo "The tests failed"
 #     echo "Here's a dump of the pods:"
