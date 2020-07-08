@@ -32,7 +32,7 @@ else
 fi
 echo "Creating the following KfDef"
 cat ./kfctl_openshift.yaml
-oc create -f ./kfctl_openshift.yaml
+#oc create -f ./kfctl_openshift.yaml
 set +x
 if [ "$?" -ne 0 ]; then
     echo "The installation failed"
