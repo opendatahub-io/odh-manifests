@@ -9,7 +9,7 @@ source ${MY_DIR}/../util
 os::test::junit::declare_suite_start "$MY_SCRIPT"
 
 function test_jupyterhub() {
-    header "Testing Jupyter Hub installation"
+    header "Testing JupyterHub installation"
     os::cmd::expect_success "oc project ${ODHPROJECT}"
     os::cmd::try_until_text "oc get deploymentconfig jupyterhub" "jupyterhub" $odhdefaulttimeout $odhdefaultinterval
     os::cmd::try_until_text "oc get deploymentconfig jupyterhub-db" "jupyterhub-db" $odhdefaulttimeout $odhdefaultinterval
@@ -21,6 +21,17 @@ function test_jupyterhub() {
     os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
 }
 
+function test_start_notebook() {
+    header "Testing JupyterHub Notebook Execution"
+
+    os::cmd::expect_success "oc project ${ODHPROJECT}"
+    route="https://"$(oc get route jupyterhub -o jsonpath='{.spec.host}')
+    os::cmd::expect_success "JH_HEADLESS=true JH_USER_NAME=jh-test JH_LOGIN_USER=admin JH_LOGIN_PASS=admin \
+    JH_NOTEBOOKS=jh-stresstest/test.ipynb JH_NOTEBOOK_IMAGE=s2i-minimal-notebook:3.6 JH_AS_ADMIN=true \
+    JH_URL=$route python3 ${MY_DIR}/jupyterhub/jhtest.py"
+}
+
 test_jupyterhub
+test_start_notebook
 
 os::test::junit::declare_suite_end

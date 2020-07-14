@@ -30,9 +30,14 @@ else
     sed -i "s#uri: https://github.com/opendatahub-io/odh-manifests/tarball/master#uri: https://api.github.com/repos/opendatahub-io/odh-manifests/tarball/pull/${PULL_NUMBER}/head#" ./kfctl_openshift.yaml
   fi
 fi
+
+echo "Creating HTPASSWD OAuth provider"
+oc apply -f /peak/operator-tests/odh-manifests/resources/htpasswd.secret.yaml
+oc apply -f /peak/operator-tests/odh-manifests/resources/oauth.htpasswd.yaml
+
 echo "Creating the following KfDef"
 cat ./kfctl_openshift.yaml
-oc create -f ./kfctl_openshift.yaml
+oc apply -f ./kfctl_openshift.yaml
 set +x
 if [ "$?" -ne 0 ]; then
     echo "The installation failed"

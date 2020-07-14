@@ -6,6 +6,6 @@ metadata:
   name: jupyterhub-cfg
 data:
   jupyterhub_config.py: ""
-  jupyterhub_admins: ""
+  jupyterhub_admins: "admin"
   gpu_mode: ""
   singleuser_pvc_size: 2Gi
