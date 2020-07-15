@@ -17,6 +17,10 @@ data:
             memory: 2Gi
             cpu: 1
 
+      - name: Elyra Notebook
+        images:
+        - 's2i-elyra-notebook:1.0.0'
+
       - name: Spark Notebook
         images:
         - 's2i-spark-minimal-notebook:3.6'

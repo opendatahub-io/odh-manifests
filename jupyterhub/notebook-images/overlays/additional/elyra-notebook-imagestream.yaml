@@ -1,0 +1,18 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    opendatahub.io/notebook-image: "true"
+  name: s2i-elyra-notebook
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+  - annotations:
+      openshift.io/imported-from: quay.io/akchinstc/s2i-elyra-notebook
+    from:
+      kind: DockerImage
+      name: quay.io/akchinstc/s2i-elyra-notebook:1.0.0
+    name: "1.0.0"
+    referencePolicy:
+      type: Source
