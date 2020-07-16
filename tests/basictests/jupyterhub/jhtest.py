@@ -1,5 +1,6 @@
 import os
 import sys
+from distutils.util import strtobool
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -42,14 +43,15 @@ class JHStress():
         self.url = os.environ.get('JH_URL')
         self.username = os.environ.get('JH_LOGIN_USER')
         self.password = os.environ.get('JH_LOGIN_PASS')
+        self.login_provider = os.environ.get('OPENSHIFT_LOGIN_PROVIDER', 'htpasswd-provider')
         self.notebooks = os.environ.get('JH_NOTEBOOKS', "").split(",")
         self.user_name = os.environ.get('JH_USER_NAME', 'test-user1')
         self.spawner = {
             "image": os.environ.get('JH_NOTEBOOK_IMAGE', "s2i-minimal-notebook:3.6"),
             "size": os.environ.get('JH_NOTEBOOK_SIZE', "None"),
         }
-        self.as_admin = os.environ.get('JH_AS_ADMIN', False)
-        self.headless = os.environ.get('JH_HEADLESS', False)
+        self.as_admin = strtobool(os.environ.get('JH_AS_ADMIN', False))
+        self.headless = strtobool(os.environ.get('JH_HEADLESS', False))
         self.preload_repos = os.environ.get('JH_PRELOAD_REPOS', "https://github.com/vpavlin/jh-stresstest")
 
 
@@ -167,8 +169,8 @@ class JHStress():
         elem = self.driver.find_element_by_link_text("Sign in with OpenShift")
         elem.send_keys(Keys.RETURN)
 
-        if self.check_exists_by_xpath('//a[text()="htpasswd-provider"]'):
-            elem = self.driver.find_element_by_link_text("htpasswd-provider")
+        if self.check_exists_by_xpath('//a[text()="%s"]' % self.login_provider):
+            elem = self.driver.find_element_by_link_text(self.login_provider)
             elem.send_keys(Keys.RETURN)
             self.openshift_login(self.username, self.password)
 
