@@ -31,9 +31,13 @@ else
   fi
 fi
 
-echo "Creating HTPASSWD OAuth provider"
-oc apply -f /peak/operator-tests/odh-manifests/resources/htpasswd.secret.yaml
-oc apply -f /peak/operator-tests/odh-manifests/resources/oauth.htpasswd.yaml
+if [ -z "${OPENSHIFT_USER}" ] || [ -z "${OPENSHIFT_PASS}" ]; then
+  echo "Creating HTPASSWD OAuth provider"
+  oc apply -f /peak/operator-tests/odh-manifests/resources/htpasswd.secret.yaml
+  oc apply -f /peak/operator-tests/odh-manifests/resources/oauth.htpasswd.yaml
+  export OPENSHIFT_USER=admin
+  export OPENSHIFT_PASS=admin
+fi
 
 echo "Creating the following KfDef"
 cat ./kfctl_openshift.yaml
