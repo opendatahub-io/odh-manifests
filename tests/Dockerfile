@@ -1,10 +1,15 @@
 FROM centos:centos8
 
 ARG CHROMEDRIVER_VER=84.0.4147.30
+ARG ORG=opendatahub-io
+ARG BRANCH=master
+
+ENV HOME /root
+WORKDIR /root
 
 RUN dnf install -y bc git go-toolset python3-pip unzip && \
-    git clone https://github.com/crobby/peak && \    
-    cd /peak && \
+    git clone https://github.com/crobby/peak $HOME/peak && \    
+    cd $HOME/peak && \
     git submodule update --init
 
 RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm &&\
@@ -16,41 +21,43 @@ RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.n
 RUN curl -o /usr/local/bin/jq http://stedolan.github.io/jq/download/linux64/jq && \
     chmod +x /usr/local/bin/jq
 
-RUN mkdir -p /src && \
-    cd /src && \
-    git clone https://github.com/opendatahub-io/odh-manifests && \
-    chmod -R 777 /src
+RUN mkdir -p $HOME/src && \
+    cd $HOME/src && \
+    git clone --depth=1 --branch ${BRANCH} https://github.com/${ORG}/odh-manifests && \
+    chmod -R 777 $HOME/src
 
-ADD https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz /peak/ 
-RUN tar -C /usr/bin -xvf /peak/oc.tar.gz && \
-    chmod +x /usr/bin/oc
+ADD https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz $HOME/peak/ 
+RUN tar -C /usr/local/bin -xvf $HOME/peak/oc.tar.gz && \
+    chmod +x /usr/local/bin/oc
 
 RUN curl -o /tmp/chromedriver_linux64.zip -L https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VER}/chromedriver_linux64.zip &&\
     unzip /tmp/chromedriver_linux64.zip &&\
     cp chromedriver /usr/local/bin/chromedriver
 
-COPY Pipfile Pipfile.lock /peak
+COPY Pipfile Pipfile.lock $HOME/peak
 
 RUN pip3 install micropipenv &&\
     ln -s `which pip3` /usr/bin/pip &&\
-    cd /peak &&\
+    cd $HOME/peak &&\
     micropipenv install
 
-COPY basictests /peak/operator-tests/odh-manifests/basictests
-COPY resources /peak/operator-tests/odh-manifests/resources
-COPY util /peak/operator-tests/odh-manifests
-COPY setup/kfctl_openshift.yaml /kfdef/
-COPY setup/operatorsetup /peak/
-COPY scripts/install.sh /peak/
-COPY scripts/installandtest.sh /peak/
+COPY basictests $HOME/peak/operator-tests/odh-manifests/basictests
+COPY resources $HOME/peak/operator-tests/odh-manifests/resources
+COPY util $HOME/peak/operator-tests/odh-manifests
+COPY setup/kfctl_openshift.yaml $HOME/kfdef/
+COPY setup/operatorsetup $HOME/peak/
+COPY scripts/install.sh $HOME/peak/
+COPY scripts/installandtest.sh $HOME/peak/
 
-RUN chmod -R 777 /kfdef && \
-    mkdir -p /.kube && \
-    chmod -R 777 /.kube && \
-    chmod -R 777 /peak
+RUN chmod -R 777 $HOME/kfdef && \
+    mkdir -p $HOME/.kube && \
+    chmod -R 777 $HOME/.kube && \
+    chmod -R 777 $HOME/peak && \
+    mkdir -p /peak && \
+    ln -s $HOME/peak/installandtest.sh /peak/installandtest.sh
 
 # For local testing, you can add your own kubeconfig to the image
 # Note:  Do not push the image to a public repo with your kubeconfig
 # ADD kubeconfig /root/.kube/config
 
-CMD /peak/installandtest.sh
+CMD $HOME/peak/installandtest.sh

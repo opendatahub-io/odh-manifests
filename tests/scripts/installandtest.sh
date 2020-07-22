@@ -3,20 +3,24 @@
 set -x
 env | sort
 mkdir -p ~/.kube
-cp /var/run/secrets/ci.openshift.io/multi-stage/kubeconfig ~/.kube/config
-chmod 755 ~/.kube/config
+cp /tmp/kubeconfig ~/.kube/config 2> /dev/null || cp /var/run/secrets/ci.openshift.io/multi-stage/kubeconfig ~/.kube/config
+chmod 644 ~/.kube/config
 export KUBECONFIG=~/.kube/config
 
 TESTS_REGEX=${TESTS_REGEX:-"basictests"}
 
 # This is needed to avoid `oc status` failing inside openshift-ci
 oc new-project opendatahub
-/peak/install.sh
-/peak/run.sh ${TESTS_REGEX}
+
+$HOME/peak/install.sh
+$HOME/peak/run.sh ${TESTS_REGEX}
+
 if [ "$?" -ne 0 ]; then
     echo "The tests failed"
-    echo "Here's a dump of the pods:"
-    oc get pods -o json -n opendatahub 
+    if [ -z "${SKIP_PODS_OUTPUT}"]; then
+        echo "Here's a dump of the pods:"
+        oc get pods -o json -n opendatahub
+    fi
     exit 1
 fi
 

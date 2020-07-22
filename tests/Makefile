@@ -1,0 +1,27 @@
+IMAGE=odh-manifests-test
+GIT_ORG=opendatahub-io
+GIT_BRANCH=master
+NAMESPACE=opendatahub
+SKIP_PODS_OUTPUT=
+
+all: test
+test: build run clean
+
+build:
+	podman build -t $(IMAGE) --build-arg ORG=$(GIT_ORG) --build-arg BRANCH=$(GIT_BRANCH) .
+
+run:
+	oc config view --flatten --minify > /tmp/tests-kubeconfig
+	podman run -e SKIP_PODS_OUTPUT=$(SKIP_PODS_OUTPUT) -it -v /tmp/tests-kubeconfig:/tmp/kubeconfig:z $(IMAGE)
+
+clean:
+	oc delete -n $(NAMESPACE) kfdef opendatahub || true
+	oc delete project $(NAMESPACE) || echo -e "\n\n==> If the project deletion failed, you can try to use this script to force it: https://raw.githubusercontent.com/jefferyb/useful-scripts/master/openshift/force-delete-openshift-project\n\n"
+	#Clean up openshift-operators namespace
+	oc get csv -n openshift-operators -o name | grep strimzi-cluster-operator | xargs oc delete -n openshift-operators || true
+	oc get csv -n openshift-operators -o name | grep opendatahub-operator | xargs oc delete -n openshift-operators || true
+	oc delete subscription -n openshift-operators -l peak.test.subscription=opendatahub-operator
+	oc get mutatingwebhookconfiguration -o name | grep seldon | grep $(NAMESPACE) | xargs oc delete || true
+	oc get mutatingwebhookconfiguration -o name | grep katib | grep $(NAMESPACE) | xargs oc delete || true
+	oc get validatingwebhookconfiguration -o name | grep seldon | grep $(NAMESPACE) | xargs oc delete || true
+	oc get validatingwebhookconfiguration -o name | grep katib | grep $(NAMESPACE) | xargs oc delete || true
