@@ -9,10 +9,11 @@ export KUBECONFIG=~/.kube/config
 
 TESTS_REGEX=${TESTS_REGEX:-"basictests"}
 
-# This is needed to avoid `oc status` failing inside openshift-ci
-oc new-project opendatahub
-
-$HOME/peak/install.sh
+if [ -z "${SKIP_INSTALL}" ]; then
+    # This is needed to avoid `oc status` failing inside openshift-ci
+    oc new-project opendatahub
+    $HOME/peak/install.sh
+fi
 $HOME/peak/run.sh ${TESTS_REGEX}
 
 if [ "$?" -ne 0 ]; then
