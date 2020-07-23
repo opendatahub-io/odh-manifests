@@ -8,6 +8,36 @@ The intial tests here verify deployment of a KFDef instance
 
 # Quick start
 
+# Running containerized tests
+
+Running the tests this way assumes that you have an active kubeadmin login
+on the cluster that you want to run the tests against and that you have podman
+installed.  (If you prefer docker, you can edit the Makefile to replace podman
+with docker).
+
+Run the following:
+
+```
+cd tests
+make build
+make run
+```
+
+To cleanup the installation after a test run, you can run:
+```
+make clean
+```
+
+## Customizing test behavior
+
+Without changes, the test image will run $HOME/peak/installandtest.sh which
+handles setting up the opendatahub-operator and then creating the KfDef found in
+tests/setup/kfctl_openshift.yaml.  If you want to modify your test run, you
+might want to change those files to get the behavior that you're looking for.
+After you make changes, you will need to rebuild the test image with `make build`.
+
+# Running tests manually
+
 Note when running on a **mac** you may need to do the following:
 
 ```
