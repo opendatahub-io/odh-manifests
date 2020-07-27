@@ -30,7 +30,7 @@ make clean
 
 ## Customizing test behavior
 
-Without changes, the test image will run $HOME/peak/installandtest.sh which
+Without changes, the test image will run `$HOME/peak/installandtest.sh` which
 handles setting up the opendatahub-operator and then creating the KfDef found in
 tests/setup/kfctl_openshift.yaml.  If you want to modify your test run, you
 might want to change those files to get the behavior that you're looking for.
