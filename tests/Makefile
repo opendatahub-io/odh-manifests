@@ -3,6 +3,10 @@ GIT_ORG=opendatahub-io
 GIT_BRANCH=master
 NAMESPACE=opendatahub
 SKIP_PODS_OUTPUT=
+# Setting SKIP_INSTALL will let you run the tests against an ODH instance that is already setup
+SKIP_INSTALL=
+# Setting TESTS_REGEX will allow you to change which tests are going to be run
+TESTS_REGEX=
 
 all: test
 test: build run clean
@@ -12,7 +16,7 @@ build:
 
 run:
 	oc config view --flatten --minify > /tmp/tests-kubeconfig
-	podman run -e SKIP_PODS_OUTPUT=$(SKIP_PODS_OUTPUT) -it -v /tmp/tests-kubeconfig:/tmp/kubeconfig:z $(IMAGE)
+	podman run -e SKIP_PODS_OUTPUT=$(SKIP_PODS_OUTPUT) -e SKIP_INSTALL=$(SKIP_INSTALL) -e TESTS_REGEX=$(TESTS_REGEX) -it -v /tmp/tests-kubeconfig:/tmp/kubeconfig:z $(IMAGE)
 
 clean:
 	oc delete -n $(NAMESPACE) kfdef opendatahub || true
