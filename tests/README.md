@@ -36,6 +36,14 @@ tests/setup/kfctl_openshift.yaml.  If you want to modify your test run, you
 might want to change those files to get the behavior that you're looking for.
 After you make changes, you will need to rebuild the test image with `make build`.
 
+If you'd like to run the tests against an instance that already has Open Data Hub installed,
+you can edit the Makefile to set `SKIP_INSTALL=true` and that will cause the test run
+to skip the installation process and will only run the tests.
+
+If you'd like to run a single test instead of all tests, you can edit the Makefile to
+set the TESTS_REGEX variable `TESTS_REGEX=<name of the test to run>`.  That will
+only run the test that you specify instead of all of the tests.
+
 # Running tests manually
 
 Note when running on a **mac** you may need to do the following:
