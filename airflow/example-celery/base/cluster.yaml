@@ -25,21 +25,21 @@ spec:
     operator: False
   scheduler:
     image: "quay.io/opendatahub/docker-airflow"
-    version: "openshift"
+    version: &version "1.10.11"
   ui:
     image: "quay.io/opendatahub/docker-airflow"
     replicas: 1
-    version: "openshift"
+    version: *version
     enableroutes: true
   worker:
     image: "quay.io/opendatahub/docker-airflow"
     replicas: 2
-    version: "openshift"
+    version: *version
     ForceRoot: "true"
   flower:
     image: "quay.io/opendatahub/docker-airflow"
     replicas: 1
-    version: "openshift"
+    version: *version
     enableroutes: true
   dags:
     subdir: "airflow/dags/"
