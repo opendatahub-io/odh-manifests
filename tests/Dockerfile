@@ -41,13 +41,11 @@ RUN pip3 install micropipenv &&\
     cd $HOME/peak &&\
     micropipenv install
 
-COPY basictests $HOME/peak/operator-tests/odh-manifests/basictests
+COPY setup/operatorsetup scripts/install.sh scripts/installandtest.sh $HOME/peak/
 COPY resources $HOME/peak/operator-tests/odh-manifests/resources
 COPY util $HOME/peak/operator-tests/odh-manifests
 COPY setup/kfctl_openshift.yaml $HOME/kfdef/
-COPY setup/operatorsetup $HOME/peak/
-COPY scripts/install.sh $HOME/peak/
-COPY scripts/installandtest.sh $HOME/peak/
+COPY basictests $HOME/peak/operator-tests/odh-manifests/basictests
 
 RUN chmod -R 777 $HOME/kfdef && \
     mkdir -p $HOME/.kube && \
