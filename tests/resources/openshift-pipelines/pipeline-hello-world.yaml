@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: odh-test-hello-world
+spec:
+  tasks:
+    - name: odh-test-hello-world
+      params:
+        - name: subject
+          value: ODH Test
+      taskRef:
+        kind: Task
+        name: odh-test-hello-world
