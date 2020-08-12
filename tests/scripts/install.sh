@@ -5,7 +5,15 @@ echo "Installing kfDef from test directory"
 set -x
 ## Install the opendatahub-operator
 pushd ~/peak
-./setup.sh -o ~/peak/operatorsetup 2>&1
+retry=5
+while [[ $retry -gt 0 ]]; do
+  ./setup.sh -o ~/peak/operatorsetup 2>&1
+  if [ $? -eq 0 ]; then
+    retry=-1
+  fi
+  retry=$(( retry - 1))
+  sleep 1m
+done
 echo "Pausing 20 seconds to allow operator to start"
 sleep 20s
 popd
@@ -42,9 +50,10 @@ fi
 echo "Creating the following KfDef"
 cat ./kfctl_openshift.yaml
 oc apply -f ./kfctl_openshift.yaml
-set +x
-if [ "$?" -ne 0 ]; then
+kfctl_result=$?
+if [ "$kfctl_result" -ne 0 ]; then
     echo "The installation failed"
-    exit $?
+    exit $kfctl_result
 fi
+set +x
 popd

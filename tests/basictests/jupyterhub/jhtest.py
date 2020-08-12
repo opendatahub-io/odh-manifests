@@ -20,6 +20,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 _LOGGER = logging.getLogger()
+_SCREENSHOT_DIR="/tmp/screenshots"
 
 class JHStress():
     def __init__(self):
@@ -52,7 +53,7 @@ class JHStress():
         }
         self.as_admin = strtobool(os.environ.get('JH_AS_ADMIN', False))
         self.headless = strtobool(os.environ.get('JH_HEADLESS', False))
-        self.preload_repos = os.environ.get('JH_PRELOAD_REPOS', "https://github.com/vpavlin/jh-stresstest")
+        self.preload_repos = os.environ.get('JH_PRELOAD_REPOS', "https://github.com/opendatahub-io/testing-notebooks")
 
 
         if not self.url:
@@ -162,7 +163,7 @@ class JHStress():
                 _LOGGER.info("Stopped the server")
         except Exception as e:
             _LOGGER.error(e)
-            self.driver.get_screenshot_as_file("/tmp/exception.png")
+            self.driver.get_screenshot_as_file(os.path.join(_SCREENSHOT_DIR, "exception.png"))
             raise e
 
     def login(self):
@@ -174,7 +175,6 @@ class JHStress():
             elem.send_keys(Keys.RETURN)
             self.openshift_login(self.username, self.password)
 
-        self.driver.get_screenshot_as_file("/tmp/permission.png")
         permissions_xpath = '//input[@value="Allow selected permissions"]'
         if self.check_exists_by_xpath(permissions_xpath):
             elem = spawn_elem = self.driver.find_element(By.XPATH, permissions_xpath)
