@@ -1,13 +1,3 @@
-# Basic opendatahub tests and how to use them
-
-This test repository is meant to be used with the
-test runner [located here](https://github.com/tmckayus/peak),
-see the README.md there for complete information.
-
-The intial tests here verify deployment of a KFDef instance
-
-# Quick start
-
 # Running containerized tests
 
 Running the tests this way assumes that you have an active kubeadmin login
@@ -37,14 +27,18 @@ might want to change those files to get the behavior that you're looking for.
 After you make changes, you will need to rebuild the test image with `make build`.
 
 If you'd like to run the tests against an instance that already has Open Data Hub installed,
-you can edit the Makefile to set `SKIP_INSTALL=true` and that will cause the test run
-to skip the installation process and will only run the tests.
+you set `SKIP_INSTALL=true` and that will cause the test run
+to skip the installation process and will only run the tests.  example: `make run SKIP_INSTALL=true`
 
-If you'd like to run a single test instead of all tests, you can edit the Makefile to
+If you'd like to run a single test instead of all tests, you can
 set the TESTS_REGEX variable `TESTS_REGEX=<name of the test to run>`.  That will
-only run the test that you specify instead of all of the tests.
+only run the test that you specify instead of all of the tests.  example: `make run TESTS_REGEX=grafana`
 
 # Running tests manually
+
+Manual running of the tests relies on the test
+runner [located here](https://github.com/tmckayus/peak).
+See the README.md there for more detailed information on how it works.
 
 Note when running on a **mac** you may need to do the following:
 
