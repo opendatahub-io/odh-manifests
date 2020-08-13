@@ -22,7 +22,7 @@ make clean
 
 Without changes, the test image will run `$HOME/peak/installandtest.sh` which
 handles setting up the opendatahub-operator and then creating the KfDef found in
-tests/setup/kfctl_openshift.yaml.  If you want to modify your test run, you
+`tests/setup/kfctl_openshift.yaml`.  If you want to modify your test run, you
 might want to change those files to get the behavior that you're looking for.
 After you make changes, you will need to rebuild the test image with `make build`.
 
@@ -33,6 +33,9 @@ to skip the installation process and will only run the tests.  example: `make ru
 If you'd like to run a single test instead of all tests, you can
 set the TESTS_REGEX variable `TESTS_REGEX=<name of the test to run>`.  That will
 only run the test that you specify instead of all of the tests.  example: `make run TESTS_REGEX=grafana`
+
+For other possible configurations, you can look in the Makefile.  There are a set of
+variables at the top that you could change to meet the needs of your particular test run.
 
 # Running tests manually
 
