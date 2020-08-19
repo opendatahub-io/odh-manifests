@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: aicoe-prometheus
+spec:
+  to:
+    kind: Service
+    name: aicoe-prometheus
+  tls:
+    termination: Reencrypt

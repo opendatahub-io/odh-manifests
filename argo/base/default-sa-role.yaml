@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argo-workflow-additions-role
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods/log
+    verbs:
+      - get
+      - watch

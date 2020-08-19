@@ -1,0 +1,47 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Alertmanager
+metadata:
+  name: aicoe-sre-alertmanager
+  namespace: dh-psi-monitoring
+spec:
+  replicas: 3
+  securityContext: {}
+  serviceAccountName: aicoe-monitoring
+  listenLocal: true
+  containers:
+    - name: oauth-proxy
+      image: registry.redhat.io/openshift4/ose-oauth-proxy:v4.4
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 9095
+          name: web
+      args:
+        - '-provider=openshift'
+        - '-https-address=:9095'
+        - '-upstream=http://localhost:9093'
+        - '-openshift-service-account=aicoe-monitoring'
+        - '-openshift-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
+        - '-openshift-ca=/etc/pki/router-ca/ca-bundle.crt'
+        - '-tls-cert=/etc/tls/private/tls.crt'
+        - '-tls-key=/etc/tls/private/tls.key'
+        - '-cookie-secret-file=/etc/proxy/secrets/session_secret'
+        - '-skip-auth-regex=^/metrics'
+        - '-openshift-sar={"resource": "namespaces", "verb": "get", "resourceName": "dh-psi-monitoring", "namespace": "dh-psi-monitoring"}'
+      volumeMounts:
+        - mountPath: /etc/tls/private
+          name: aicoe-alert-manager-tls
+        - mountPath: /etc/proxy/secrets
+          name: aicoe-alert-manager-proxy
+        - mountPath: /etc/pki/router-ca
+          name: router-ca
+          readOnly: true
+  volumes:
+    - name: aicoe-alert-manager-tls
+      secret:
+        secretName: aicoe-alert-manager-tls
+    - name: aicoe-alert-manager-proxy
+      secret:
+        secretName: aicoe-alert-manager-proxy
+    - secret:
+        secretName: default-ingress-cert
+      name: router-ca

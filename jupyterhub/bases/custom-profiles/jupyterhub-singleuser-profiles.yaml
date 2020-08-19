@@ -1,0 +1,116 @@
+profiles:
+- name: globals
+  env:
+    S3_ENDPOINT_URL: https://s3.upshift.redhat.com
+  resources:
+    mem_limit: 2Gi
+    cpu_limit: 1
+  node_tolerations:
+    - key: provider
+      operator: Equal
+      value: gpu-baremetal
+      effect: NoSchedule
+- name: Don profile
+  users:
+    - dcheswor
+    - weaton
+  resources:
+    mem_limit: 256Gi
+    cpu_limit: 16
+- name: AI Ops Users
+  users:
+    - mcliffor
+    - kachauha
+    - ochatter
+    - hveeradh
+    - shanand
+    - aduggal
+    - sbadhe
+    - rtripath
+    - supathak
+  resources:
+    mem_limit: 32Gi
+    cpu_limit: 4
+- name: Users with 16 GB RAM
+  users:
+    - esammons
+  resources:
+    mem_limit: 16Gi
+- name: Users with 32 GB
+  users:
+    - dmulford
+  resources:
+    mem_limit: 32Gi
+- name: Spark 2.4 Notebook
+  images:
+    - 's2i-spark24-minimal-notebook:3.6'
+    - 's2i-spark24-scipy-notebook:3.6'
+  env:
+    PYSPARK_SUBMIT_ARGS: '--packages com.amazonaws:aws-java-sdk:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3 pyspark-shell'
+    PYSPARK_DRIVER_PYTHON: "jupyter"
+    PYSPARK_DRIVER_PYTHON_OPTS: "notebook"
+    SPARK_HOME: '/opt/app-root/lib/python3.6/site-packages/pyspark/'
+    PYTHONPATH: '$PYTHONPATH:/opt/app-root/lib/python3.6/site-packages/:/opt/app-root/lib/python3.6/site-packages/pyspark/python/:/opt/app-root/lib/python3.6/site-packages/pyspark/python/lib/py4j-0.8.2.1-src.zip'
+  resources:
+    mem_limit: 2Gi
+    cpu_limit: 1
+  services:
+    spark:
+      template: jupyterhub-spark-operator-configmap
+      parameters:
+        WORKER_NODES: '2'
+        MASTER_NODES: '1'
+        MASTER_MEMORY_LIMIT: '2Gi'
+        MASTER_CPU_LIMIT: '1'
+        MASTER_MEMORY_REQUEST: '2Gi'
+        MASTER_CPU_REQUEST: '1'
+        WORKER_MEMORY_LIMIT: '2Gi'
+        WORKER_CPU_LIMIT: '1'
+        WORKER_MEMORY_REQUEST: '2Gi'
+        WORKER_CPU_REQUEST: '1'
+        SPARK_IMAGE: quay.io/radanalyticsio/openshift-spark:2.4-latest
+      return:
+        SPARK_CLUSTER: 'metadata.name'
+- name: Spark Notebook
+  images:
+  - 's2i-spark-minimal-notebook:3.6'
+  - 's2i-spark-scipy-notebook:3.6'
+  - 's2i-spark-minimal-notebook-with-libsndfile:3.6'
+  - 's2i-spark-scipy-notebook-with-libsndfile:3.6'
+  env:
+    PYSPARK_SUBMIT_ARGS: '--packages com.amazonaws:aws-java-sdk:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3 pyspark-shell'
+    PYSPARK_DRIVER_PYTHON: "jupyter"
+    PYSPARK_DRIVER_PYTHON_OPTS: "notebook"
+    SPARK_HOME: '/opt/app-root/lib/python3.6/site-packages/pyspark/'
+    PYTHONPATH: '$PYTHONPATH:/opt/app-root/lib/python3.6/site-packages/:/opt/app-root/lib/python3.6/site-packages/pyspark/python/:/opt/app-root/lib/python3.6/site-packages/pyspark/python/lib/py4j-0.8.2.1-src.zip'
+  services:
+    spark:
+      template: jupyterhub-spark-operator-configmap
+      configuration:
+        WORKER_NODES: '2'
+        MASTER_NODES: '1'
+        MASTER_MEMORY_LIMIT: '2Gi'
+        MASTER_CPU_LIMIT: '1'
+        MASTER_MEMORY_REQUEST: '2Gi'
+        MASTER_CPU_REQUEST: '1'
+        WORKER_MEMORY_LIMIT: '2Gi'
+        WORKER_CPU_LIMIT: '1'
+        WORKER_MEMORY_REQUEST: '2Gi'
+        WORKER_CPU_REQUEST: '1'
+        SPARK_IMAGE: 'quay.io/radanalyticsio/openshift-spark-py36:2.4.5-2'
+      return:
+        SPARK_CLUSTER: 'metadata.name'
+
+sizes:
+  - name: Small
+    resources:
+      mem_limit: 2Gi
+      cpu_limit: 1
+  - name: Medium
+    resources:
+      mem_limit: 4Gi
+      cpu_limit: 2
+  - name: Large
+    resources:
+      mem_limit: 8Gi
+      cpu_limit: 4

@@ -1,0 +1,6 @@
+namespace: dh-dev-jupyterhub
+resources:
+- ../../bases/jupyterhub
+- ../../bases/custom-profiles
+patchesStrategicMerge:
+- jupyterhub.yaml

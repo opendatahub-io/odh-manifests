@@ -1,0 +1,95 @@
+apiVersion: opendatahub.io/v1alpha1
+kind: OpenDataHub
+metadata:
+  name: jupyterhub-opendatahub
+spec:
+  aicoe-jupyterhub:
+    jupyterhub_admins:
+      - acorvin
+      - mshah
+      - aasthana
+      - hveeradh
+      - hukhan
+      - gfrasca
+      - rmartine
+      - llasmith
+      - vpavlin
+      - shgriffi
+    odh_deploy: True
+    s3_endpoint_url: https://s3.upshift.redhat.com
+    registry: "quay.io"
+    repository: "odh-jupyterhub"
+    jupyterhub_img_tag: 3.0.7-cf600f3
+    jupyterhub_db_version: "9.5"
+    jupyterhub_configmap_name: jupyterhub-custom-cfg
+    notebook_images:
+      deploy_all_notebooks: True
+      deploy_cuda_notebooks: True
+    storage_class: null
+    db_memory: 1Gi
+    jupyterhub_memory: 1Gi
+    notebook_image: "s2i-minimal-notebook:3.6"
+    gpu_mode: "selinux"
+    # Name of the configmap that will be used when spawning a notebook for the single user
+    spark_configmap_template: 'jupyterhub-spark-operator-configmap'
+    # PYSPARK args to use in the notebook pod
+    # These submit args should be customized for the values passed for spark_memory and spark_cpu. You'll need to account for the available memory on the spark work nodes
+    spark_pyspark_submit_args: "--conf spark.cores.max=6 --conf spark.executor.instances=2 --conf spark.executor.memory=3G --conf spark.executor.cores=3 --conf spark.driver.memory=4G --packages com.amazonaws:aws-java-sdk:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3 pyspark-shell"
+    spark_pyspark_driver_python: "jupyter"
+    spark_pyspark_driver_python_opts: "notebook"
+    spark_home: "/opt/app-root/lib/python3.6/site-packages/pyspark/"
+    spark_pythonpath: "$PYTHONPATH:/opt/app-root/lib/python3.6/site-packages/:/opt/app-root/lib/python3.6/site-packages/pyspark/python/:/opt/app-root/lib/python3.6/site-packages/pyspark/python/lib/py4j-0.8.2.1-src.zip"
+  spark:
+      # Spark image to use in the cluster
+      image: "quay.io/opendatahub/spark-cluster-image:spark22python36"
+      worker:
+        # Number of spark worker nodes
+        instances: 2
+        # Amount of cpu & memory resources to allocate to the each worker node in the cluster.
+        resources:
+          limits:
+            memory: 4Gi
+            cpu: 3
+          requests:
+            memory: 1Gi
+            cpu: 500m
+      master:
+        # Number of spark master nodes
+        instances: 1
+        # Amount of cpu & memory resources to allocate to the each node in the cluster.
+        resources:
+          limits:
+            memory: 4Gi
+            cpu: 1
+          requests:
+            memory: 1Gi
+            cpu: 500m
+  spark-operator:
+    odh_deploy: True
+    operator_image: radanalyticsio/spark-operator:latest
+    spark_image: radanalyticsio/openshift-spark:latest
+    worker:
+      instances: 0
+      resources:
+        limits:
+          memory: 2Gi
+          cpu: 2
+        requests:
+          memory: 1Gi
+          cpu: 500m
+    master:
+      instances: 0
+      resources:
+        limits:
+          memory: 1i
+          cpu: 1
+        requests:
+          memory: 512Mi
+          cpu: 500m
+
+  seldon:
+    odh_deploy: False
+  jupyter-on-openshift:
+    odh_deploy: False
+  monitoring:
+    odh_deploy: False

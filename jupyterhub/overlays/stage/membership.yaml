@@ -1,0 +1,12 @@
+---
+apiVersion: authorization.openshift.io/v1
+kind: RoleBinding
+metadata:
+  name: project-admins
+roleRef:
+  name: admin
+subjects:
+  - kind: 'Group'
+    name: data-hub-openshift-admins
+groupNames:
+  - data-hub-openshift-admins
