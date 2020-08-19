@@ -1,8 +1,0 @@
-namePrefix: airflow-on-k8s-operator-
-resources:
-- role.yaml
-- role_binding.yaml
-- airflowbase_editor_role.yaml
-- airflowbase_viewer_role.yaml
-- airflowcluster_editor_role.yaml
-- airflowcluster_viewer_role.yaml
