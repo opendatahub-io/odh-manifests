@@ -13,10 +13,13 @@ make build
 make run
 ```
 
-To cleanup the installation after a test run, you can run:
-```
-make clean
-```
+## Cleaning up after your test run (optional)
+
+Only run the following if you want to eliminate your Open Data Hub installation.
+
+To cleanup the Open Data Hub installation after a test run, you can run `make clean`.
+Running `make clean` **will wipe your Open Data Hub installation** and delete the project.
+
 
 ## Customizing test behavior
 
