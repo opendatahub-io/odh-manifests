@@ -1,0 +1,63 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  labels:
+    prometheus: aicoe-sre
+  name: aicoe-sre-prometheus
+  namespace: dh-psi-monitoring
+spec:
+  alerting:
+    alertmanagers:
+      - name: aicoe-sre-alertmanager
+        namespace: dh-psi-monitoring
+        port: web
+  replicas: 2
+  serviceAccountName: aicoe-monitoring
+  serviceMonitorNamespaceSelector:
+    matchLabels:
+      ticket: pnt0817437
+  serviceMonitorSelector:
+    matchLabels:
+      prometheus: aicoe-sre
+  podMonitorSelector:
+    matchLabels:
+      prometheus: aicoe-sre
+  listenLocal: true
+  containers:
+    - name: oauth-proxy
+      image: registry.redhat.io/openshift4/ose-oauth-proxy:v4.4
+      imagePullPolicy: Always
+      ports:
+      - containerPort: 8443
+        name: web
+      args:
+        - '-provider=openshift'
+        - '-https-address=:8443'
+        - '-upstream=http://localhost:9090'
+        - '-openshift-service-account=aicoe-monitoring'
+        - '-openshift-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
+        - '-openshift-ca=/etc/pki/router-ca/ca-bundle.crt'
+        - '-tls-cert=/etc/tls/private/tls.crt'
+        - '-tls-key=/etc/tls/private/tls.key'
+        - '-cookie-secret-file=/etc/proxy/secrets/session_secret'
+        - '-skip-auth-regex=^/metrics'
+        - '-openshift-sar={"resource": "namespaces", "verb": "get", "resourceName": "dh-psi-monitoring", "namespace": "dh-psi-monitoring"}'
+      volumeMounts:
+      - mountPath: /etc/tls/private
+        name: aicoe-prometheus-tls
+      - mountPath: /etc/proxy/secrets
+        name: aicoe-prometheus-proxy
+      - mountPath: /etc/pki/router-ca
+        name: router-ca
+        readOnly: true
+  volumes:
+  - name: aicoe-prometheus-tls
+    secret:
+      secretName: aicoe-prometheus-tls
+  - name: aicoe-prometheus-proxy
+    secret:
+      secretName: aicoe-prometheus-proxy
+  - secret:
+      secretName: default-ingress-cert
+    name: router-ca
+

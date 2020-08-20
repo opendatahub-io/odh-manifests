@@ -1,0 +1,8 @@
+namespace: dh-psi-monitoring
+resources:
+- ../../bases/prometheus
+- ../../bases/grafana
+- ../../bases/alertmanager
+- ../../bases/oauth_client
+generators:
+  - ./secret-generator.yaml

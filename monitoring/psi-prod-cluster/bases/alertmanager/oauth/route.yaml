@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: aicoe-alert-manager
+spec:
+  to:
+    kind: Service
+    name: aicoe-alert-manager
+    weight: 100
+  port:
+    targetPort: web
+  tls:
+    termination: Reencrypt
+  wildcardPolicy: None

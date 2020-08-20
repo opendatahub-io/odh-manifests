@@ -1,0 +1,7 @@
+apiVersion: opendatahub.io/v1alpha1
+kind: OpenDataHub
+metadata:
+  name: jupyterhub-opendatahub
+spec:
+  aicoe-jupyterhub:
+    storage_class: dynamic-nfs

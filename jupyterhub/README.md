@@ -1,78 +1,89 @@
-# JupyterHub
+# dh-jupyterhub
 
-JupyterHub comes with 2 components:
+Kustomize deployment for the Data Hub's internal Jupyterhub instance
 
-1. [jupyterhub](#jupyterhub)
-1. [notebook-images](#notebook-images)
+## Runbook
 
-## JupyterHub
+The Runbook for Jupyterhub can be found in the dh-runbooks repository at
+[jupyterhub.md](https://github.com/AICoE/aicoe-sre/blob/master/runbooks/jupyterhub.md) for deployment instructions.
 
-Contains deployment manifests for JupyterHub instance.
+## Deployment Instructions
 
-### Parameters
+### Prerequisites
 
-JupyterHub component comes with 2 parameters exposed vie KFDef.
+#### Deploy ODH Operator
 
-#### s3_endpoint_url
+To deploy Jupyterhub we first need to deploy the ODH Operator.
 
-HTTP endpoint exposed by your S3 object storage solution which will be made available to JH users in `S3_ENDPOINT_URL` env variable.
+Follow the steps in this repo to deploy the ODH Operator: [dh-internal-odh-install](https://gitlab.cee.redhat.com/data-hub/dh-internal-odh-install)
 
-#### storage_class
+#### Install Kustomize
 
-Name of the storage class to be used for PVCs created by JupyterHub component. This requires `storage-class` **overlay** to be enabled as well to work.
+Install [Kustomize](https://github.com/kubernetes-sigs/kustomize/blob/master/docs/INSTALL.md)
 
-##### Examples
-
-```
-  - kustomizeConfig:
-      overlays:
-      - storage-class
-      parameters:
-        - name: storage_class
-          value: standard
-        - name: s3_endpoint_url
-          value: "s3.odh.com"
-      repoRef:
-        name: manifests
-        path: jupyterhub/jupyterhub
-    name: jupyterhub
+```bash
+GO111MODULE=on go get sigs.k8s.io/kustomize/kustomize/v3@v3.5.4
 ```
 
+See [Kustomize](https://github.com/kubernetes-sigs/kustomize/tree/master/docs)
+docs for more info.
 
-### Overlays
+### Custom Images
 
-JupyterHub component comes with 2 overlays.
+We build a number of custom Jupyter notebook images for use in production
+JupyterHub. By default, these images are not included when you deploy to
+dev. This is to save resources in our development environments. If you
+wish to deploy these custom images run:
 
-#### build
+```bash
+cd overlays/dev
+kustomize edit add resource ../../bases/custom-images/
+```
 
-Contains build manifests for JupyterHub images.
+This will add custom-images as part of the `kustomize` build when following
+the steps below for deployment.
 
-#### storage-class
+### Deploying to Development
 
-Customizes JupyterHub to use a specific `StorageClass` for PVCs, see `storage_class` parameter.
+Run the following command from the root of this repository to deploy
+Jupyterhub in a development environment:
 
-## Notebook Images
+```bash
+kustomize build overlays/dev/ | oc apply -f -
+```
 
-Contains manifests for Jupyter notebook images compatible with JupyterHub on OpenShift.
+### Deploying to Stage
 
-### Parameters
+NOTE: You need to be logged in as the `opendatahub-operator` Service Account
+in the `dh-stage-jupyterhub` namespace
+Run the following command from the root of this repository to deploy
+Jupyterhub to stage:
 
-Notebook Images do not provide any parameters.
+```bash
+oc login --token=$(oc sa get-token opendatahub-operator -n dh-stage-jupyterhub)
+kustomize build overlays/stage/ | oc apply -f -
+```
 
-### Overlays
+### Deploying to Production
 
-Notebook Images component comes with 3 overlays.
+NOTE: You need to be logged in as the `opendatahub-operator` Service Account
+in the `dh-prod-jupyterhub` namespace
 
-#### additional
+Run the following command from the root of this repository to deploy
+Jupyterhub to production:
 
-Contains additional Jupyter notebook images.
+```bash
+oc login --token=$(oc sa get-token opendatahub-operator -n dh-prod-jupyterhub)
+kustomize build overlays/prod/ | oc apply -f -
+```
 
-#### build
+## Build manifests
 
-Contains build manifests for Jupyter notebook images.
+If you want to build the manifests on your local file system without deploying
+them run the following command from the root of this repository:
 
-#### cuda
-
-Contains build chain manifest for CUDA enabled ubi 7 based images, provides `tensorflow-gpu` enabled notebook image.
-
-*NOTE:* Builds in this overlay require 4 GB of memory and 4 cpus
+```bash
+# target_env is either dev, stage, prod
+mkdir build
+kustomize build overlays/${target_env}/ -o build/
+```

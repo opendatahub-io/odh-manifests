@@ -1,0 +1,10 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: argo-server
+spec:
+  port:
+    targetPort: web
+  to:
+    kind: Service
+    name: argo-server

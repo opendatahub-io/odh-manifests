@@ -1,0 +1,6 @@
+namespace: dh-prod-jupyterhub
+resources:
+- ../../bases/jupyterhub
+- ../../bases/custom-images
+- ../../bases/custom-profiles
+- membership.yaml

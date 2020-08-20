@@ -1,14 +1,8 @@
-# Each list is sorted alphabetically, additions should maintain that order
-approvers:
-- crobby
-- lavlas
-- nakfour
-- vpavlin
+# See the OWNERS docs at https://go.k8s.io/owners
 
+approvers:
+  - anishasthana
+  - HumairAK
 reviewers:
-- anishasthana
-- crobby
-- lavlas
-- nakfour
-- VedantMahabaleshwarkar
-- vpavlin
+  - accorvin
+  - hemajv
