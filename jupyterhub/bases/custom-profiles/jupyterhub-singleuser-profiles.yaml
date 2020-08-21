@@ -34,6 +34,7 @@ profiles:
 - name: Users with 16 GB RAM
   users:
     - esammons
+    - cdolfi
   resources:
     mem_limit: 16Gi
 - name: Users with 32 GB
