@@ -2,23 +2,22 @@ apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
   labels:
-    build: s2i-elyra-notebook
-  name: s2i-elyra-notebook
+    build: s2i-lab-elyra
+  name: s2i-lab-elyra
 spec:
   output:
     to:
       kind: ImageStreamTag
-      name: s2i-elyra-notebook:1.0.0
+      name: quay.io/thoth-station/s2i-lab-elyra:0.0.1
   source:
-    contextDir: elyra-notebook
     git:
-      uri: https://github.com/akchinSTC/jupyter-notebooks
+      uri: https://github.com/opendatahub-io/s2i-lab-elyra
     type: Git
   strategy:
     sourceStrategy:
       from:
         kind: ImageStreamTag
-        name: s2i-minimal-notebook:3.6
+        name: quay.io/thoth-station/s2i-minimal-notebook:v0.0.4
     type: Source
   triggers:
   - type: ConfigChange
