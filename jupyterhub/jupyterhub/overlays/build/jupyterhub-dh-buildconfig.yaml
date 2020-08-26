@@ -11,7 +11,7 @@ spec:
       name: jupyterhub-img:latest
   source:
     git:
-      uri: https://github.com/aicoe/jupyterhub-ocp-oauth
+      uri: https://github.com/opendatahub-io/jupyterhub-odh
     type: Git
   strategy:
     sourceStrategy:

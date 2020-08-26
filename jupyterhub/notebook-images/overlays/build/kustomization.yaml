@@ -8,7 +8,6 @@ resources:
 - tensorflow-notebook-buildconfig.yaml
 - spark-minimal-notebook-buildconfig.yaml
 - spark-scipy-notebook-buildconfig.yaml
-- nbviewer-buildconfig.yaml
 
 commonLabels:
   opendatahub.io/component: "true"

@@ -8,18 +8,28 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: s2i-minimal-notebook:3.6
+      name: s2i-minimal-notebook:local-build
   source:
-    contextDir: minimal-notebook
     git:
-      uri: https://github.com/vpavlin/jupyter-notebooks
+      uri: https://github.com/thoth-station/s2i-minimal-notebook
     type: Git
   strategy:
     sourceStrategy:
       forcePull: true
       from:
         kind: DockerImage
-        name: registry.access.redhat.com/ubi7/python-36
+        name: quay.io/thoth-station/s2i-thoth-ubi8-py36:v0.15.0
+      env:
+      - name: "ENABLE_PIPENV"
+        value: "1"
+      - name: "THOTH_DRY_RUN"
+        value: "1"
+      - name: "THOTH_ADVISE"
+        value: "0"
+      - name: "THOTH_PROVENANCE_CHECK"
+        value: "0"
+      - name: "THOTH_ERROR_FALLBACK"
+        value: "1"
     type: Source
   triggers:
   - type: ConfigChange
