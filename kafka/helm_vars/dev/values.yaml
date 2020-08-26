@@ -1,0 +1,15 @@
+namespace: dh-dev-message-bus
+kafka_cluster_name: dev
+kafka_affinity_label: node-role.kubernetes.io/compute
+kafka_affinity_match: "true"
+kafka_replicas: 1
+offsets_topic_replication_factor: 1
+kafka_storage_size: 10Gi
+kafka_storage_class: ""
+zookeeper_replicas: 1
+zookeeper_storage_size: "10Gi"
+zookeeper_storage_class: ""
+probe_delay_seconds: "15"
+openshift_registry_url: "docker-registry.default.svc:5000"
+kafka_connect_memory: 1Gi
+topic_default_replicas: 1

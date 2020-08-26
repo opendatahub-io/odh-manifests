@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scheme: http
+    prometheus.io/scrape: 'true'
+  labels:
+    name: strimzi-cluster-operator
+    strimzi.io/kind: cluster-operator
+  name: strimzi-cluster-operator
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    strimzi.io/kind: cluster-operator
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

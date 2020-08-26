@@ -1,0 +1,19 @@
+{{- range $kafka_topics := .Values.kafka_topics }}
+apiVersion: kafka.strimzi.io/v1alpha1
+kind: KafkaTopic
+metadata:
+  name: {{ $kafka_topics.topicName }}
+  namespace: {{ $.Values.namespace | quote }}
+  labels:
+    strimzi.io/cluster: {{ $.Values.kafka_cluster_name }}
+    template: kafka-topics-template
+spec:
+    partitions: {{ $kafka_topics.partitions | default "2"}}
+    replicas: {{ $.Values.topic_default_replicas }}
+    topicName: {{ $kafka_topics.topicName }}
+    {{- if $kafka_topics.config }}
+    config:
+{{toYaml $kafka_topics.config | indent 8 }}
+    {{- end}}
+---
+{{- end }}

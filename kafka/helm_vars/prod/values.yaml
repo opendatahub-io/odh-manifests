@@ -1,0 +1,15 @@
+namespace: dh-prod-message-bus
+kafka_cluster_name: three
+kafka_affinity_label: provider
+kafka_affinity_match: gpu-baremetal
+offsets_topic_replication_factor: 5
+topic_default_replicas: 5
+kafka_replicas: 5
+kafka_storage_size: 3000Gi
+kafka_storage_class: ceph-dyn-datahub-prod-psi
+zookeeper_replicas: 3
+zookeeper_storage_size: "10Gi"
+zookeeper_storage_class: ceph-dyn-datahub-prod-psi
+probe_delay_seconds: 175
+openshift_registry_url: docker-registry.default.svc:5000
+kafka_connect_memory: 8Gi
