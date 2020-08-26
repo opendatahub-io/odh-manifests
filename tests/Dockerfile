@@ -1,6 +1,6 @@
 FROM centos:centos8
 
-ARG CHROMEDRIVER_VER=84.0.4147.30
+ARG CHROMEDRIVER_VER=85.0.4183.38
 ARG ORG=opendatahub-io
 ARG BRANCH=master
 
@@ -14,7 +14,7 @@ RUN dnf install -y bc git go-toolset python3-pip unzip && \
 
 RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm &&\
     echo -e "[google-chrome]\nname=google-chrome\nbaseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64\nenabled=1\ngpgcheck=1\ngpgkey=https://dl.google.com/linux/linux_signing_key.pub" > /etc/yum.repos.d/google-chrome.repo &&\
-    yum -y install "google-chrome-stable-84*" &&\
+    yum -y install "google-chrome-stable-85*" &&\
     yum clean all
 
 # install jq to help with parsing json
