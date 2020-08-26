@@ -35,11 +35,11 @@ items:
         name: cuda:$(cuda_version)-base-ubi7
     resources:
       limits:
-        cpu: "4"
+        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "4"
-        memory: 4Gi
+        cpu: "1"
+        memory: 2Gi
     source:
       contextDir: $(cuda_version)/base
       git:
@@ -78,11 +78,11 @@ items:
         name: cuda:$(cuda_version)-runtime-ubi7
     resources:
       limits:
-        cpu: "4"
+        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "4"
-        memory: 4Gi
+        cpu: "1"
+        memory: 2Gi
     source:
       contextDir: $(cuda_version)/runtime/
       git:
@@ -116,11 +116,11 @@ items:
         name: cuda:$(cuda_version)-cudnn7-runtime-ubi7
     resources:
       limits:
-        cpu: "4"
+        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "4"
-        memory: 4Gi
+        cpu: "1"
+        memory: 2Gi
     source:
       contextDir: $(cuda_version)/runtime/cudnn7
       git:
@@ -154,11 +154,11 @@ items:
         name: cuda:$(cuda_version)-devel-ubi7
     resources:
       limits:
-        cpu: "4"
+        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "4"
-        memory: 4Gi
+        cpu: "1"
+        memory: 2Gi
     source:
       contextDir: $(cuda_version)/devel/
       git:
@@ -192,11 +192,11 @@ items:
         name: cuda:$(cuda_version)-cudnn7-devel-ubi7
     resources:
       limits:
-        cpu: "4"
+        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "4"
-        memory: 4Gi
+        cpu: "1"
+        memory: 2Gi
     source:
       contextDir: $(cuda_version)/devel/cudnn7
       git:
@@ -230,11 +230,11 @@ items:
         name: python-36-ubi7:latest
     resources:
       limits:
-        cpu: "4"
+        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "4"
-        memory: 4Gi
+        cpu: "1"
+        memory: 2Gi
     source:
       contextDir: "3.6"
       git:
