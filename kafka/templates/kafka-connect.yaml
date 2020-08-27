@@ -1,0 +1,215 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kafka-connect-secrets
+  namespace: {{ $.Values.namespace | quote }}
+  labels:
+    template: kafka-connect-template
+type: Opaque
+stringData:
+  AWS_ACCESS_KEY_ID: {{ $.Values.aws_access_key_id | quote}}
+  AWS_SECRET_ACCESS_KEY: {{ $.Values.aws_secret_access_key | quote }}
+
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: kafka-connect-s2i
+  namespace: {{ $.Values.namespace | quote }}
+  annotations:
+    description: The Strimzi Kafka-Connect S2I base image
+  labels:
+    template: kafka-connect-template
+spec:
+  tags:
+    - name: 0.8.1
+      from:
+        kind: DockerImage
+        name: strimzi/kafka-connect-s2i:0.8.1
+
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: kafka-connect
+  namespace: {{ $.Values.namespace | quote }}
+  annotations:
+    description: Our custom kafka-connect image
+  labels:
+    template: kafka-connect-template
+spec:
+  tags:
+    - name: latest
+
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: kafka-connector-manager
+  namespace: {{ $.Values.namespace | quote }}
+  annotations:
+    description: A tool for managing Kafka Connector instances
+  labels:
+    template: kafka-connect-template
+spec:
+  tags:
+    - name: latest
+
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: kafka-connect
+  namespace: {{ $.Values.namespace | quote }}
+  annotations:
+    description: Builds our custom kafka-connect image
+  labels:
+    template: kafka-connect-template
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: kafka-connect:latest
+  source:
+    type: Git
+    contextDir: kafka/custom-connect-image
+    git:
+      ref: {{ $.Values.dh_kafka_git_branch | quote }}
+      uri: {{ $.Values.dh_kafka_git_repo | quote }}
+  strategy:
+    dockerStrategy:
+      env:
+        - name: GIT_SSL_NO_VERIFY
+          value: 'true'
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: kafka-connect-secrets
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: kafka-connect-secrets
+              key: AWS_SECRET_ACCESS_KEY
+    type: Docker
+  triggers:
+    - type: ConfigChange
+
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: kafka-connector-manager
+  namespace: {{ $.Values.namespace | quote }}
+  annotations:
+    description: Builds our kafka-connector-manager image
+  labels:
+    template: kafka-connect-template
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: kafka-connector-manager:latest
+  source:
+    type: Git
+    contextDir: kafka-connector-manager
+    git:
+      ref: {{ $.Values.dh_kafka_git_branch | quote }}
+      uri: https://gitlab.cee.redhat.com/data-hub/dh-kafka.git
+  strategy:
+    dockerStrategy:
+      env:
+        - name: GIT_SSL_NO_VERIFY
+          value: 'true'
+    type: Docker
+  triggers:
+    - type: ConfigChange
+
+---
+apiVersion: kafka.strimzi.io/v1alpha1
+kind: KafkaConnect
+metadata:
+  name: {{ $.Values.kafka_cluster_name | quote }}
+  namespace: {{ $.Values.namespace | quote }}
+  labels:
+    template: kafka-connect-template
+spec:
+  resources:
+    requests:
+      memory: {{ $.Values.kafka_connect_memory }}
+    limits:
+      memory: {{ $.Values.kafka_connect_memory }}
+  image: {{ $.Values.openshift_registry_url }}/{{ $.Values.namespace }}/kafka-connect
+  replicas: 1
+  bootstrapServers: {{ $.Values.kafka_cluster_name }}-kafka-bootstrap:9092
+  config:
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter.schemas.enable: false
+    value.converter.schemas.enable: false
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-connector-manager-config
+  namespace: {{ $.Values.namespace }}
+  labels:
+    template: kafka-connect-template
+data:
+  s3-connector.json: |-
+    {
+    "name": "s3-connector-{{ $.Values.s3_connector_topic }}",
+        "config": {
+            "topics.dir": "storage/kafka",
+            "connector.class": "io.confluent.connect.s3.S3SinkConnector",
+            "tasks.max": "1",
+            "topics": "{{ $.Values.s3_connector_topic }}",
+            "flush.size": "300",
+            "rotate.interval.ms": "30000",
+            "store.url": "{{ $.Values.s3_endpoint }}",
+            "s3.bucket.name": "{{ $.Values.s3_connector_bucket }}",
+            "storage.class": "io.confluent.connect.s3.storage.S3Storage",
+            "format.class": "io.confluent.connect.s3.format.json.JsonFormat",
+            "format.class.schemas.enable": "false",
+            "partitioner.class": "io.confluent.connect.storage.partitioner.TimeBasedPartitioner",
+            "timestamp.extractor": "Record",
+            "partition.duration.ms": "3600000",
+            "path.format": "'year'=YYYY/'month'=MM/'day'=dd/'hour'=HH",
+            "locale": "en",
+            "timezone": "GMT"
+        }
+    }
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kafka-connector-manager
+  namespace: {{ $.Values.namespace | quote }}
+  labels:
+    template: kafka-connect-template
+spec:
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: kafka-connector-manager
+      namespace: {{ $.Values.namespace | quote }}
+      labels:
+        template: kafka-connect-template
+    spec:
+      containers:
+        - name: kafka-connector-manager
+          image: {{ $.Values.openshift_registry_url }}/{{ $.Values.namespace }}/kafka-connector-manager
+          command: ["python", "connector_manager.py", "--endpoint", "http://{{ $.Values.kafka_cluster_name }}-connect-api:8083/"]
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: kafka-connector-manager-config
+              mountPath: /etc/dh-kafka-connectors.d/
+      restartPolicy: OnFailure
+      volumes:
+        - name: kafka-connector-manager-config
+          configMap:
+            name: kafka-connector-manager-config

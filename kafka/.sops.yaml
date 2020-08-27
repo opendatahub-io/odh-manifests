@@ -1,0 +1,3 @@
+creation_rules:
+  - encrypted_regex: '^(kafka_topics|s3_endpoint)$'
+    pgp: "EFDB9AFBD18936D9AB6B2EECBD2C73FF891FBC7E"

@@ -1,0 +1,113 @@
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    template: kafka-consumer-lag-monitor
+    build: prometheus-kafka-consumer-group-exer
+  name: prometheus-kafka-consumer-group-exporter
+  namespace: {{ $.Values.namespace | quote }}
+spec:
+  lookupPolicy:
+    local: false
+
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: prometheus-kafka-consumer-group-exporter
+  namespace: {{ $.Values.namespace | quote }}
+  labels:
+    template: kafka-consumer-lag-monitor
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: prometheus-kafka-consumer-group-exporter:latest
+  source:
+    git:
+      uri: https://github.com/braedon/prometheus-kafka-consumer-group-exporter
+    type: Git
+  strategy:
+    sourceStrategy:
+      env:
+      - name: APP_FILE
+        value: prometheus_kafka_consumer_group_exporter:main
+      from:
+        kind: DockerImage
+        name: centos/python-36-centos7
+      forcePull: true
+    type: Source
+  triggers:
+    - type: ConfigChange
+
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    template: kafka-consumer-lag-monitor
+    app: kafka-consumer-lag-monitor
+  name: kafka-consumer-lag-monitor
+  namespace: {{ $.Values.namespace | quote }}
+spec:
+  replicas: 1
+  strategy:
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: kafka-consumer-lag-monitor
+    spec:
+      containers:
+      - name: monitor
+        ports:
+          - containerPort: 9999
+        args:
+        - prometheus-kafka-consumer-group-exporter
+        - -p=9999
+        - "-b={{ $.Values.kafka_cluster_name }}-kafka-bootstrap:9092"
+      restartPolicy: Always
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - monitor
+        from:
+          kind: ImageStreamTag
+          name: prometheus-kafka-consumer-group-exporter:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    template: kafka-consumer-lag-monitor
+    app: kafka-consumer-lag-monitor
+  name: kafka-consumer-lag-monitor
+  namespace: {{ $.Values.namespace | quote }}
+spec:
+  ports:
+  - name: port-9999
+    port: 9999
+    targetPort: 9999
+  selector:
+    app: kafka-consumer-lag-monitor
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    template: kafka-consumer-lag-monitor
+    app: kafka-consumer-lag-monitor
+  name: kafka-consumer-lag-monitor
+  namespace: {{ $.Values.namespace | quote }}
+spec:
+  port:
+    targetPort: port-9999
+  to:
+    kind: Service
+    name: kafka-consumer-lag-monitor
