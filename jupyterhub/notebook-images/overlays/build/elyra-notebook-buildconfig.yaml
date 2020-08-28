@@ -1,0 +1,23 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: s2i-lab-elyra
+  name: s2i-lab-elyra
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: s2i-lab-elyra:v0.0.1
+  source:
+    git:
+      uri: https://github.com/opendatahub-io/s2i-lab-elyra
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: s2i-minimal-notebook:v0.0.4
+    type: Source
+  triggers:
+  - type: ConfigChange

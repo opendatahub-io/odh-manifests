@@ -9,6 +9,7 @@ resources:
 - spark-minimal-notebook-buildconfig.yaml
 - spark-scipy-notebook-buildconfig.yaml
 - nbviewer-buildconfig.yaml
+- elyra-notebook-buildconfig.yaml
 
 commonLabels:
   opendatahub.io/component: "true"
