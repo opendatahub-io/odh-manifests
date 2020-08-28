@@ -1,0 +1,392 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: odh-argo
+  labels:
+    app: grafana
+spec:
+  name: argo-dashboard.json
+  json: >
+   {
+          "annotations": {
+          "list": [
+              {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+              }
+            ]
+          },
+          "editable": true,
+          "gnetId": null,
+          "graphTooltip": 0,
+          "id": 2,
+          "iteration": 1598279245135,
+          "links": [],
+          "panels": [
+            {
+              "cacheTimeout": null,
+              "colorBackground": false,
+              "colorValue": false,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "datasource": "opendatahub",
+              "format": "none",
+              "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+              },
+              "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 0
+              },
+              "id": 2,
+              "interval": null,
+              "links": [],
+              "mappingType": 1,
+              "mappingTypes": [
+                {
+                  "name": "value to text",
+                  "value": 1
+                },
+                {
+                  "name": "range to text",
+                  "value": 2
+                }
+              ],
+              "maxDataPoints": 100,
+              "nullPointMode": "connected",
+              "nullText": null,
+              "options": {},
+              "postfix": "",
+              "postfixFontSize": "50%",
+              "prefix": "",
+              "prefixFontSize": "50%",
+              "rangeMaps": [
+                {
+                  "from": "null",
+                  "text": "N/A",
+                  "to": "null"
+                }
+              ],
+              "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": false
+              },
+              "tableColumn": "",
+              "targets": [
+                {
+                  "expr": "sum(argo_workflow_status_phase{namespace=~\"$Namespace\",phase=\"Failed\"})",
+                  "format": "time_series",
+                  "intervalFactor": 2,
+                  "refId": "A",
+                  "step": 4
+                }
+              ],
+              "thresholds": "",
+              "title": "Argo Failed Workflows",
+              "type": "singlestat",
+              "valueFontSize": "80%",
+              "valueMaps": [
+                {
+                  "op": "=",
+                  "text": "N/A",
+                  "value": "null"
+                }
+              ],
+              "valueName": "avg"
+            },
+            {
+              "cacheTimeout": null,
+              "colorBackground": false,
+              "colorValue": false,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "datasource": "opendatahub",
+              "format": "none",
+              "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+              },
+              "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 0
+              },
+              "id": 3,
+              "interval": null,
+              "links": [],
+              "mappingType": 1,
+              "mappingTypes": [
+                {
+                  "name": "value to text",
+                  "value": 1
+                },
+                {
+                  "name": "range to text",
+                  "value": 2
+                }
+              ],
+              "maxDataPoints": 100,
+              "nullPointMode": "connected",
+              "nullText": null,
+              "options": {},
+              "postfix": "",
+              "postfixFontSize": "50%",
+              "prefix": "",
+              "prefixFontSize": "50%",
+              "rangeMaps": [
+                {
+                  "from": "null",
+                  "text": "N/A",
+                  "to": "null"
+                }
+              ],
+              "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": false
+              },
+              "tableColumn": "",
+              "targets": [
+                {
+                  "expr": "sum(argo_workflow_status_phase{namespace=~\"$Namespace\",phase=\"Succeeded\"})",
+                  "format": "time_series",
+                  "intervalFactor": 2,
+                  "refId": "A",
+                  "step": 4
+                }
+              ],
+              "thresholds": "",
+              "title": "Argo Succesful Workflows",
+              "type": "singlestat",
+              "valueFontSize": "80%",
+              "valueMaps": [
+                {
+                  "op": "=",
+                  "text": "N/A",
+                  "value": "null"
+                }
+              ],
+              "valueName": "avg"
+            },
+            {
+              "columns": [],
+              "datasource": "opendatahub",
+              "fontSize": "100%",
+              "gridPos": {
+                "h": 15,
+                "w": 24,
+                "x": 0,
+                "y": 7
+              },
+              "id": 1,
+              "links": [],
+              "options": {},
+              "pageSize": null,
+              "scroll": true,
+              "showHeader": true,
+              "sort": {
+                "col": 0,
+                "desc": true
+              },
+              "styles": [
+                {
+                  "alias": "Time",
+                  "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                  "pattern": "Time",
+                  "type": "date"
+                },
+                {
+                  "alias": "",
+                  "colorMode": null,
+                  "colors": [
+                    "rgba(245, 54, 54, 0.9)",
+                    "rgba(237, 129, 40, 0.89)",
+                    "rgba(50, 172, 45, 0.97)"
+                  ],
+                  "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                  "decimals": 2,
+                  "pattern": "kubernetes_name",
+                  "thresholds": [],
+                  "type": "hidden",
+                  "unit": "short"
+                },
+                {
+                  "alias": "",
+                  "colorMode": null,
+                  "colors": [
+                    "rgba(245, 54, 54, 0.9)",
+                    "rgba(237, 129, 40, 0.89)",
+                    "rgba(50, 172, 45, 0.97)"
+                  ],
+                  "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                  "decimals": 2,
+                  "pattern": "job",
+                  "thresholds": [],
+                  "type": "hidden",
+                  "unit": "short"
+                },
+                {
+                  "alias": "",
+                  "colorMode": null,
+                  "colors": [
+                    "rgba(245, 54, 54, 0.9)",
+                    "rgba(237, 129, 40, 0.89)",
+                    "rgba(50, 172, 45, 0.97)"
+                  ],
+                  "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                  "decimals": 2,
+                  "pattern": "app",
+                  "thresholds": [],
+                  "type": "hidden",
+                  "unit": "short"
+                },
+                {
+                  "alias": "",
+                  "colorMode": null,
+                  "colors": [
+                    "rgba(245, 54, 54, 0.9)",
+                    "rgba(237, 129, 40, 0.89)",
+                    "rgba(50, 172, 45, 0.97)"
+                  ],
+                  "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                  "decimals": 2,
+                  "pattern": "kubernetes_namespace",
+                  "thresholds": [],
+                  "type": "hidden",
+                  "unit": "short"
+                },
+                {
+                  "alias": "Time (seconds)",
+                  "colorMode": null,
+                  "colors": [
+                    "rgba(245, 54, 54, 0.9)",
+                    "rgba(237, 129, 40, 0.89)",
+                    "rgba(50, 172, 45, 0.97)"
+                  ],
+                  "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                  "decimals": 2,
+                  "pattern": "Value",
+                  "thresholds": [],
+                  "type": "number",
+                  "unit": "short"
+                },
+                {
+                  "alias": "",
+                  "colorMode": null,
+                  "colors": [
+                    "rgba(245, 54, 54, 0.9)",
+                    "rgba(237, 129, 40, 0.89)",
+                    "rgba(50, 172, 45, 0.97)"
+                  ],
+                  "decimals": 2,
+                  "pattern": "/.*/",
+                  "thresholds": [],
+                  "type": "number",
+                  "unit": "short"
+                }
+              ],
+              "targets": [
+                {
+                  "expr": "argo_workflow_completion_time{namespace=~\"$Namespace\"} - argo_workflow_start_time{namespace=~\"$Namespace\"}",
+                  "format": "table",
+                  "intervalFactor": 2,
+                  "refId": "A",
+                  "step": 1
+                }
+              ],
+              "title": "Workflow Run Time",
+              "transform": "table",
+              "type": "table"
+            }
+          ],
+          "refresh": false,
+          "schemaVersion": 18,
+          "style": "dark",
+          "tags": [],
+          "templating": {
+            "list": [
+              {
+                "allValue": null,
+                "current": {
+                  "text": "All",
+                  "value": "$__all"
+                },
+                "datasource": "opendatahub",
+                "definition": "",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Namespace",
+                "multi": true,
+                "name": "Namespace",
+                "options": [],
+                "query": "label_values(argo_workflow_status_phase, namespace)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+              }
+            ]
+          },
+          "time": {
+            "from": "now-5m",
+            "to": "now"
+          },
+          "timepicker": {
+            "refresh_intervals": [
+              "5s",
+              "10s",
+              "30s",
+              "1m",
+              "5m",
+              "15m",
+              "30m",
+              "1h",
+              "2h",
+              "1d"
+            ],
+            "time_options": [
+              "5m",
+              "15m",
+              "1h",
+              "6h",
+              "12h",
+              "24h",
+              "2d",
+              "7d",
+              "30d"
+            ]
+          },
+          "timezone": "",
+          "title": "Argo Workflow",
+          "uid": "qIsQ7aHGk",
+          "version": 3
+   }

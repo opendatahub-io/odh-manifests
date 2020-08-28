@@ -8,5 +8,5 @@ commonLabels:
 resources:
 - datasource.yaml
 - dashboard.yaml
-- argo-dashbaord.yaml
+- argo-dashboard.yaml
 - grafana.yaml
