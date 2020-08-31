@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kafka-test
+  labels:
+    app: kafka-test
+spec:
+  template:
+    spec:
+      containers:
+      - name: kafka-test
+        image: quay.io/opendatahub-ci/kafka-test:latest
+        env:
+          - name: APP_FILE
+            value: app.sh
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+      restartPolicy: Never
+  backoffLimit: 1
