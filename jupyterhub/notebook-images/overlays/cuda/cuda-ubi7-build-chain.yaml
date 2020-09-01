@@ -4,7 +4,7 @@ items:
   kind: ImageStream
   metadata:
     labels:
-      appName: 10.1-cuda-chain-ubi7
+      appName: $(cuda_version)-cuda-chain-ubi7
       appTypes: cuda-build-chain
     name: cuda
   spec:
@@ -14,7 +14,7 @@ items:
   kind: ImageStream
   metadata:
     labels:
-      appName: 10.1-cuda-chain-ubi7
+      appName: $(cuda_version)-cuda-chain-ubi7
       appTypes: cuda-build-chain
     name: python-36-ubi7
   spec:
@@ -24,24 +24,24 @@ items:
   kind: BuildConfig
   metadata:
     labels:
-      appName: 10.1-cuda-chain-ubi7
-      appName1: 10.1-base-ubi7
+      appName: $(cuda_version)-cuda-chain-ubi7
+      appName1: $(cuda_version)-base-ubi7
       appTypes: cuda-build-chain
-    name: 10.1-base-ubi7
+    name: $(cuda_version)-base-ubi7
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: cuda:10.1-base-ubi7
+        name: cuda:$(cuda_version)-base-ubi7
     resources:
       limits:
-        cpu: "4"
+        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "4"
-        memory: 4Gi
+        cpu: "1"
+        memory: 2Gi
     source:
-      contextDir: 10.1/base
+      contextDir: $(cuda_version)/base
       git:
         ref: ubi7
         uri: https://github.com/harshad16/cuda.git
@@ -67,24 +67,24 @@ items:
   kind: BuildConfig
   metadata:
     labels:
-      appName: 10.1-cuda-chain-ubi7
-      appName1: 10.1-runtime-ubi7
+      appName: $(cuda_version)-cuda-chain-ubi7
+      appName1: $(cuda_version)-runtime-ubi7
       appTypes: cuda-build-chain
-    name: 10.1-runtime-ubi7
+    name: $(cuda_version)-runtime-ubi7
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: cuda:10.1-runtime-ubi7
+        name: cuda:$(cuda_version)-runtime-ubi7
     resources:
       limits:
-        cpu: "4"
+        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "4"
-        memory: 4Gi
+        cpu: "1"
+        memory: 2Gi
     source:
-      contextDir: 10.1/runtime/
+      contextDir: $(cuda_version)/runtime/
       git:
         ref: ubi7
         uri: https://github.com/harshad16/cuda.git
@@ -93,7 +93,7 @@ items:
       dockerStrategy:
         from:
           kind: ImageStreamTag
-          name: cuda:10.1-base-ubi7
+          name: cuda:$(cuda_version)-base-ubi7
         noCache: true
     triggers:
     - type: ConfigChange
@@ -105,24 +105,24 @@ items:
   kind: BuildConfig
   metadata:
     labels:
-      appName: 10.1-cuda-chain-ubi7
-      appName1: 10.1-cudnn7-runtime-ubi7
+      appName: $(cuda_version)-cuda-chain-ubi7
+      appName1: $(cuda_version)-cudnn7-runtime-ubi7
       appTypes: cuda-build-chain
-    name: 10.1-cudnn7-runtime-ubi7
+    name: $(cuda_version)-cudnn7-runtime-ubi7
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: cuda:10.1-cudnn7-runtime-ubi7
+        name: cuda:$(cuda_version)-cudnn7-runtime-ubi7
     resources:
       limits:
-        cpu: "4"
+        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "4"
-        memory: 4Gi
+        cpu: "1"
+        memory: 2Gi
     source:
-      contextDir: 10.1/runtime/cudnn7
+      contextDir: $(cuda_version)/runtime/cudnn7
       git:
         ref: ubi7
         uri: https://github.com/harshad16/cuda.git
@@ -131,7 +131,7 @@ items:
       dockerStrategy:
         from:
           kind: ImageStreamTag
-          name: cuda:10.1-runtime-ubi7
+          name: cuda:$(cuda_version)-runtime-ubi7
         noCache: true
     triggers:
     - type: ConfigChange
@@ -143,24 +143,24 @@ items:
   kind: BuildConfig
   metadata:
     labels:
-      appName: 10.1-cuda-chain-ubi7
-      appName1: 10.1-devel-ubi7
+      appName: $(cuda_version)-cuda-chain-ubi7
+      appName1: $(cuda_version)-devel-ubi7
       appTypes: cuda-build-chain
-    name: 10.1-devel-ubi7
+    name: $(cuda_version)-devel-ubi7
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: cuda:10.1-devel-ubi7
+        name: cuda:$(cuda_version)-devel-ubi7
     resources:
       limits:
-        cpu: "4"
+        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "4"
-        memory: 4Gi
+        cpu: "1"
+        memory: 2Gi
     source:
-      contextDir: 10.1/devel/
+      contextDir: $(cuda_version)/devel/
       git:
         ref: ubi7
         uri: https://github.com/harshad16/cuda.git
@@ -169,7 +169,7 @@ items:
       dockerStrategy:
         from:
           kind: ImageStreamTag
-          name: cuda:10.1-runtime-ubi7
+          name: cuda:$(cuda_version)-runtime-ubi7
         noCache: true
     triggers:
     - type: ConfigChange
@@ -181,24 +181,24 @@ items:
   kind: BuildConfig
   metadata:
     labels:
-      appName: 10.1-cuda-chain-ubi7
-      appName1: 10.1-cudnn7-devel-ubi7
+      appName: $(cuda_version)-cuda-chain-ubi7
+      appName1: $(cuda_version)-cudnn7-devel-ubi7
       appTypes: cuda-build-chain
-    name: 10.1-cudnn7-devel-ubi7
+    name: $(cuda_version)-cudnn7-devel-ubi7
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: cuda:10.1-cudnn7-devel-ubi7
+        name: cuda:$(cuda_version)-cudnn7-devel-ubi7
     resources:
       limits:
-        cpu: "4"
+        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "4"
-        memory: 4Gi
+        cpu: "1"
+        memory: 2Gi
     source:
-      contextDir: 10.1/devel/cudnn7
+      contextDir: $(cuda_version)/devel/cudnn7
       git:
         ref: ubi7
         uri: https://github.com/harshad16/cuda.git
@@ -207,7 +207,7 @@ items:
       dockerStrategy:
         from:
           kind: ImageStreamTag
-          name: cuda:10.1-devel-ubi7
+          name: cuda:$(cuda_version)-devel-ubi7
         noCache: true
     triggers:
     - type: ConfigChange
@@ -219,7 +219,7 @@ items:
   kind: BuildConfig
   metadata:
     labels:
-      appName: 10.1-cuda-chain-ubi7
+      appName: $(cuda_version)-cuda-chain-ubi7
       appName1: python-36-ubi7
       appTypes: cuda-build-chain
     name: python-36-ubi7
@@ -230,11 +230,11 @@ items:
         name: python-36-ubi7:latest
     resources:
       limits:
-        cpu: "4"
+        cpu: "2"
         memory: 4Gi
       requests:
-        cpu: "4"
-        memory: 4Gi
+        cpu: "1"
+        memory: 2Gi
     source:
       contextDir: "3.6"
       git:
@@ -246,7 +246,7 @@ items:
         dockerfilePath: Dockerfile.rhel7
         from:
           kind: ImageStreamTag
-          name: cuda:10.1-cudnn7-devel-ubi7
+          name: cuda:$(cuda_version)-cudnn7-devel-ubi7
         noCache: true
     triggers:
     - type: ConfigChange

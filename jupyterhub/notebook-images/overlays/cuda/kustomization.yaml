@@ -3,5 +3,22 @@ kind: Kustomization
 bases:
 - ../../base
 resources:
-- cuda-10-1-ubi7-build-chain.yaml
+- cuda-ubi7-build-chain.yaml
 - tensorflow-gpu-notebook.yaml
+
+configMapGenerator:
+- name: parameters
+  env: params.env
+generatorOptions:
+  disableNameSuffixHash: true
+
+vars:
+- name: cuda_version
+  objref:
+    kind: ConfigMap
+    name: parameters
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.cuda_version
+configurations:
+- params.yaml
