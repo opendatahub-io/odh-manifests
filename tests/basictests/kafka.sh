@@ -3,6 +3,7 @@
 source $TEST_DIR/common
 
 MY_DIR=$(readlink -f `dirname "${BASH_SOURCE[0]}"`)
+KAFKA_TEST_JOB="${MY_DIR}/../resources/kafka-test.job.yaml"
 
 source ${MY_DIR}/../util
 
@@ -24,6 +25,13 @@ function test_kafka() {
     os::cmd::expect_success_and_text "echo ${#runningbuspods[@]}" "7"
 }
 
+function test_kafka_consumer_producer() {
+    oc apply -n "${ODHPROJECT}" -f ${KAFKA_TEST_JOB}
+    os::cmd::try_until_text "oc logs -l job-name=kafka-test" "Producer produced a message"
+    oc delete -n "${ODHPROJECT}" -f ${KAFKA_TEST_JOB}
+}
+
 test_kafka
+test_kafka_consumer_producer
 
 os::test::junit::declare_suite_end
