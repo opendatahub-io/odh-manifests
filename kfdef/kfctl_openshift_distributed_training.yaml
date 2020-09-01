@@ -125,6 +125,16 @@ spec:
         name: kf-manifests
         path: tf-training/tf-job-operator
     name: tf-job-operator
+  - kustomizeConfig:
+      repoRef:
+        name: kf-manifests
+        path: pytorch-job/pytorch-job-crds
+    name: pytorch-job-crds
+  - kustomizeConfig:
+      repoRef:
+        name: kf-manifests
+        path: pytorch-job/pytorch-operator
+    name: pytorch-operator
   repos:
   - name: kf-manifests
     uri: https://github.com/opendatahub-io/manifests/tarball/v1.0-branch-openshift  
