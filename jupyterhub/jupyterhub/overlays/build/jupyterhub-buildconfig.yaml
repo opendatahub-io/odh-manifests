@@ -12,8 +12,8 @@ spec:
       name: jupyterhub:latest
   source:
     git:
-      ref: 3.0.7
-      uri: https://github.com/jupyter-on-openshift/jupyterhub-quickstart.git
+      ref: v3.5.1
+      uri: https://github.com/opendatahub-io/jupyterhub-quickstart.git
     type: Git
   strategy:
     sourceStrategy:

@@ -8,17 +8,16 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: s2i-spark-scipy-notebook:3.6
+      name: s2i-spark-scipy-notebook:local-build
   source:
-    contextDir: scipy-notebook
     git:
-      uri: https://github.com/vpavlin/jupyter-notebooks
+      uri: https://github.com/thoth-station/s2i-scipy-notebook
     type: Git
   strategy:
     sourceStrategy:
       from:
         kind: ImageStreamTag
-        name: s2i-spark-minimal-notebook:3.6
+        name: s2i-spark-minimal-notebook:local-build
     type: Source
   triggers:
   - type: ConfigChange

@@ -8,17 +8,16 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: s2i-tensorflow-notebook:3.6
+      name: s2i-tensorflow-notebook:local-build
   source:
-    contextDir: tensorflow-notebook
     git:
-      uri: https://github.com/vpavlin/jupyter-notebooks
+      uri: https://github.com/thoth-station/s2i-minimal-notebook
     type: Git
   strategy:
     sourceStrategy:
       from:
         kind: ImageStreamTag
-        name: s2i-minimal-notebook:3.6
+        name: s2i-minimal-notebook:local-build
     type: Source
   triggers:
   - type: ConfigChange
