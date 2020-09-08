@@ -40,9 +40,20 @@ else
 fi
 
 if [ -z "${OPENSHIFT_USER}" ] || [ -z "${OPENSHIFT_PASS}" ]; then
+  OAUTH_PATCH_TEXT="$(cat $HOME/peak/operator-tests/odh-manifests/resources/oauth-patch.htpasswd.json)"
   echo "Creating HTPASSWD OAuth provider"
   oc apply -f $HOME/peak/operator-tests/odh-manifests/resources/htpasswd.secret.yaml
-  oc apply -f $HOME/peak/operator-tests/odh-manifests/resources/oauth.htpasswd.yaml
+
+  # Test if any oauth identityProviders exists. If not, initialize the identityProvider list
+  if ! oc get oauth cluster -o json | jq -e '.spec.identityProviders' ; then
+    echo 'No oauth identityProvider exists. Initializing oauth .spec.identityProviders = []'
+    oc patch oauth cluster --type json -p '[{"op": "add", "path": "/spec/identityProviders", "value": []}]'
+  fi
+
+  # Patch in the htpasswd identityProvider prevent deletion of any existing identityProviders like ldap
+  #  We can have multiple identityProvdiers enabled aslong as their 'name' value is unique
+  oc patch oauth cluster --type json -p '[{"op": "add", "path": "/spec/identityProviders/-", "value": '"$OAUTH_PATCH_TEXT"'}]'
+
   export OPENSHIFT_USER=admin
   export OPENSHIFT_PASS=admin
 fi
