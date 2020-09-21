@@ -3,4 +3,7 @@ resources:
 - ../../bases/jupyterhub
 - ../../bases/custom-images
 - ../../bases/custom-profiles
+- ../../bases
 - membership.yaml
+generators:
+        - ./secret-generator.yaml
