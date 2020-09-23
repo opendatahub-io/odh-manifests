@@ -4,3 +4,5 @@ resources:
 - ../../bases/custom-images
 - ../../bases/custom-profiles
 - membership.yaml
+generators:
+- ./secret-generator.yaml
