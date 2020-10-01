@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workflow-controller-configmap
+data:
+  workflowDefaults: |
+    spec:
+      # must complete in 8h (28,800 seconds)
+      activeDeadlineSeconds: 28800
+
+      # keep workflows for 24h (86,400 seconds). If workflow succeeded keep for 1h (3,600 seconds) only
+      ttlStrategy:
+        secondsAfterCompletion: 86400
+        secondsAfterSuccess: 3600
