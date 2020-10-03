@@ -6,8 +6,11 @@ rules:
   - apiGroups:
       - argoproj.io
     resources:
+      - cronworkflows
+      - cronworkflows/finalizers
       - workflows
       - workflows/finalizers
+      - workfloweventbindings
       - workflowtemplates
       - workflowtemplates/finalizers
     verbs:

@@ -4,7 +4,3 @@ metadata:
   name: workflow-controller-configmap
 data:
   containerRuntimeExecutor: k8sapi
-  metricsConfig: |
-    enabled: true
-    path: /metrics
-    port: 9090
