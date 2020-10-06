@@ -115,6 +115,11 @@ spec:
         name: manifests
         path: odhargo/odhargo
     name: odhargo
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: odh-dashboard
+    name: odh-dashboard
   repos:
   - name: kf-manifests
     uri: https://github.com/opendatahub-io/manifests/tarball/v1.0-branch-openshift
