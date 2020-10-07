@@ -7,4 +7,4 @@ spec:
     kind: Service
     name: aicoe-prometheus
   tls:
-    termination: Reencrypt
+    termination: reencrypt
