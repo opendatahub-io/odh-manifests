@@ -1,0 +1,25 @@
+---
+exclude: /configs
+repos:
+  - repo: git://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.1.1
+    hooks:
+      - id: remove-tabs
+
+  - repo: git://github.com/pre-commit/pre-commit-hooks
+    rev: v2.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-symlinks
+      - id: detect-private-key
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace

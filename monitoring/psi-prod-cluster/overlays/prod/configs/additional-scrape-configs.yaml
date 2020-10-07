@@ -1,0 +1,10 @@
+- job_name: 'Federate metrics from DH Prometheus'
+  honor_labels: true
+  metrics_path: '/federate'
+  scheme: https
+  params:
+    'match[]':
+      - '{__name__=~"argocd_.*"}'
+  static_configs:
+    - targets:
+      - 'prometheus-dh-prod-monitoring.cloud.datahub.psi.redhat.com'

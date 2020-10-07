@@ -4,5 +4,13 @@ resources:
 - ../../bases/grafana
 - ../../bases/alertmanager
 - ../../bases/oauth_client
+patchesStrategicMerge:
+  - prometheus.yaml
 generators:
 - secret-generator.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+secretGenerator:
+  - name: additional-scrape-configs
+    files:
+      - configs/additional-scrape-configs.yaml
