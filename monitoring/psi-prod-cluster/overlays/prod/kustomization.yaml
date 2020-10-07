@@ -5,4 +5,4 @@ resources:
 - ../../bases/alertmanager
 - ../../bases/oauth_client
 generators:
-  - ./secret-generator.yaml
+- secret-generator.yaml
