@@ -4,7 +4,7 @@ metadata:
   name: aicoe-sre-alertmanager
   namespace: dh-psi-monitoring
 spec:
-  replicas: 3
+  replicas: 1
   securityContext: {}
   serviceAccountName: aicoe-monitoring
   listenLocal: true

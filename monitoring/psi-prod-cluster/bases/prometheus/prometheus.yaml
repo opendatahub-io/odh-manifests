@@ -11,17 +11,14 @@ spec:
       - name: aicoe-sre-alertmanager
         namespace: dh-psi-monitoring
         port: web
-  replicas: 2
+  replicas: 1
   serviceAccountName: aicoe-monitoring
   serviceMonitorNamespaceSelector:
     matchLabels:
       ticket: pnt0817437
   serviceMonitorSelector:
     matchLabels:
-      prometheus: aicoe-sre
-  podMonitorSelector:
-    matchLabels:
-      prometheus: aicoe-sre
+      prometheus: dh-prometheus
   listenLocal: true
   containers:
     - name: oauth-proxy

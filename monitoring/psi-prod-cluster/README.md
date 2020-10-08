@@ -41,7 +41,7 @@ oc create -f psi-ocp.yaml
 
     ```bash
     oc project <target_namespace>
-    oc policy add-role-to-user view system:serviceaccount:dh-psi-monitoring:aicoe-prometheus
+    oc policy add-role-to-user view system:serviceaccount:dh-psi-monitoring:aicoe-monitoring
     ```
 
 4. Make sure that the Prometheus CR has a label that matches a label for the target namespace:
@@ -99,4 +99,4 @@ The following user-guide can be a good point of reference: [alerting.md](https:/
 
 ### Prometheus unable to detect pod/service monitors
 
-Make sure that the monitor has the `prometheus: aicoe-sre` label on it.
+Make sure that the monitor has the `prometheus: dh-monitoring` label on it.

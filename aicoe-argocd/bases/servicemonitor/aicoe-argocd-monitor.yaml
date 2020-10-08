@@ -2,14 +2,14 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: servicemonitor-aicoe-argocd
-  labels:
-    prometheus: aicoe-sre
   namespace: aicoe-argocd
+  labels:
+    prometheus: dh-prometheus
 spec:
   endpoints:
-    - port: metrics
-      interval: 30s
+    - interval: 30s
       path: /metrics
+      port: metrics
   selector:
     matchLabels:
-      app.kubernetes.io/purpose: aicoe-cd-metrics 
+      app.kubernetes.io/purpose: aicoe-cd-metrics
