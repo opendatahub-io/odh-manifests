@@ -8,9 +8,9 @@ assignees: ''
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+A clear and concise description of what the bug is and how often it occurs
 
-**To Reproduce**
+**Steps To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
@@ -21,6 +21,7 @@ Steps to reproduce the behavior:
 A clear and concise description of what you expected to happen.
 
 **Workaround (if any)**
+Any manual steps that allow you to resolve the issue
 
 **Open Data Hub Version**
 Please attach relevant kfdef manifest if applicable
