@@ -281,3 +281,22 @@ spec:
     importPolicy:
       scheduled: true
     name: "latest"
+
+# Insight configuration file analysis image
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    opendatahub.io/notebook-image: "true"
+  name: s2i-insights-configuration-files-analysis-notebook
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+  - from:
+      kind: DockerImage
+      name: docker-registry.upshift.redhat.com/aicoe-notebooks/insights-configuration-files-analysis:latest
+    importPolicy:
+      scheduled: true
+    name: "latest"
