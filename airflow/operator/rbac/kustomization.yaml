@@ -1,3 +1,0 @@
-resources:
-- leader_election_role.yaml
-- leader_election_role_binding.yaml
