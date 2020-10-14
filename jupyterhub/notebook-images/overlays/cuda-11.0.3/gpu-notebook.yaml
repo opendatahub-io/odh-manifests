@@ -40,8 +40,8 @@ items:
       local: true
     tags:
     - annotations:
-        opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.3"},{"name":"TensorFlow","version":"==2.4.1"},{"name":"CUDA","version":"11.0.3"}]'
-        opendatahub.io/notebook-python-dependencies: '[{"name":"TensorFlow","version":"==2.4.1"},{"name":"Tensorboard","version":"2.4.1"},{"name":"Boto3","version":"1.17.11"},{"name":"Kafka-Python","version":"2.0.2"},{"name":"Matplotlib","version":"3.1.3"},{"name":"Numpy","version":"1.19.5"},{"name":"Pandas","version":"0.25.3"},{"name":"Scipy","version":"1.6.2"}]'
+        opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.3"},{"name":"TensorFlow","version":"2.4.1"},{"name":"CUDA","version":"11.0.3"}]'
+        opendatahub.io/notebook-python-dependencies: '[{"name":"TensorFlow","version":"2.4.1"},{"name":"Tensorboard","version":"2.4.1"},{"name":"Boto3","version":"1.17.11"},{"name":"Kafka-Python","version":"2.0.2"},{"name":"Matplotlib","version":"3.1.3"},{"name":"Numpy","version":"1.19.5"},{"name":"Pandas","version":"0.25.3"},{"name":"Scipy","version":"1.6.2"}]'
       name: "py3.8-cuda-11.0.3"
       referencePolicy:
         type: Local
@@ -62,8 +62,8 @@ items:
       local: true
     tags:
     - annotations:
-        opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.3"},{"name":"PyTorch","version":"==1.8.1"},{"name":"CUDA","version":"11.0.3"}]'
-        opendatahub.io/notebook-python-dependencies: '[{"name":"PyTorch","version":"==1.8.1"},{"name":"Tensorboard","version":"1.15.0"},{"name":"Boto3","version":"1.17.11"},{"name":"Kafka-Python","version":"2.0.2"},{"name":"Matplotlib","version":"3.4.1"},{"name":"Numpy","version":"1.20.2"},{"name":"Pandas","version":"1.2.3"},{"name":"Scipy","version":"1.6.2"}]'
+        opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.3"},{"name":"PyTorch","version":"1.8.1"},{"name":"CUDA","version":"11.0.3"}]'
+        opendatahub.io/notebook-python-dependencies: '[{"name":"PyTorch","version":"1.8.1"},{"name":"Tensorboard","version":"1.15.0"},{"name":"Boto3","version":"1.17.11"},{"name":"Kafka-Python","version":"2.0.2"},{"name":"Matplotlib","version":"3.4.1"},{"name":"Numpy","version":"1.20.2"},{"name":"Pandas","version":"1.2.3"},{"name":"Scipy","version":"1.6.2"}]'
       name: "py3.8-cuda-11.0.3"
       referencePolicy:
         type: Local
@@ -72,10 +72,17 @@ items:
   metadata:
     name: s2i-minimal-gpu-cuda-$(cuda_version)-notebook
   spec:
+    nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
         name: 'minimal-gpu:py3.8-cuda-$(cuda_version)'
+    resources:
+      requests:
+        memory: 4Gi
+    completionDeadlineSeconds: 1800
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 1
     strategy:
       type: Docker
       dockerStrategy:
@@ -84,72 +91,81 @@ items:
           name: '$(cuda_version)-cuda-s2i-thoth-ubi8-py38:latest'
         noCache: true
         dockerfilePath: Dockerfile
+    postCommit: {}
     source:
       type: Git
       git:
-        ref: python38
         uri: 'https://github.com/thoth-station/s2i-minimal-notebook'
+        ref: python38
     triggers:
-      - type: ConfigChange
       - type: ImageChange
-    resources:
-      limits:
-        memory: 4Gi
-      requests:
-        memory: 4Gi
+        imageChange: {}
+    runPolicy: SerialLatestOnly
 - kind: BuildConfig
   apiVersion: build.openshift.io/v1
   metadata:
     name: s2i-tensorflow-gpu-cuda-$(cuda_version)-notebook
   spec:
+    nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
         name: 'tensorflow-gpu:py3.8-cuda-$(cuda_version)'
+    resources:
+      limits:
+        memory: 8Gi
+      requests:
+        memory: 6Gi
+    completionDeadlineSeconds: 1800
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 1
     strategy:
       type: Source
       sourceStrategy:
         from:
           kind: ImageStreamTag
           name: 'minimal-gpu:py3.8-cuda-$(cuda_version)'
+    postCommit: {}
     source:
       type: Git
       git:
-        ref: python38
         uri: 'https://github.com/thoth-station/s2i-tensorflow-gpu-notebook'
+        ref: python38
     triggers:
-      - type: ConfigChange
       - type: ImageChange
-    resources:
-      limits:
-        memory: 8Gi
-      requests:
-        memory: 6Gi
+        imageChange: {}
+    runPolicy: SerialLatestOnly
 - kind: BuildConfig
   apiVersion: build.openshift.io/v1
   metadata:
     name: s2i-pytorch-gpu-cuda-$(cuda_version)-notebook
   spec:
+    nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
         name: 'pytorch-gpu:py3.8-cuda-$(cuda_version)'
+    resources:
+      limits:
+        memory: 8Gi
+      requests:
+        memory: 6Gi
+    completionDeadlineSeconds: 1800
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 1
     strategy:
       type: Source
       sourceStrategy:
         from:
           kind: ImageStreamTag
           name: 'minimal-gpu:py3.8-cuda-$(cuda_version)'
+    postCommit: {}
     source:
       type: Git
       git:
-        ref: python38
         uri: 'https://github.com/thoth-station/s2i-pytorch-notebook'
+        ref: python38
     triggers:
-      - type: ConfigChange
       - type: ImageChange
-    resources:
-      limits:
-        memory: 8Gi
-      requests:
-        memory: 6Gi
+        imageChange: {}
+    runPolicy: SerialLatestOnly
