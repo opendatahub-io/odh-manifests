@@ -1,0 +1,81 @@
+apiVersion: kfdef.apps.kubeflow.org/v1
+kind: KfDef
+metadata:
+  name: opendatahub
+  namespace: opendatahub
+spec:
+  applications:
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: odh-common
+    name: odh-common
+  #Note: AI Library components requires seldon do be deployed first, make sure to place seldon before AIlibrary
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: odhseldon/cluster
+    name: odhseldon
+  - kustomizeConfig:
+      parameters:
+      - name: namespace
+        value: openshift-operators
+      repoRef:
+        name: manifests
+        path: kafka/cluster
+    name: strimzi-operator
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: kafka/kafka
+    name: kafka-cluster
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: grafana/cluster
+    name: grafana-cluster
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: grafana/grafana
+    name: grafana-instance
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: prometheus/cluster
+    name: prometheus-cluster
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: prometheus/operator
+    name: prometheus-operator
+  - kustomizeConfig:
+      parameters:
+        - name: s3_endpoint_url
+          value: "s3.odh.com"
+      repoRef:
+        name: manifests
+        path: jupyterhub/jupyterhub
+    name: jupyterhub
+  - kustomizeConfig:
+      overlays:
+      #- cuda
+      - additional
+      repoRef:
+        name: manifests
+        path: jupyterhub/notebook-images
+    name: notebook-images
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: odhargo/cluster
+    name: odhargo-cluster
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: odhargo/odhargo
+    name: odhargo
+  repos:
+  - name: manifests
+    uri: https://github.com/red-hat-data-services/odh-manifests/tarball/master
+  version: master
