@@ -177,7 +177,7 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   labels:
-    opendatahub.io/notebook-image: "true" 
+    opendatahub.io/notebook-image: "true"
   name: s2i-openshift-sme-mailing-list-analysis-notebook
 spec:
   lookupPolicy:
@@ -338,4 +338,3 @@ spec:
     importPolicy:
       scheduled: true
     name: "latest"
-    

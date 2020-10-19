@@ -21,8 +21,8 @@ The deployment instructions that follow deploy all of the above components.
 
 ### Prerequisites
 
-We use [helm](https://helm.sh/) to install our helm charts. We also need the helm secrets plugin.  
-To install these use the commands below:  
+We use [helm](https://helm.sh/) to install our helm charts. We also need the helm secrets plugin.
+To install these use the commands below:
 
 ```bash
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
@@ -30,11 +30,11 @@ chmod 700 get_helm.sh
 ./get_helm.sh
 
 sudo helm plugin install https://github.com/zendesk/helm-secrets
-```  
+```
 
-We are using sops to encrypt and decrypt our secret variable files using the ArgoCD ksops key(s).  
-You can find the public key [here](http://keys.gnupg.net/pks/lookup?op=vindex&fingerprint=on&search=0xBD2C73FF891FBC7E).  
-For the private key please reach out to [Internal Datahub Devs](mailto:data-hub@redhat.com).  
+We are using sops to encrypt and decrypt our secret variable files using the ArgoCD ksops key(s).
+You can find the public key [here](http://keys.gnupg.net/pks/lookup?op=vindex&fingerprint=on&search=0xBD2C73FF891FBC7E).
+For the private key please reach out to [Internal Datahub Devs](mailto:data-hub@redhat.com).
 
 ### Install Strimzi
 
@@ -53,10 +53,10 @@ To deploy Kafka and its supporting artifacts to dev, run the following command:
 helm secrets install --generate-name -f secrets.enc.yaml -f helm_vars/dev/values.yaml -f helm_vars/dev/secrets.yaml.
 ```
 
-Once deploy to upgrade the current deployment run the commands:  
+Once deploy to upgrade the current deployment run the commands:
 
 ```bash
-helm list  
+helm list
 helm secrets upgrade -f secrets.enc.yaml -f helm_vars/prod/values.yaml -f helm_vars/prod/secrets.yaml <chart_name_from_previous_command> .
 ```
 
@@ -68,11 +68,11 @@ To deploy Kafka and its supporting artifacts to stage, run the following command
  helm secrets install --generate-name -f secrets.enc.yaml -f helm_vars/stage/values.yaml -f helm_vars/stage/secrets.yaml .
 ```
 
-Once deploy to upgrade the current deployment run the commands:  
+Once deploy to upgrade the current deployment run the commands:
 
 ```bash
-helm list  
-helm secrets upgrade -f secrets.enc.yaml -f helm_vars/stage/values.yaml -f helm_vars/stage/secrets.yaml <chart_name_from_previous_command> .  
+helm list
+helm secrets upgrade -f secrets.enc.yaml -f helm_vars/stage/values.yaml -f helm_vars/stage/secrets.yaml <chart_name_from_previous_command> .
 ```
 
 ### Steps to deploy in prod
@@ -84,14 +84,14 @@ __Note: In order to deploy Kafka you must have the "strimziadmin" role associate
 helm secrets install --generate-name -f secrets.enc.yaml -f helm_vars/prod/values.yaml -f helm_vars/prod/secrets.yaml .
 ```
 
-Once deploy to upgrade the current deployment run the commands:  
+Once deploy to upgrade the current deployment run the commands:
 
 ```bash
 helm list
 helm secrets upgrade -f secrets.enc.yaml -f helm_vars/prod/values.yaml -f helm_vars/prod/secrets.yaml <chart_name_from_previous_command> .
 ```
 
-## Further Documentation  
+## Further Documentation
 
 ### Kafka Connect
 
