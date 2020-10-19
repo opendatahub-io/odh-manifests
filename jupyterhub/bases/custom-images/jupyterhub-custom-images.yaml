@@ -300,3 +300,22 @@ spec:
     importPolicy:
       scheduled: true
     name: "latest"
+
+# Configuration file analysis image on public dataset
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    opendatahub.io/notebook-image: "true"
+  name: s2i-configuration-files-analysis-notebook
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+  - from:
+      kind: DockerImage
+      name: docker-registry.upshift.redhat.com/aicoe-notebooks/configuration-files-analysis:latest
+    importPolicy:
+      scheduled: true
+    name: "latest"
