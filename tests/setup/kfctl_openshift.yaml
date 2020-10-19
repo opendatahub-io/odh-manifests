@@ -117,6 +117,11 @@ spec:
         name: manifests
         path: kafka/kafka
     name: kafka-cluster
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: odh-dashboard
+    name: odh-dashboard
   repos:
   - name: kf-manifests
     uri: https://github.com/opendatahub-io/manifests/tarball/v0.7-branch-openshift  
