@@ -10,11 +10,13 @@ while [[ $retry -gt 0 ]]; do
   ./setup.sh -o ~/peak/operatorsetup 2>&1
   if [ $? -eq 0 ]; then
     retry=-1
-  fi
-  echo "Trying restart of marketplace community operator pod"
-  oc delete pod -n openshift-marketplace $(oc get pod -n openshift-marketplace -l marketplace.operatorSource=community-operators -o jsonpath="{$.items[*].metadata.name}")
+  else
+    echo "Trying restart of marketplace community operator pod"
+    oc delete pod -n openshift-marketplace $(oc get pod -n openshift-marketplace -l marketplace.operatorSource=community-operators -o jsonpath="{$.items[*].metadata.name}")
+    sleep 3m
+  fi  
   retry=$(( retry - 1))
-  sleep 3m
+  sleep 1m
 done
 popd
 ## Grabbing and applying the patch in the PR we are testing
