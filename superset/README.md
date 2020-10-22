@@ -24,3 +24,10 @@ To install Superset add the following to the `kfctl` yaml file.
 ```
 
 By default the user and password to the Superset portal is admin/admin. You can change the password by changing the value of the `SUPERSET_ADMIN_PASSWORD`. To launch the portal, go to the routes in the namespace you installed Open Data Hub and click on the route with `superset` name.
+
+### Superset Database Initialization
+
+Prior to running, Superset's database must be initialized. This is handled via the `superset-db-init` Kubernetes
+job. Upon deployment, this job will be created and run once. There will likely be a brief period of time that
+the Superset container will fail before the initialization completes. Once this is done, the Superset pod should
+start running without intervention.
