@@ -11,11 +11,11 @@ while [[ $retry -gt 0 ]]; do
   if [ $? -eq 0 ]; then
     retry=-1
   fi
+  echo "Trying restart of marketplace community operator pod"
+  oc delete pod -n openshift-marketplace $(oc get pod -n openshift-marketplace -l marketplace.operatorSource=community-operators -o jsonpath="{$.items[*].metadata.name}")
   retry=$(( retry - 1))
-  sleep 1m
+  sleep 3m
 done
-echo "Pausing 20 seconds to allow operator to start"
-sleep 20s
 popd
 ## Grabbing and applying the patch in the PR we are testing
 pushd ~/src/odh-manifests
