@@ -23,10 +23,12 @@ if  [ "$?" -ne 0 ]; then
     if [ -z "${SKIP_PODS_OUTPUT}" ]; then
         echo "Here's a dump of the pods:"
         oc get pods -o json -n ${ODHPROJECT}
+        echo "Logs from the opendatahub-operator pod"
+        oc logs -n openshift-operators $(oc get pods -n openshift-operators -l name=opendatahub-operator -o jsonpath="{$.items[*].metadata.name}")
     fi
     exit 1
 fi
 
 ## Debugging pause...uncomment below to be able to poke around the test pod post-test
 # echo "Debugging pause for 3 hours"
-# sleep 180m
+#sleep 180m
