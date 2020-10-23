@@ -16,6 +16,11 @@ if [ -z "${SKIP_INSTALL}" ]; then
     oc new-project ${ODHPROJECT}
     $HOME/peak/install.sh
 fi
+
+## Debugging pause...uncomment below to be able to poke around the test pod post-test
+echo "Debugging pause for 30 minutes"
+sleep 30m
+
 $HOME/peak/run.sh ${TESTS_REGEX}
 
 if  [ "$?" -ne 0 ]; then
