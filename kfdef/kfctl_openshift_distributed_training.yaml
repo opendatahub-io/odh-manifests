@@ -63,12 +63,7 @@ spec:
       repoRef:
         name: manifests
         path: radanalyticsio/spark/cluster
-    name: radanalyticsio-cluster
-  - kustomizeConfig:
-      repoRef:
-        name: manifests
-        path: radanalyticsio/spark/operator
-    name: radanalyticsio-spark-operator
+    name: radanalyticsio-spark-cluster
   - kustomizeConfig:
       repoRef:
         name: manifests
