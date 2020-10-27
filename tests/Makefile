@@ -10,6 +10,9 @@ SKIP_PODS_OUTPUT=
 SKIP_INSTALL=
 # Setting TESTS_REGEX will allow you to change which tests are going to be run
 TESTS_REGEX=
+# Location inside the container where CI system will retrieve files after a test run
+ARTIFACT_DIR=/tmp/artifacts
+LOCAL_ARTIFACT_DIR="${PWD}/artifacts"
 
 all: test
 test: build run clean
@@ -18,11 +21,12 @@ build:
 	podman build -t $(IMAGE) --build-arg ORG=$(GIT_ORG) --build-arg BRANCH=$(GIT_BRANCH) .
 
 run:
-	mkdir -p `pwd`/screenshots/
+	# Confirm that we have a directory for storing any screenshots from selenium tests
+	mkdir -p ${LOCAL_ARTIFACT_DIR}/screenshots
 	oc config view --flatten --minify > /tmp/tests-kubeconfig
 	podman run -e SKIP_PODS_OUTPUT=$(SKIP_PODS_OUTPUT) -e SKIP_INSTALL=$(SKIP_INSTALL) -e TESTS_REGEX=$(TESTS_REGEX) -e ODHPROJECT=$(ODHPROJECT) \
-		-e OPENSHIFT_USER="$(OPENSHIFT_USER)" -e OPENSHIFT_PASS="$(OPENSHIFT_PASS)" -e OPENSHIFT_LOGIN_PROVIDER=$(OPENSHIFT_LOGIN_PROVIDER) \
-		-it -v `pwd`/screenshots/:/tmp/screenshots:z -v /tmp/tests-kubeconfig:/tmp/kubeconfig:z $(IMAGE)
+		-e OPENSHIFT_USER="$(OPENSHIFT_USER)" -e OPENSHIFT_PASS="$(OPENSHIFT_PASS)" -e OPENSHIFT_LOGIN_PROVIDER=$(OPENSHIFT_LOGIN_PROVIDER) -e ARTIFACT_DIR=$(ARTIFACT_DIR) \
+		-it -v ${LOCAL_ARTIFACT_DIR}/:$(ARTIFACT_DIR):z -v /tmp/tests-kubeconfig:/tmp/kubeconfig:z $(IMAGE)
 
 clean:
 	oc delete -n $(ODHPROJECT) kfdef opendatahub || true

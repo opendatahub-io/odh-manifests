@@ -20,7 +20,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 _LOGGER = logging.getLogger()
-_SCREENSHOT_DIR="/tmp/screenshots"
+_SCREENSHOT_DIR=f"{os.environ.get('ARTIFACT_DIR', '/tmp')}/screenshots"
 
 class JHStress():
     def __init__(self):
