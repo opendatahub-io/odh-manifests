@@ -2,10 +2,8 @@
 .dockerignore
 .gitignore
 Dockerfile
-Containerfile
 tests
 LICENSE
 Makefile
 OWNERS
 *.md
-.aicoe-ci.yaml
