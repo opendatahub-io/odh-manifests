@@ -16,7 +16,7 @@ if [ -z "${SKIP_INSTALL}" ]; then
     oc new-project ${ODHPROJECT}
     $HOME/peak/install.sh
 fi
-$HOME/peak/run.sh ${TESTS_REGEX}
+$HOME/peak/run.sh kafka
 
 if  [ "$?" -ne 0 ]; then
     echo "The tests failed"
