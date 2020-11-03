@@ -1,0 +1,22 @@
+---
+apiVersion: radanalytics.io/v1
+kind: SparkCluster
+metadata:
+  name: spark-cluster-thriftserver
+spec:
+  worker:
+    instances: "1"
+    memoryRequest: 512Mi
+    memoryLimit: 2Gi
+    cpuRequest: 200m
+    cpuLimit: "2"
+  master:
+    instances: "1"
+    memoryRequest: 512Mi
+    memoryLimit: 2Gi
+    cpuRequest: 200m
+    cpuLimit: "2"
+  customImage: spark-cluster-image
+  env:
+    - name: SPARK_METRICS_ON # Requires quay.io/radanalyticsio/openshift-spark-py36 image or compatible
+      value: prometheus

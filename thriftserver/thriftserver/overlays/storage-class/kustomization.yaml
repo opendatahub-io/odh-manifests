@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - ../../base
+
+patchesJson6902:
+  - target:
+      kind: PersistentVolumeClaim
+      version: v1
+      name: thriftserver-db
+    path: pvc-patch.yaml
+  - target:
+      kind: PersistentVolumeClaim
+      version: v1
+      name: thriftserver
+    path: pvc-patch.yaml
