@@ -1,0 +1,8 @@
+check:
+  - thoth-build
+build:
+  build-stratergy: "Dockerfile"
+  registry: "quay.io"
+  registry-org: "modh"
+  registry-project: "odh-manifests"
+  registry-secret: "modh-pusher-secret"
