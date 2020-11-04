@@ -12,4 +12,7 @@ spec:
   serviceMonitorSelector:
       matchLabels:
         team: opendatahub
+  podMonitorSelector:
+      matchLabels:
+        team: opendatahub
   ruleSelector: {}
