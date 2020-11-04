@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 from distutils.util import strtobool
 
 from selenium import webdriver
@@ -48,11 +49,12 @@ class JHStress():
         self.notebooks = os.environ.get('JH_NOTEBOOKS', "").split(",")
         self.user_name = os.environ.get('JH_USER_NAME', 'test-user1')
         self.spawner = {
-            "image": os.environ.get('JH_NOTEBOOK_IMAGE', "s2i-minimal-notebook:3.6"),
-            "size": os.environ.get('JH_NOTEBOOK_SIZE', "None"),
+            "image": os.environ.get('JH_NOTEBOOK_IMAGE', "s2i-spark-minimal-notebook:3.6"),
+            "size": os.environ.get('JH_NOTEBOOK_SIZE', "Default"),
+            "gpu": os.environ.get('JH_NOTEBOOK_GPU', "0"),
         }
-        self.as_admin = strtobool(os.environ.get('JH_AS_ADMIN', False))
-        self.headless = strtobool(os.environ.get('JH_HEADLESS', False))
+        self.as_admin = strtobool(os.environ.get('JH_AS_ADMIN', 'False'))
+        self.headless = strtobool(os.environ.get('JH_HEADLESS', 'False'))
         self.preload_repos = os.environ.get('JH_PRELOAD_REPOS', "https://github.com/opendatahub-io/testing-notebooks")
 
 
@@ -97,7 +99,7 @@ class JHStress():
         _LOGGER.info("User %s does not exist" % self.user_name)
         textarea_visible = False
         retry = 0
-        while not textarea_visible and retry < 3:
+        while not textarea_visible and retry < 4:
             add_user_elem = self.driver.find_element(By.ID, "add-users")
             add_user_elem.click()
 
@@ -116,7 +118,7 @@ class JHStress():
         save_users_elem.click()
             
 
-        w = WebDriverWait(self.driver, 5)
+        w = WebDriverWait(self.driver, 30)
         start_elem = w.until(EC.element_to_be_clickable((By.XPATH, '//a[@href="/hub/spawn/%s"]' % self.user_name)))
         start_elem.click()
 
@@ -125,17 +127,19 @@ class JHStress():
 
         #TODO: Figure out why this sometimes fails
         retry = 2
-
-        w = WebDriverWait(self.driver, 10)
-        stop_elem = w.until(EC.element_to_be_clickable((By.XPATH, '//tr[@data-user="%s"]//a[text()="stop server"]' % self.user_name)))
-        _LOGGER.info("Stopping the server")
-        time.sleep(5)
-        stop_elem.click()
+        self.driver.implicitly_wait(10)
+        stop_elem = self.driver.find_element_by_xpath('//tr[@data-user="%s"]/td[4]/a[1]' % self.user_name)
+        if "hidden" in stop_elem.get_attribute("class"):
+            _LOGGER.info("Server already stopped")
+        else:
+            _LOGGER.info("Stopping the server")
+            time.sleep(5)
+            stop_elem.click()
         
         w = WebDriverWait(self.driver, 50)
         start_elem = w.until(EC.element_to_be_clickable((By.XPATH, '//a[@href="/hub/spawn/%s"]' % self.user_name)))
 
-        del_elem = w.until(EC.element_to_be_clickable((By.XPATH, '//tr[@data-user="%s"]//a[text()="delete"]' % self.user_name)))
+        del_elem = w.until(EC.element_to_be_clickable((By.XPATH, '//tr[@data-user="%s"]//a[text()="delete user"]' % self.user_name)))
         del_elem.click()
 
         confirm_del_elem  = w.until(EC.element_to_be_clickable((By.XPATH, '//button[text()="Delete User"]')))
@@ -166,9 +170,18 @@ class JHStress():
             self.driver.get_screenshot_as_file(os.path.join(_SCREENSHOT_DIR, "exception.png"))
             raise e
 
+    def deal_with_privacy_error(self):
+        if "Privacy error" in self.driver.title:
+            elem = self.driver.find_element_by_id("details-button")
+            elem.send_keys(Keys.RETURN)
+            elem = self.driver.find_element_by_id("proceed-link")
+            elem.send_keys(Keys.RETURN)
+        
     def login(self):
+        self.deal_with_privacy_error()
         elem = self.driver.find_element_by_link_text("Sign in with OpenShift")
         elem.send_keys(Keys.RETURN)
+        self.deal_with_privacy_error()
 
         if self.check_exists_by_xpath('//a[text()="%s"]' % self.login_provider):
             elem = self.driver.find_element_by_link_text(self.login_provider)
@@ -180,25 +193,55 @@ class JHStress():
             elem = spawn_elem = self.driver.find_element(By.XPATH, permissions_xpath)
             elem.send_keys(Keys.RETURN)
     
-    def spawn(self):
-        image_select = Select(self.driver.find_element(By.XPATH, '//select[@name="custom_image"]'))
-        image_select.select_by_value(self.spawner["image"])
-
-        size_select = Select(self.driver.find_element(By.XPATH, '//select[@name="size"]'))
-        size_select.select_by_value(self.spawner["size"])
-
-        env_name = self.driver.find_element(By.XPATH, '//input[@name="variable_name_1"]')
-        env_name.send_keys("JUPYTER_PRELOAD_REPOS")
-
-        env_value = self.driver.find_element(By.XPATH, '//input[@name="variable_value_1"]')
-        env_value.send_keys(self.preload_repos)
-
-        spawn_elem = self.driver.find_element(By.XPATH, '//input[@value="Spawn"]')
-        spawn_elem.click()
-
-        w = WebDriverWait(self.driver, 180)
-        element = w.until(EC.presence_of_element_located((By.ID, 'notebook_list_header')))
+    def test_environment_variables(self):
+        _LOGGER.info("Testing Environment Variables")
+        self.add_environment_variable('foo', 'bar')
+        self.add_environment_variable('foo1', 'bar1')
+        self.remove_last_environment_variable()
+        self.remove_last_environment_variable()
     
+    def add_environment_variable(self, key, value):
+        self.driver.implicitly_wait(10)
+        add_button_elem = self.driver.find_element(By.XPATH, '//*[@id="root"]/div/header/form/form/button')
+        add_button_elem.send_keys(Keys.RETURN)
+        key_elem = self.driver.find_element(By.NAME, 'variable_name')
+        value_elem = self.driver.find_element(By.NAME, 'variable_value')
+        key_elem.clear()
+        key_elem.send_keys(key)
+        value_elem.clear()
+        value_elem.send_keys(value)
+
+    def remove_last_environment_variable(self):
+        remove_button_elems = self.driver.find_elements(By.CLASS_NAME, 'btn-danger')
+        elem = remove_button_elems[len(remove_button_elems) - 1]
+        elem.send_keys(Keys.RETURN)
+
+    def spawn(self):
+        image_drop = self.driver.find_element(By.XPATH, '//*[@id="ImageDropdownBtn"]')
+        image_drop.send_keys(Keys.RETURN)
+
+        self.driver.implicitly_wait(10)
+        image_select = self.driver.find_element_by_id(self.spawner["image"])
+        image_select.click()
+
+        size_drop = self.driver.find_element(By.XPATH, '//*[@id="SizeDropdownBtn"]')
+        size_drop.click()
+
+        size_select = self.driver.find_element_by_id(self.spawner["size"])
+        size_select.click()
+
+        gpu_elem = self.driver.find_element(By.XPATH, '//*[@id="gpu-form"]')
+        gpu_elem.clear()
+        gpu_elem.send_keys(self.spawner['gpu'])
+
+        self.test_environment_variables()
+
+        time.sleep(0.5)
+
+        self.add_environment_variable("JUPYTER_PRELOAD_REPOS", self.preload_repos)
+
+        gpu_elem.send_keys(Keys.RETURN)
+
     def stop(self):
         self.driver.get(self.url+ "/hub/home")
         stop_elem = self.driver.find_element_by_id("stop")
@@ -206,6 +249,9 @@ class JHStress():
 
     def run_notebook(self, notebook, tab):
         path = notebook.split("/")
+        w = WebDriverWait(self.driver, 90)
+        auth_elem = w.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/form/input')))
+        auth_elem.click()
         if len(path) > 1:
             for segment in path[:-1]:
                 w = WebDriverWait(self.driver, 10)
@@ -213,7 +259,6 @@ class JHStress():
                 dir_elem.click()
 
         _LOGGER.info("Executing notebook %s" % path[-1])
-        w = WebDriverWait(self.driver, 10)
         notebook_elem = w.until(EC.presence_of_element_located((By.XPATH, '//span[text()="%s"]' % path[-1])))
         notebook_elem.click()
 
@@ -275,3 +320,4 @@ if __name__ == "__main__":
     jhs = JHStress()
     jhs.run()
     jhs.quit()
+    
