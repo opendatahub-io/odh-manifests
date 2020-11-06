@@ -22,7 +22,8 @@ spec:
         sidecar.istio.io/inject: "true"
     spec:
       containers:
-      - env:
+      - image: registry.redhat.io/rhel8/postgresql-96
+        env:
         - name: POSTGRESQL_USER
           valueFrom:
             secretKeyRef:
@@ -65,13 +66,4 @@ spec:
           name: jupyterhub-cfg
         name: config
   triggers:
-  - imageChangeParams:
-      automatic: true
-      containerNames:
-      - postgresql
-      from:
-        kind: ImageStreamTag
-        name: postgresql:9.6
-        namespace: openshift
-    type: ImageChange
   - type: ConfigChange

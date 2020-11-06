@@ -15,7 +15,7 @@ function verify_spark_operator_install() {
     header "Testing Radanalytics Spark Operator installation"
     os::cmd::expect_success "oc project ${ODHPROJECT}"
     os::cmd::expect_success_and_text "oc get deployment spark-operator" "spark-operator"
-    runningpods=($(oc get pods -l app.kubernetes.io/name=spark-operator --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
+    runningpods=($(oc get pods -l app.kubernetes.io/name=radanalytics-spark-operator --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
     os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
 }
 

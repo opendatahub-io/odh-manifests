@@ -1,12 +1,12 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: grafana-operator
+  name: radanalytics-spark
   namespace: opendatahub
 spec:
   channel: alpha
   installPlanApproval: Automatic
-  name: grafana-operator
+  name: radanalytics-spark
   source: community-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: grafana-operator.v3.6.0
+  startingCSV: sparkoperator.v1.1.0

@@ -63,12 +63,7 @@ spec:
       repoRef:
         name: manifests
         path: radanalyticsio/spark/cluster
-    name: radanalyticsio-cluster
-  - kustomizeConfig:
-      repoRef:
-        name: manifests
-        path: radanalyticsio/spark/operator
-    name: radanalyticsio-spark-operator
+    name: radanalyticsio-spark-cluster
   - kustomizeConfig:
       repoRef:
         name: manifests
@@ -115,6 +110,11 @@ spec:
         name: manifests
         path: odhargo/odhargo
     name: odhargo
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: odh-dashboard
+    name: odh-dashboard
   repos:
   - name: kf-manifests
     uri: https://github.com/opendatahub-io/manifests/tarball/v1.0-branch-openshift
