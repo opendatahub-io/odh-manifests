@@ -41,20 +41,20 @@ items:
         cpu: "1"
         memory: 2Gi
     source:
-      contextDir: $(cuda_version)/base
+      contextDir: "dist/$(cuda_version)/ubi7-x86_64/base"
       git:
-        ref: ubi7
-        uri: https://github.com/harshad16/cuda.git
+        ref: master
+        uri: https://github.com/thoth-station/cuda.git
       type: Git
     strategy:
       dockerStrategy:
         dockerfilePath: Dockerfile
         env:
         - name: S2I_IMAGE
-          value: registry.access.redhat.com/ubi7/s2i-base
+          value: registry.access.redhat.com/rhscl/s2i-base-rhel7:1
         from:
           kind: DockerImage
-          name: registry.access.redhat.com/ubi7/s2i-base
+          name: registry.access.redhat.com/rhscl/s2i-base-rhel7:1
         noCache: true
       type: Docker
     triggers:
@@ -84,10 +84,10 @@ items:
         cpu: "1"
         memory: 2Gi
     source:
-      contextDir: $(cuda_version)/runtime/
+      contextDir: "dist/$(cuda_version)/ubi7-x86_64/runtime/"
       git:
-        ref: ubi7
-        uri: https://github.com/harshad16/cuda.git
+        ref: master
+        uri: https://github.com/thoth-station/cuda.git
       type: Git
     strategy:
       dockerStrategy:
@@ -122,10 +122,10 @@ items:
         cpu: "1"
         memory: 2Gi
     source:
-      contextDir: $(cuda_version)/runtime/cudnn7
+      contextDir: "dist/$(cuda_version)/ubi7-x86_64/runtime/cudnn7/"
       git:
-        ref: ubi7
-        uri: https://github.com/harshad16/cuda.git
+        ref: master
+        uri: https://github.com/thoth-station/cuda.git
       type: Git
     strategy:
       dockerStrategy:
@@ -160,10 +160,10 @@ items:
         cpu: "1"
         memory: 2Gi
     source:
-      contextDir: $(cuda_version)/devel/
+      contextDir: "dist/$(cuda_version)/ubi7-x86_64/devel/"
       git:
-        ref: ubi7
-        uri: https://github.com/harshad16/cuda.git
+        ref: master
+        uri: https://github.com/thoth-station/cuda.git
       type: Git
     strategy:
       dockerStrategy:
@@ -198,10 +198,10 @@ items:
         cpu: "1"
         memory: 2Gi
     source:
-      contextDir: $(cuda_version)/devel/cudnn7
+      contextDir: "dist/$(cuda_version)/ubi7-x86_64/devel/cudnn7/"
       git:
-        ref: ubi7
-        uri: https://github.com/harshad16/cuda.git
+        ref: master
+        uri: https://github.com/thoth-station/cuda.git
       type: Git
     strategy:
       dockerStrategy:
@@ -239,7 +239,7 @@ items:
       contextDir: "3.6"
       git:
         ref: master
-        uri: https://github.com/harshad16/s2i-python-container.git
+        uri: https://github.com/thoth-station/s2i-python-container.git
       type: Git
     strategy:
       dockerStrategy:
