@@ -11,6 +11,11 @@ TESTS_REGEX=${TESTS_REGEX:-"basictests"}
 ODHPROJECT=${ODHPROJECT:-"opendatahub"}
 export ODHPROJECT
 
+echo "OCP version info"
+echo `oc version`
+echo "Sleeping for 10 min to let the cluster settle"
+sleep 10m
+
 if [ -z "${SKIP_INSTALL}" ]; then
     # This is needed to avoid `oc status` failing inside openshift-ci
     oc new-project ${ODHPROJECT}
