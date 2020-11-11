@@ -18,8 +18,8 @@ if [ -z "${SKIP_INSTALL}" ]; then
     # This is needed to avoid `oc status` failing inside openshift-ci
     oc new-project ${ODHPROJECT}
     $HOME/peak/install.sh
-    echo "Sleeping for 10 min to let the KfDef install settle"
-    sleep 10m
+    echo "Sleeping for 5 min to let the KfDef install settle"
+    sleep 5m
 fi
 $HOME/peak/run.sh ${TESTS_REGEX}
 
@@ -30,8 +30,6 @@ if  [ "$?" -ne 0 ]; then
         oc get pods -o json -n ${ODHPROJECT}
         echo "Logs from the opendatahub-operator pod"
         oc logs -n openshift-operators $(oc get pods -n openshift-operators -l name=opendatahub-operator -o jsonpath="{$.items[*].metadata.name}")
-        echo "Here's the prometheus csv"
-        oc get csv $(oc get subscription prometheus --template={{.spec.startingCSV}}) -o yaml
     fi
     exit 1
 fi
