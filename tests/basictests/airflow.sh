@@ -52,6 +52,8 @@ function test_airflow() {
     runningpods=($(oc get pods -l control-plane=controller-manager --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
     os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
     create_airflow
+    echo "Sleeping for 5 min after creating airflow"
+    sleep 5m
     verify_airflow
     test_routes
     delete_airflow
