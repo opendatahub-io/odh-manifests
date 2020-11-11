@@ -17,6 +17,8 @@ function test_promportal() {
 function test_prometheus() {
     header "Testing ODH Prometheus installation"
     os::cmd::expect_success "oc project ${ODHPROJECT}"
+    echo "Here is the prometheus csv"
+    `oc get csv $(oc get subscription prometheus --template={{.spec.startingCSV}}) -o yaml`
     os::cmd::try_until_text "oc get pods -l k8s-app=prometheus-operator --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "prometheus-operator" $odhdefaulttimeout $odhdefaultinterval
     runningbuspods=($(oc get pods -l k8s-app=prometheus-operator --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
     os::cmd::expect_success_and_text "echo ${#runningbuspods[@]}" "1"
