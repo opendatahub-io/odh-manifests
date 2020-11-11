@@ -30,6 +30,8 @@ if  [ "$?" -ne 0 ]; then
         oc get pods -o json -n ${ODHPROJECT}
         echo "Logs from the opendatahub-operator pod"
         oc logs -n openshift-operators $(oc get pods -n openshift-operators -l name=opendatahub-operator -o jsonpath="{$.items[*].metadata.name}")
+        echo "Here's the prometheus csv"
+        oc get csv $(oc get subscription prometheus --template={{.spec.startingCSV}}) -o yaml
     fi
     exit 1
 fi
