@@ -13,13 +13,13 @@ export ODHPROJECT
 
 echo "OCP version info"
 echo `oc version`
-echo "Sleeping for 10 min to let the cluster settle"
-sleep 10m
 
 if [ -z "${SKIP_INSTALL}" ]; then
     # This is needed to avoid `oc status` failing inside openshift-ci
     oc new-project ${ODHPROJECT}
     $HOME/peak/install.sh
+    echo "Sleeping for 10 min to let the KfDef install settle"
+    sleep 10m
 fi
 $HOME/peak/run.sh ${TESTS_REGEX}
 

@@ -50,7 +50,7 @@ function test_airflow() {
     os::cmd::try_until_text "oc get deployment airflow-on-k8s-operator-controller-manager" "airflow-on-k8s-operator-controller-manager" $odhdefaulttimeout $odhdefaultinterval
     os::cmd::try_until_text "oc get pods -l control-plane=controller-manager --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "airflow-on-k8s-operator-controller-manager" $odhdefaulttimeout $odhdefaultinterval
     runningpods=($(oc get pods -l control-plane=controller-manager --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
-    os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1" $odhdefaulttimeout $odhdefaultinterval
+    os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
     create_airflow
     verify_airflow
     test_routes
