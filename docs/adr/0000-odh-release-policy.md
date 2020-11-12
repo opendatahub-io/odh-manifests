@@ -33,7 +33,7 @@ project/product level while maintianing freedom of others to update.
 
 ### Negative Consequences <!-- optional -->
 
-* A ODH release (a tag in the odh-manifests repository) might not contain the latest versions of components, for example
+* An ODH release (a tag in the odh-manifests repository) might not contain the latest versions of components, for example
   security updates might have forced the build of a S2I image used with JupyterHub component of ODH.
 
 <!-- markdownlint-disable-file MD013 -->
