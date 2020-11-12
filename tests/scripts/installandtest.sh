@@ -11,10 +11,15 @@ TESTS_REGEX=${TESTS_REGEX:-"basictests"}
 ODHPROJECT=${ODHPROJECT:-"opendatahub"}
 export ODHPROJECT
 
+echo "OCP version info"
+echo `oc version`
+
 if [ -z "${SKIP_INSTALL}" ]; then
     # This is needed to avoid `oc status` failing inside openshift-ci
     oc new-project ${ODHPROJECT}
     $HOME/peak/install.sh
+    echo "Sleeping for 5 min to let the KfDef install settle"
+    sleep 5m
 fi
 $HOME/peak/run.sh ${TESTS_REGEX}
 

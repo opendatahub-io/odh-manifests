@@ -22,7 +22,7 @@ metadata:
 spec:
   postgres:
     operator: False
-    image: "registry.access.redhat.com/rhscl/postgresql-10-rhel7"
+    image: "registry.redhat.io/rhscl/postgresql-10-rhel7"
     version: "latest"
   storage:
     version: ""
