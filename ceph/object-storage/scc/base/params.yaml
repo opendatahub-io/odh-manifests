@@ -1,0 +1,7 @@
+varReference:
+- path: metadata/name
+  kind: SecurityContextConstraints
+  apiGroup: security.openshift.io
+- path: users
+  kind: SecurityContextConstraints
+  apiGroup: security.openshift.io
