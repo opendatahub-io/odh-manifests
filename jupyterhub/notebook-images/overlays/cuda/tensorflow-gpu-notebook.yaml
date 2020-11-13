@@ -25,54 +25,21 @@ items:
       limits:
         memory: 2Gi
     source:
-      contextDir: minimal-notebook
       git:
-        uri: https://github.com/vpavlin/jupyter-notebooks
+        ref: master
+        uri: 'https://github.com/thoth-station/s2i-minimal-notebook'
       type: Git
     strategy:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: python-36-ubi7:latest
+          name: $(cuda_version)-cuda-python-36-ubi7:latest
       type: Source
-    triggers:
-    - type: ConfigChange
-    - type: ImageChange
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    labels:
-      build: s2i-tensorflow-gpu-base
-    name: s2i-tensorflow-gpu-base
-  spec:
-    lookupPolicy:
-      local: true
-- apiVersion: build.openshift.io/v1
-  kind: BuildConfig
-  metadata:
-    labels:
-      build: s2i-tensorflow-gpu-base
-    name: s2i-tensorflow-gpu-base
-  spec:
-    output:
-      to:
-        kind: ImageStreamTag
-        name: s2i-tensorflow-gpu-base:3.6
-    resources:
-      limits:
-        memory: 2Gi
-    source:
-      contextDir: tensorflow-notebook
-      git:
-        ref: feature/add-tf-gpu
-        uri: https://github.com/vpavlin/jupyter-notebooks
-      type: Git
-    strategy:
-      sourceStrategy:
-        from:
-          kind: ImageStreamTag
-          name: s2i-minimal-notebook-gpu:3.6
-      type: Source
+      env:
+      - name: ENABLE_MICROPIPENV
+        value: "1"
+      - name: UPGRADE_PIP_TO_LATEST
+        value: "1"
     triggers:
     - type: ConfigChange
     - type: ImageChange
@@ -101,16 +68,15 @@ items:
       limits:
         memory: 512Mi
     source:
-      contextDir: tensorflow-notebook-gpu
       git:
-        ref: feature/add-tf-gpu
-        uri: https://github.com/vpavlin/jupyter-notebooks
+        ref: master
+        uri: 'https://github.com/thoth-station/s2i-tensorflow-notebook'
       type: Git
     strategy:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: s2i-tensorflow-gpu-base:3.6
+          name: s2i-minimal-notebook-gpu:3.6
       type: Source
     triggers:
     - type: ConfigChange
