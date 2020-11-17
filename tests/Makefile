@@ -5,7 +5,6 @@ ODHPROJECT=opendatahub
 OPENSHIFT_USER=
 OPENSHIFT_PASS=
 OPENSHIFT_LOGIN_PROVIDER=
-SKIP_PODS_OUTPUT=
 # Setting SKIP_INSTALL will let you run the tests against an ODH instance that is already setup
 SKIP_INSTALL=
 # Setting TESTS_REGEX will allow you to change which tests are going to be run
@@ -24,7 +23,7 @@ run:
 	# Confirm that we have a directory for storing any screenshots from selenium tests
 	mkdir -p ${LOCAL_ARTIFACT_DIR}/screenshots
 	oc config view --flatten --minify > /tmp/tests-kubeconfig
-	podman run -e SKIP_PODS_OUTPUT=$(SKIP_PODS_OUTPUT) -e SKIP_INSTALL=$(SKIP_INSTALL) -e TESTS_REGEX=$(TESTS_REGEX) -e ODHPROJECT=$(ODHPROJECT) \
+	podman run -e SKIP_INSTALL=$(SKIP_INSTALL) -e TESTS_REGEX=$(TESTS_REGEX) -e ODHPROJECT=$(ODHPROJECT) \
 		-e OPENSHIFT_USER="$(OPENSHIFT_USER)" -e OPENSHIFT_PASS="$(OPENSHIFT_PASS)" -e OPENSHIFT_LOGIN_PROVIDER=$(OPENSHIFT_LOGIN_PROVIDER) -e ARTIFACT_DIR=$(ARTIFACT_DIR) \
 		-it -v ${LOCAL_ARTIFACT_DIR}/:$(ARTIFACT_DIR):z -v /tmp/tests-kubeconfig:/tmp/kubeconfig:z $(IMAGE)
 

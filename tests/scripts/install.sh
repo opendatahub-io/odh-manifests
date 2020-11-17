@@ -26,7 +26,7 @@ if [ -z "$PULL_NUMBER" ]; then
 else
   curl -O -L https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/${PULL_NUMBER}.patch
   echo "Applying followng patch:"
-  cat ${PULL_NUMBER}.patch | tee ${ARTIFACT_DIR}/github-pr-${PULL_NUMBER}.patch
+  cat ${PULL_NUMBER}.patch > ${ARTIFACT_DIR}/github-pr-${PULL_NUMBER}.patch
   git apply ${PULL_NUMBER}.patch
 fi
 popd
@@ -61,7 +61,7 @@ if [ -z "${OPENSHIFT_USER}" ] || [ -z "${OPENSHIFT_PASS}" ]; then
 fi
 
 echo "Creating the following KfDef"
-cat ./kfctl_openshift.yaml | tee ${ARTIFACT_DIR}/kfctl_openshift.yaml
+cat ./kfctl_openshift.yaml > ${ARTIFACT_DIR}/kfctl_openshift.yaml
 oc apply -f ./kfctl_openshift.yaml
 kfctl_result=$?
 if [ "$kfctl_result" -ne 0 ]; then
