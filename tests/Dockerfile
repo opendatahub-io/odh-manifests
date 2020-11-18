@@ -11,7 +11,7 @@ RUN dnf install -y bc git go-toolset python3-pip unzip && \
     git clone https://github.com/crobby/peak $HOME/peak && \    
     cd $HOME/peak && \
     git submodule update --init
-RUN echo "Installing chrome"
+
 RUN dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm &&\
     echo -e "[google-chrome]\nname=google-chrome\nbaseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64\nenabled=1\ngpgcheck=1\ngpgkey=https://dl.google.com/linux/linux_signing_key.pub" > /etc/yum.repos.d/google-chrome.repo &&\
     dnf -y install "google-chrome-stable" &&\
