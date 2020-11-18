@@ -16,7 +16,7 @@ items:
     labels:
       appName: $(cuda_version)-cuda-chain-ubi7
       appTypes: cuda-build-chain
-    name: python-36-ubi7
+    name: $(cuda_version)-cuda-python-36-ubi7
   spec:
     lookupPolicy:
       local: true
@@ -222,12 +222,12 @@ items:
       appName: $(cuda_version)-cuda-chain-ubi7
       appName1: python-36-ubi7
       appTypes: cuda-build-chain
-    name: python-36-ubi7
+    name: $(cuda_version)-cuda-python-36-ubi7
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: python-36-ubi7:latest
+        name: $(cuda_version)-cuda-python-36-ubi7:latest
     resources:
       limits:
         cpu: "2"
