@@ -12,10 +12,10 @@ RUN dnf install -y bc git go-toolset python3-pip unzip && \
     cd $HOME/peak && \
     git submodule update --init
 
-RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm &&\
+RUN dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm &&\
     echo -e "[google-chrome]\nname=google-chrome\nbaseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64\nenabled=1\ngpgcheck=1\ngpgkey=https://dl.google.com/linux/linux_signing_key.pub" > /etc/yum.repos.d/google-chrome.repo &&\
-    yum -y install "google-chrome-stable-86*" &&\
-    yum clean all
+    dnf -y install "google-chrome-stable" &&\
+    dnf clean all
 
 # install jq to help with parsing json
 RUN curl -o /usr/local/bin/jq http://stedolan.github.io/jq/download/linux64/jq && \
