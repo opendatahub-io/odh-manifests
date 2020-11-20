@@ -1,4 +1,5 @@
 kfdef/.cache/
 kfdef/kustomize/
 tests/kubeconfig
+tests/artifacts
 .idea
