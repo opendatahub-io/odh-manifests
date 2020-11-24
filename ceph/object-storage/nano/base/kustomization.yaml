@@ -5,6 +5,7 @@ resources:
 - service-account.yaml
 - service.yaml
 - statefulset.yaml
+- secret-rbac.yaml
 
 commonLabels:
   opendatahub.io/component: "true"
@@ -14,3 +15,5 @@ images:
 - name: ceph/daemon
   newTag: v0.7
   newName: quay.io/ceph/cn-core
+- name: oc
+  newName: quay.io/openshift/origin-cli
