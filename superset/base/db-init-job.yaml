@@ -1,27 +1,17 @@
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: superset
+  name: superset-db-init
   namespace: opendatahub
-  labels:
-    app: superset
-    opendatahub.io/component: "true"
-    component.opendatahub.io/name: superset
 spec:
-  replicas: 1
-  selector:
-    deploymentconfig: superset
+  parallelism: 1
+  completions: 1
   template:
     metadata:
-      labels:
-        app: superset
-        deploymentconfig: superset
+      name: superset-db-init
     spec:
       containers:
-        - name: superset
-          command:
-            - /bin/sh
-            - entrypoint.sh
+        - name: superset-init
           envFrom:
             - configMapRef:
                 name: superset
@@ -29,9 +19,10 @@ spec:
                 name: superset-secret
           image: quay.io/aiops/superset:v0.30
           imagePullPolicy: Always
-          ports:
-            - containerPort: 8088
-              protocol: TCP
+          command:
+            - /bin/sh
+            - /usr/local/bin/superset-init
+            - --username $(SUPERSET_ADMIN_USER) --firstname $(SUPERSET_ADMIN_FNAME) --lastname $(SUPERSET_ADMIN_LNAME) --email $(SUPERSET_ADMIN_EMAIL) --password $(SUPERSET_ADMIN_PASSWORD)
           volumeMounts:
             - mountPath: /var/lib/superset
               name: superset-data
@@ -48,5 +39,4 @@ spec:
                 path: superset_config.py
             name: superset
           name: superset-config
-  triggers:
-    - type: ConfigChange
+      restartPolicy: OnFailure

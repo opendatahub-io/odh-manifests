@@ -5,6 +5,7 @@ resources:
 - pvc.yaml
 - configmap.yaml
 - deploymentconfig.yaml
+- db-init-job.yaml
 - service.yaml
 - route.yaml
 namespace: opendatahub
