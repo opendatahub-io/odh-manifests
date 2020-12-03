@@ -10,7 +10,7 @@ release.
 ## Context and Problem Statement
 
 The Open Data Hub itself consists of many components all having their own release cycles. ODH users might decide to
-updata individual components such as container images used by JupyterHub. Nevertheless it is required to create
+update individual components such as container images used by JupyterHub. Nevertheless it is required to create
 releases of ODH as a whole.
 
 ## Considered Options
