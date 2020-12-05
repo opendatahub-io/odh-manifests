@@ -31,19 +31,19 @@ To install Ceph Object Storage add the following to the `kfctl` yaml file.
 
 * Deployment of `ceph-nano` will create a route to a `ceph-nano-dashboard` that provides a S3 web portal for the in pod object storage.
 
-* The ACCESS_KEY and SECRET_KEY created for this deployment can be retrieved from the `ceph-nano-0` pod under `/nano_user_details`
+* The ACCESS_KEY and SECRET_KEY created for this deployment can be found in `ceph-nano-credentials` secret.
   ```
-  # While logged in to the cluster and in the Open Data Hub namespace
-  # Output the ceph-nano radosgw settings
-  $ oc exec ceph-nano-0 -- cat /nano_user_details | jq '.keys'
-    ...
-        "keys": [
-          {
-            "user": "cn",
-            "access_key": "ABCDEFGHIJKL01234567",
-            "secret_key": "mnOPQRSTUVWXYZV6oSrx2MDtfEUK8R0ETagp5A9X"
-          }
-        ],
-    ...                                                       ],
+  oc describe secrets/ceph-nano-credentials
+
+  Name:         ceph-nano-credentials
+  Namespace:    odh-ceph
+  Labels:       <none>
+  Annotations:
+  Type:         Opaque
+
+  Data
+  ====
+  AWS_ACCESS_KEY_ID:      20 bytes
+  AWS_SECRET_ACCESS_KEY:  40 bytes
   ```
   ***NOTE***: The ACCESS_KEY and SECRET_KEY will change EVERY time the pod starts
