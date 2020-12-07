@@ -6,7 +6,7 @@ set -x
 ## Install the opendatahub-operator
 pushd ~/peak
 retry=5
-if [ -z "${SKIP_OPERATOR_INSTALL}" ]; then
+if ! [ -z "${SKIP_OPERATOR_INSTALL}" ]; then
     ## SKIP_OPERATOR_INSTALL is used in the opendatahub-operator repo
     ## because openshift-ci will install the operator for us
     ./setup.sh -t ~/peak/operatorsetup 2>&1
