@@ -10,19 +10,19 @@ if ! [ -z "${SKIP_OPERATOR_INSTALL}" ]; then
     ## SKIP_OPERATOR_INSTALL is used in the opendatahub-operator repo
     ## because openshift-ci will install the operator for us
     ./setup.sh -t ~/peak/operatorsetup 2>&1
-  else
-    while [[ $retry -gt 0 ]]; do
-      ./setup.sh -o ~/peak/operatorsetup 2>&1
-      if [ $? -eq 0 ]; then
-        retry=-1
-      else
-        echo "Trying restart of marketplace community operator pod"
-        oc delete pod -n openshift-marketplace $(oc get pod -n openshift-marketplace -l marketplace.operatorSource=community-operators -o jsonpath="{$.items[*].metadata.name}")
-        sleep 3m
-      fi  
-      retry=$(( retry - 1))
-      sleep 1m
-    done
+else
+  while [[ $retry -gt 0 ]]; do
+    ./setup.sh -o ~/peak/operatorsetup 2>&1
+    if [ $? -eq 0 ]; then
+      retry=-1
+    else
+      echo "Trying restart of marketplace community operator pod"
+      oc delete pod -n openshift-marketplace $(oc get pod -n openshift-marketplace -l marketplace.operatorSource=community-operators -o jsonpath="{$.items[*].metadata.name}")
+      sleep 3m
+    fi  
+    retry=$(( retry - 1))
+    sleep 1m
+  done
 fi
 popd
 ## Grabbing and applying the patch in the PR we are testing
