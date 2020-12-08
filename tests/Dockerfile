@@ -52,6 +52,7 @@ RUN chmod -R 777 $HOME/kfdef && \
     chmod -R 777 $HOME/.kube && \
     chmod -R 777 $HOME/peak && \
     mkdir -p /peak && \
+    chmod -R 777 $HOME && \
     ln -s $HOME/peak/installandtest.sh /peak/installandtest.sh
 
 # For local testing, you can add your own kubeconfig to the image
