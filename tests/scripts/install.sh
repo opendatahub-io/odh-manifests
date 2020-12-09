@@ -9,8 +9,10 @@ retry=5
 if ! [ -z "${SKIP_OPERATOR_INSTALL}" ]; then
     ## SKIP_OPERATOR_INSTALL is used in the opendatahub-operator repo
     ## because openshift-ci will install the operator for us
+    echo "Relying on odh operator installed by openshift-ci"
     ./setup.sh -t ~/peak/operatorsetup 2>&1
 else
+  echo "Installing operator from community marketplace"
   while [[ $retry -gt 0 ]]; do
     ./setup.sh -o ~/peak/operatorsetup 2>&1
     if [ $? -eq 0 ]; then
