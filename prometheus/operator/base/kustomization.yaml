@@ -1,10 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- servicemonitor.yaml
-- kafka-servicemonitor.yaml
+- kafka-podmonitors.yaml
+- jupyterhub-servicemonitor.yaml
 - prometheus.yaml
 - route.yaml
+- servicemonitor.yaml
 namespace: opendatahub
 commonLabels:
   opendatahub.io/component: "true"

@@ -6,18 +6,26 @@ set -x
 ## Install the opendatahub-operator
 pushd ~/peak
 retry=5
-while [[ $retry -gt 0 ]]; do
-  ./setup.sh -o ~/peak/operatorsetup 2>&1
-  if [ $? -eq 0 ]; then
-    retry=-1
-  else
-    echo "Trying restart of marketplace community operator pod"
-    oc delete pod -n openshift-marketplace $(oc get pod -n openshift-marketplace -l marketplace.operatorSource=community-operators -o jsonpath="{$.items[*].metadata.name}")
-    sleep 3m
-  fi  
-  retry=$(( retry - 1))
-  sleep 1m
-done
+if ! [ -z "${SKIP_OPERATOR_INSTALL}" ]; then
+    ## SKIP_OPERATOR_INSTALL is used in the opendatahub-operator repo
+    ## because openshift-ci will install the operator for us
+    echo "Relying on odh operator installed by openshift-ci"
+    ./setup.sh -t ~/peak/operatorsetup 2>&1
+else
+  echo "Installing operator from community marketplace"
+  while [[ $retry -gt 0 ]]; do
+    ./setup.sh -o ~/peak/operatorsetup 2>&1
+    if [ $? -eq 0 ]; then
+      retry=-1
+    else
+      echo "Trying restart of marketplace community operator pod"
+      oc delete pod -n openshift-marketplace $(oc get pod -n openshift-marketplace -l marketplace.operatorSource=community-operators -o jsonpath="{$.items[*].metadata.name}")
+      sleep 3m
+    fi  
+    retry=$(( retry - 1))
+    sleep 1m
+  done
+fi
 popd
 ## Grabbing and applying the patch in the PR we are testing
 pushd ~/src/odh-manifests
@@ -26,7 +34,7 @@ if [ -z "$PULL_NUMBER" ]; then
 else
   curl -O -L https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/${PULL_NUMBER}.patch
   echo "Applying followng patch:"
-  cat ${PULL_NUMBER}.patch
+  cat ${PULL_NUMBER}.patch > ${ARTIFACT_DIR}/github-pr-${PULL_NUMBER}.patch
   git apply ${PULL_NUMBER}.patch
 fi
 popd
@@ -61,7 +69,7 @@ if [ -z "${OPENSHIFT_USER}" ] || [ -z "${OPENSHIFT_PASS}" ]; then
 fi
 
 echo "Creating the following KfDef"
-cat ./kfctl_openshift.yaml
+cat ./kfctl_openshift.yaml > ${ARTIFACT_DIR}/kfctl_openshift.yaml
 oc apply -f ./kfctl_openshift.yaml
 kfctl_result=$?
 if [ "$kfctl_result" -ne 0 ]; then

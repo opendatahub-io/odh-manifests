@@ -2,10 +2,12 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
+    app: jupyterhub
     team: opendatahub
-  name: kafkaservicemonitor
-  namespace: opendatahub
+  name: jupyterhub-metrics
 spec:
   endpoints:
-    - port: prometheus
-  selector: {}
+    - port: 8080-tcp
+  selector:
+    matchLabels:
+      app: jupyterhub

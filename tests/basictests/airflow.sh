@@ -28,14 +28,14 @@ function test_routes(){
 
 function verify_airflow(){
   header "Verifying Pods for Airflow"
-  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-base-nfs-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-base-nfs-0"
-  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-base-postgres-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-base-postgres-0"
-  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-airflowui-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-airflowui-0"
-  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-flower-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-flower-0"
-  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-redis-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-redis-0"
-  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-scheduler-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-scheduler-0"
-  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-worker-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-worker-0"
-  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-worker-1 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-worker-1"
+  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-base-nfs-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-base-nfs-0" $odhdefaulttimeout $odhdefaultinterval
+  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-base-postgres-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-base-postgres-0" $odhdefaulttimeout $odhdefaultinterval
+  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-airflowui-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-airflowui-0" $odhdefaulttimeout $odhdefaultinterval
+  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-flower-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-flower-0" $odhdefaulttimeout $odhdefaultinterval
+  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-redis-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-redis-0" $odhdefaulttimeout $odhdefaultinterval
+  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-scheduler-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-scheduler-0" $odhdefaulttimeout $odhdefaultinterval
+  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-worker-0 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-worker-0" $odhdefaulttimeout $odhdefaultinterval
+  os::cmd::try_until_text "oc get pods -l statefulset.kubernetes.io/pod-name=pc-cluster-worker-1 --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "pc-cluster-worker-1" $odhdefaulttimeout $odhdefaultinterval
 }
 
 function delete_airflow(){
@@ -52,6 +52,8 @@ function test_airflow() {
     runningpods=($(oc get pods -l control-plane=controller-manager --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
     os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
     create_airflow
+    echo "Sleeping for 2 min after creating airflow"
+    sleep 2m
     verify_airflow
     test_routes
     delete_airflow

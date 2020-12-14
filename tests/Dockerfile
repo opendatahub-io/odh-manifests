@@ -12,10 +12,10 @@ RUN dnf install -y bc git go-toolset python3-pip unzip && \
     cd $HOME/peak && \
     git submodule update --init
 
-RUN yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm &&\
+RUN dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm &&\
     echo -e "[google-chrome]\nname=google-chrome\nbaseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64\nenabled=1\ngpgcheck=1\ngpgkey=https://dl.google.com/linux/linux_signing_key.pub" > /etc/yum.repos.d/google-chrome.repo &&\
-    yum -y install "google-chrome-stable-86*" &&\
-    yum clean all
+    dnf -y install "google-chrome-stable" &&\
+    dnf clean all
 
 # install jq to help with parsing json
 RUN curl -o /usr/local/bin/jq http://stedolan.github.io/jq/download/linux64/jq && \
@@ -26,7 +26,7 @@ RUN mkdir -p $HOME/src && \
     git clone --depth=1 --branch ${BRANCH} https://github.com/${ORG}/odh-manifests && \
     chmod -R 777 $HOME/src
 
-ADD https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz $HOME/peak/ 
+ADD https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.6/linux/oc.tar.gz $HOME/peak/ 
 RUN tar -C /usr/local/bin -xvf $HOME/peak/oc.tar.gz && \
     chmod +x /usr/local/bin/oc
 
@@ -52,6 +52,7 @@ RUN chmod -R 777 $HOME/kfdef && \
     chmod -R 777 $HOME/.kube && \
     chmod -R 777 $HOME/peak && \
     mkdir -p /peak && \
+    chmod -R 777 $HOME && \
     ln -s $HOME/peak/installandtest.sh /peak/installandtest.sh
 
 # For local testing, you can add your own kubeconfig to the image

@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: ceph
+    daemon: nano
+    name: ceph-nano
+  name: ceph-nano
+spec:
+  replicas: 1
+  serviceName: ceph-nano
+  selector:
+    matchLabels:
+      app: ceph
+  template:
+    metadata:
+      name: ceph-nano
+      labels:
+        app: ceph
+        daemon: nano
+    spec:
+      serviceAccountName: ceph-nano
+      initContainers:
+        - name: ceph-nano-init
+          image: ceph/daemon
+          command: ["/bin/bash", "-c", "--"]
+          args: ["cp /opt/ceph-container/tmp/* /mnt"]
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /mnt
+              name: user-details
+      containers:
+        - image: ceph/daemon
+          imagePullPolicy: Always
+          name: ceph-nano
+          ports:
+            - containerPort: 8000
+          protocol: TCP
+          resources:
+            limits:
+              cpu: "1"
+              memory: 2G
+            requests:
+              cpu: "1"
+              memory: 512M
+          env:
+            - name: NETWORK_AUTO_DETECT
+              value: "4"
+            - name: RGW_FRONTEND_PORT
+              value: "8000"
+              # Keep this for backward compatiblity, the option is gone since https://github.com/ceph/ceph-container/pull/1356
+            - name: RGW_CIVETWEB_PORT
+              value: "8000"
+            - name: SREE_PORT
+              value: "5001"
+            - name: CEPH_DEMO_UID
+              value: "nano"
+              # Enable all of the ceph daemons to run
+            - name: CEPH_DAEMON
+              value: "demo"
+            - name: DEBUG
+              value: "verbose"
+          volumeMounts:
+            - mountPath: /opt/ceph-container/tmp
+              name: user-details
+        - image: oc
+          name: credentials-exporter
+          command: ["/bin/bash", "-c", "--"]
+          args:
+            - |
+              until [ -f /mnt/cn_user_details ]; do echo "waiting for user details file..."; sleep 10; done
+
+              oc login --token=TOKEN --server=https://openshift.default.svc.cluster.local --insecure-skip-tls-verify
+              TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
+              ACCESS_KEY=$(cat /mnt/cn_user_details | python -c "import sys, json; print(json.load(sys.stdin)['keys'][0]['access_key'])")
+              SECRET_KEY=$(cat /mnt/cn_user_details | python -c "import sys, json; print(json.load(sys.stdin)['keys'][0]['secret_key'])")
+
+              if [ -z "$ACCESS_KEY" ] || [ -z "$SECRET_KEY" ]; then
+                echo "Unable to parse credentials from user details!"
+                exit 1
+              fi
+
+              cat <<EOF | oc apply -f -
+              apiVersion: v1
+              kind: Secret
+              metadata:
+                name: ceph-nano-credentials
+              type: Opaque
+              stringData:
+                AWS_ACCESS_KEY_ID: $ACCESS_KEY
+                AWS_SECRET_ACCESS_KEY: $SECRET_KEY
+              EOF
+
+              echo "waiting for ceph-nano to finish"
+              while true; do sleep 10; done;
+          volumeMounts:
+            - mountPath: /mnt
+              name: user-details
+      volumes:
+        - name: user-details
+          emptyDir: {}

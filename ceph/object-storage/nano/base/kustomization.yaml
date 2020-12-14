@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- service-account.yaml
+- service.yaml
+- statefulset.yaml
+- secret-rbac.yaml
+
+commonLabels:
+  opendatahub.io/component: "true"
+  component.opendatahub.io/name: ceph-nano
+
+images:
+- name: ceph/daemon
+  newTag: v0.7
+  newName: quay.io/ceph/cn-core
+- name: oc
+  newName: quay.io/openshift/origin-cli
