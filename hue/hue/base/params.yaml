@@ -1,0 +1,12 @@
+---
+varReference:
+  - path: stringData/hue.ini
+    kind: Secret
+  - path: stringData/hive-site.xml
+    kind: Secret
+  - path: stringData/DATA_SOURCE_NAME
+    kind: Secret
+  - path: metadata/annotations/volume.beta.kubernetes.io\/storage-class
+    kind: PersistentVolumeClaim
+  - path: spec/template/spec/containers[]/env[]/valueFrom/secretKeyRef/name
+    kind: Deployment

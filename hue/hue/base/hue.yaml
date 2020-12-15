@@ -1,0 +1,72 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hue
+spec:
+  replicas: 1
+  selector:
+    deployment: hue
+  template:
+    metadata:
+      labels:
+        deployment: hue
+    spec:
+      initContainers:
+        - name: db-init
+          image: hue
+          args: ["migrate"]
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: hue-ini
+              mountPath: /opt/hue/desktop/conf/
+      containers:
+        - name: hue
+          image: hue
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 300m
+              memory: 500Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: $(s3_credentials_secret)
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: $(s3_credentials_secret)
+                  key: AWS_SECRET_ACCESS_KEY
+          volumeMounts:
+            - name: hue-ini
+              mountPath: /opt/hue/desktop/conf/
+            - name: hive-site-xml
+              mountPath: /etc/hive/conf/
+          ports:
+            - containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /desktop/debug/is_alive
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 30
+            failureThreshold: 5
+      restartPolicy: Always
+      volumes:
+        - name: hue-ini
+          secret:
+            secretName: hue-ini
+            items:
+              - key: hue.ini
+                path: hue.ini
+        - name: hive-site-xml
+          secret:
+            secretName: hue-hive-site-xml
+            items:
+              - key: hive-site.xml
+                path: hive-site.xml

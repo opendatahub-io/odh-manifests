@@ -97,6 +97,11 @@ spec:
         name: manifests
         path: odhargo/odhargo
     name: odhargo
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: hue/hue
+    name: hue
   # strimzi/kafka moved to bottom due to strange slowness in our test cluster
   # moving it down in the order seems to avoid the slowness
   - kustomizeConfig:
