@@ -1,11 +1,14 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: odhservicemonitor
   labels:
     team: opendatahub
-  namespace: opendatahub
+  name: odhservicemonitor
 spec:
-  selector: {}
   endpoints:
-    - port: web
+    - port: web # odh-operator, Argo
+    - port: 8080-tcp # Jupyterhub
+      path: "/metrics"
+  selector:
+    matchLabels:
+      opendatahub.io/component: "true"
