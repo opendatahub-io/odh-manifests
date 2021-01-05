@@ -1,0 +1,10 @@
+---
+varReference:
+  - path: stringData/thrift-server.conf
+    kind: Secret
+  - path: stringData/DATA_SOURCE_NAME
+    kind: Secret
+  - path: metadata/annotations/volume.beta.kubernetes.io\/storage-class
+    kind: PersistentVolumeClaim
+  - path: spec/template/spec/containers[]/env[]/valueFrom/secretKeyRef/name
+    kind: Deployment

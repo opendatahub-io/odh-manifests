@@ -1,0 +1,102 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - thriftserver-db-exporter.yaml
+  - thriftserver-db-pvc.yaml
+  - thriftserver-db-secret.yaml
+  - thriftserver-db-service.yaml
+  - thriftserver-db.yaml
+  - thriftserver-hdfs-hive-secret.yaml
+  - thriftserver-pvc.yaml
+  - thriftserver-route.yaml
+  - thriftserver-sample-s3-secret.yaml
+  - thriftserver-server-conf-secret.yaml
+  - thriftserver-service.yaml
+  - thriftserver.yaml
+
+commonLabels:
+  opendatahub.io/component: "true"
+  component.opendatahub.io/name: thriftserver
+  component.opendatahub.io/part-of: datacatalog
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: thriftserver-config
+    envs:
+      - params.env
+
+vars:
+  - name: namespace
+    objref:
+      kind: Service
+      apiVersion: v1
+      name: thriftserver
+    fieldref:
+      fieldpath: metadata.namespace
+  - name: storage_class
+    objref:
+      kind: ConfigMap
+      apiVersion: v1
+      name: thriftserver-config
+    fieldref:
+      fieldpath: data.storage_class
+  - name: spark_url
+    objref:
+      kind: ConfigMap
+      apiVersion: v1
+      name: thriftserver-config
+    fieldref:
+      fieldpath: data.spark_url
+  - name: s3_endpoint_url
+    objref:
+      kind: ConfigMap
+      apiVersion: v1
+      name: thriftserver-config
+    fieldref:
+      fieldpath: data.s3_endpoint_url
+  - name: s3_credentials_secret
+    objref:
+      kind: ConfigMap
+      apiVersion: v1
+      name: thriftserver-config
+    fieldref:
+      fieldpath: data.s3_credentials_secret
+  - name: database_user
+    objref:
+      kind: Secret
+      apiVersion: v1
+      name: thriftserver-db
+    fieldref:
+      fieldpath: stringData.database-user
+  - name: database_password
+    objref:
+      kind: Secret
+      apiVersion: v1
+      name: thriftserver-db
+    fieldref:
+      fieldpath: stringData.database-password
+  - name: database_name
+    objref:
+      kind: Secret
+      apiVersion: v1
+      name: thriftserver-db
+    fieldref:
+      fieldpath: stringData.database-name
+
+configurations:
+  - params.yaml
+
+images:
+  - name: spark-cluster-image
+    newName: quay.io/opendatahub/spark-cluster-image
+    newTag: 2.4.3-h2.7
+  - name: postgresql
+    newName: registry.redhat.io/rhel8/postgresql-12
+    newTag: latest
+  - name: postgres-exporter
+    newName: quay.io/internaldatahub/postgres_exporter
+    newTag: latest

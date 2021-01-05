@@ -102,6 +102,13 @@ spec:
         name: manifests
         path: hue/hue
     name: hue
+  - kustomizeConfig:
+      overlays:
+        - create-spark-cluster
+      repoRef:
+        name: manifests
+        path: thriftserver/thriftserver
+    name: thriftserver
   # strimzi/kafka moved to bottom due to strange slowness in our test cluster
   # moving it down in the order seems to avoid the slowness
   - kustomizeConfig:

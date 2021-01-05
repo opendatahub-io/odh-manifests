@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: thriftserver-db-exporter
+  labels:
+    name: thriftserver-db-exporter
+stringData:
+  DATA_SOURCE_NAME: |
+    postgresql://$(database_user):$(database_password)@localhost:5432/$(database_name)?sslmode=disable

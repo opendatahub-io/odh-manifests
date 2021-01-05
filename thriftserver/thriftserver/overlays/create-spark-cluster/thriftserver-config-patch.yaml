@@ -1,0 +1,4 @@
+---
+- op: replace
+  path: /data/spark_url
+  value: spark://spark-cluster-thriftserver.$(namespace).svc:7077
