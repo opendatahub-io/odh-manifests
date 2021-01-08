@@ -26,7 +26,7 @@ RUN mkdir -p $HOME/src && \
     git clone --depth=1 --branch ${BRANCH} https://github.com/${ORG}/odh-manifests && \
     chmod -R 777 $HOME/src
 
-ADD https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz $HOME/peak/ 
+ADD https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.6/linux/oc.tar.gz $HOME/peak/ 
 RUN tar -C /usr/local/bin -xvf $HOME/peak/oc.tar.gz && \
     chmod +x /usr/local/bin/oc
 
@@ -52,6 +52,7 @@ RUN chmod -R 777 $HOME/kfdef && \
     chmod -R 777 $HOME/.kube && \
     chmod -R 777 $HOME/peak && \
     mkdir -p /peak && \
+    chmod -R 777 $HOME && \
     ln -s $HOME/peak/installandtest.sh /peak/installandtest.sh
 
 # For local testing, you can add your own kubeconfig to the image

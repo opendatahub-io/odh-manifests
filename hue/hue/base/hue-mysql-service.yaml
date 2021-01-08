@@ -1,0 +1,24 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: hue-mysql
+  annotations:
+    template.openshift.io/expose-uri: |
+      'mysql://{.spec.clusterIP}:{.spec.ports[?(.name=="mysql")].port}'
+spec:
+  ports:
+    - name: mysql
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+    - name: exporter
+      protocol: TCP
+      port: 9104
+      targetPort: 9104
+  selector:
+    deployment: hue-mysql
+  type: ClusterIP
+  sessionAffinity: None
+status:
+  loadBalancer: {}

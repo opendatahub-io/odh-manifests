@@ -1,0 +1,112 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hue-mysql
+  annotations:
+    template.alpha.openshift.io/wait-for-ready: "true"
+spec:
+  replicas: 1
+  selector:
+    deployment: hue-mysql
+  template:
+    metadata:
+      labels:
+        deployment: hue-mysql
+    spec:
+      containers:
+        - name: mysqld-exporter
+          image: mysqld-exporter
+          ports:
+            - containerPort: 9104
+          env:
+            - name: DATA_SOURCE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: "hue-mysqld-exporter"
+                  key: DATA_SOURCE_NAME
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: 9104
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: 9104
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 300Mi
+        - name: mysql
+          image: mysql
+          ports:
+            - containerPort: 3306
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - "-i"
+                - "-c"
+                - >-
+                  MYSQL_PWD=$MYSQL_PASSWORD mysql -h 127.0.0.1 -u $MYSQL_USER -D
+                  $MYSQL_DATABASE -e 'SELECT 1'
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 3306
+            timeoutSeconds: 1
+          env:
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: "hue-mysql"
+                  key: database-user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "hue-mysql"
+                  key: database-password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: "hue-mysql"
+                  key: database-name
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "hue-mysql"
+                  key: database-root-password
+          resources:
+            requests:
+              cpu: 300m
+              memory: 500Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          volumeMounts:
+            - name: "mysql"
+              mountPath: "/var/lib/mysql/data"
+          terminationMessagePath: "/dev/termination-log"
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          capabilities: {}
+          securityContext:
+            capabilities: {}
+            privileged: false
+      volumes:
+        - name: mysql
+          persistentVolumeClaim:
+            claimName: hue-mysql
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
