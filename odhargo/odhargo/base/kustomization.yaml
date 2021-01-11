@@ -21,17 +21,17 @@ patchesStrategicMerge:
 
 images:
   - name: argoproj/workflow-controller
-    newName: quay.io/opendatahub/workflow-controller
-    newTag: v2.12.3
+    newName: quay.io/argoproj/workflow-controller
+    newTag: v2.12.5
   - name: argoproj/argocli
-    newName: quay.io/opendatahub/argocli
-    newTag: v2.12.3
+    newName: quay.io/argoproj/argocli
+    newTag: v2.12.5
 
 patchesJson6902:
   - patch: |
       - op: replace
         path: /spec/template/spec/containers/0/args/3
-        value: quay.io/opendatahub/argoexec:v2.12.3
+        value: quay.io/argoproj/argoexec:v2.12.5
     target:
       group: apps
       kind: Deployment
