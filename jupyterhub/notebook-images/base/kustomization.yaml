@@ -7,3 +7,20 @@ resources:
 commonLabels:
   opendatahub.io/component: "true"
   component.opendatahub.io/name: jupyterhub
+
+
+configMapGenerator:
+- name: jupyterhub-notebook-parameters
+  env: params.env
+generatorOptions:
+  disableNameSuffixHash: true
+vars:
+- name: registry
+  objref:
+    kind: ConfigMap
+    name: jupyterhub-notebook-parameters
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.registry
+configurations:
+- params.yaml

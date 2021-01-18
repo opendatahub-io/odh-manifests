@@ -11,7 +11,7 @@ Contains deployment manifests for JupyterHub instance.
 
 ### Parameters
 
-JupyterHub component comes with 2 parameters exposed vie KFDef.
+JupyterHub component comes with 4 parameters exposed vie KFDef.
 
 #### s3_endpoint_url
 
@@ -20,6 +20,14 @@ HTTP endpoint exposed by your S3 object storage solution which will be made avai
 #### storage_class
 
 Name of the storage class to be used for PVCs created by JupyterHub component. This requires `storage-class` **overlay** to be enabled as well to work.
+
+#### registry
+
+URL of the registry where images are located. This is useful when you are trying to deploy to a disconnected/air gapped cluster where images are mirrored to some local registry.
+
+#### registry_db
+
+Same as `registry` but specifically used for the DB deployment since that is pulled from a different registry than the rest of the images by default
 
 ##### Examples
 
@@ -57,7 +65,11 @@ Contains manifests for Jupyter notebook images compatible with JupyterHub on Ope
 
 ### Parameters
 
-Notebook Images do not provide any parameters.
+Notebook images come with 1 parameter
+
+#### registry
+
+URL of the registry where images are located. This is useful when you are trying to deploy to a disconnected/air gapped cluster where images are mirrored to some local registry.
 
 ### Overlays
 

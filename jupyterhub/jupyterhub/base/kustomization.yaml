@@ -47,5 +47,19 @@ vars:
     apiVersion: v1
   fieldref:
     fieldpath: data.s3_endpoint_url
+- name: registry
+  objref:
+    kind: ConfigMap
+    name: parameters
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.registry
+- name: registry_db
+  objref:
+    kind: ConfigMap
+    name: parameters
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.registry_db
 configurations:
 - params.yaml

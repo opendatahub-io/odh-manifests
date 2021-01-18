@@ -22,7 +22,7 @@ spec:
         sidecar.istio.io/inject: "true"
     spec:
       containers:
-      - image: registry.redhat.io/rhel8/postgresql-96
+      - image: $(registry_db)/rhel8/postgresql-96
         env:
         - name: POSTGRESQL_USER
           valueFrom:

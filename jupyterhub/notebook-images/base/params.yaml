@@ -1,0 +1,5 @@
+varReference:
+- path: spec/tags/from/name
+  kind: ImageStream
+- path: spec/tags/annotations/openshift.io\/imported-from
+  kind: ImageStream

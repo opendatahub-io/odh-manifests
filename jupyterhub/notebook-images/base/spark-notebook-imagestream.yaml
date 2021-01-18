@@ -9,10 +9,10 @@ spec:
     local: true
   tags:
   - annotations:
-      openshift.io/imported-from: quay.io/odh-jupyterhub/s2i-spark-minimal-notebook
+      openshift.io/imported-from: $(registry)/odh-jupyterhub/s2i-spark-minimal-notebook
     from:
       kind: DockerImage
-      name: quay.io/odh-jupyterhub/s2i-spark-minimal-notebook:py36-spark2.4.5-hadoop2.7.3
+      name: $(registry)/odh-jupyterhub/s2i-spark-minimal-notebook:py36-spark2.4.5-hadoop2.7.3
     name: "py36-spark2.4.5-hadoop2.7.3"
     referencePolicy:
       type: Source

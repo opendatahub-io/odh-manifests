@@ -13,10 +13,10 @@ spec:
     local: true
   tags:
   - annotations:
-      openshift.io/imported-from: quay.io/thoth-station/s2i-minimal-notebook
+      openshift.io/imported-from: $(registry)/thoth-station/s2i-minimal-notebook
     from:
       kind: DockerImage
-      name: quay.io/thoth-station/s2i-minimal-notebook:v0.0.4
+      name: $(registry)/thoth-station/s2i-minimal-notebook:v0.0.4
     name: "v0.0.4"
     referencePolicy:
       type: Source

@@ -8,10 +8,10 @@ spec:
     local: true
   tags:
   - annotations:
-      openshift.io/imported-from: quay.io/odh-jupyterhub/nbviewer
+      openshift.io/imported-from: $(registry)/odh-jupyterhub/nbviewer
     from:
       kind: DockerImage
-      name: quay.io/odh-jupyterhub/nbviewer:latest
+      name: $(registry)/odh-jupyterhub/nbviewer:latest
     name: latest
     referencePolicy:
       type: Source

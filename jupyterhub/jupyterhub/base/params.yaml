@@ -6,3 +6,9 @@ varReference:
   kind: ConfigMap
 - path: metadata/annotations/volume.beta.kubernetes.io\/storage-class
   kind: PersistentVolumeClaim
+- path: spec/tags/from/name
+  kind: ImageStream
+- path: spec/tags/annotations/openshift.io\/imported-from
+  kind: ImageStream
+- path: spec/template/spec/containers/image
+  kind: DeploymentConfig

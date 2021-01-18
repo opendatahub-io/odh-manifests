@@ -9,10 +9,10 @@ spec:
     local: true
   tags:
   - annotations:
-      openshift.io/imported-from: quay.io/odh-jupyterhub/s2i-spark-scipy-notebook
+      openshift.io/imported-from: $(registry)/odh-jupyterhub/s2i-spark-scipy-notebook
     from:
       kind: DockerImage
-      name: quay.io/odh-jupyterhub/s2i-spark-scipy-notebook:3.6
+      name: $(registry)/odh-jupyterhub/s2i-spark-scipy-notebook:3.6
     name: "3.6"
     referencePolicy:
       type: Source
