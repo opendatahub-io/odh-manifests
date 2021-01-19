@@ -249,7 +249,7 @@ class JHStress():
 
     def run_notebook(self, notebook, tab):
         path = notebook.split("/")
-        w = WebDriverWait(self.driver, 90)
+        w = WebDriverWait(self.driver, 300)
         auth_elem = w.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/form/input')))
         auth_elem.click()
         if len(path) > 1:
@@ -320,4 +320,3 @@ if __name__ == "__main__":
     jhs = JHStress()
     jhs.run()
     jhs.quit()
-    
