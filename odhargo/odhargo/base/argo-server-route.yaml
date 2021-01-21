@@ -1,11 +1,10 @@
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: argo-portal
-  namespace: opendatahub
+  name: argo-server
 spec:
   to:
     kind: Service
     name: argo-server
   port:
-    targetPort: 2746
+    targetPort: web

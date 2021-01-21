@@ -1,0 +1,10 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: workflow-controller-metrics
+spec:
+  port:
+    targetPort: metrics
+  to:
+    kind: Service
+    name: workflow-controller-metrics
