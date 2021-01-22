@@ -34,12 +34,12 @@ items:
         from:
           kind: ImageStreamTag
           name: $(cuda_version)-cuda-python-36-ubi7:latest
+        env:
+        - name: ENABLE_MICROPIPENV
+          value: "1"
+        - name: UPGRADE_PIP_TO_LATEST
+          value: "1"
       type: Source
-      env:
-      - name: ENABLE_MICROPIPENV
-        value: "1"
-      - name: UPGRADE_PIP_TO_LATEST
-        value: "1"
     triggers:
     - type: ConfigChange
     - type: ImageChange
@@ -66,11 +66,15 @@ items:
         name: s2i-tensorflow-notebook-gpu:3.6
     resources:
       limits:
-        memory: 512Mi
+        cpu: "2"
+        memory: 5Gi
+      requests:
+        cpu: "1"
+        memory: 2Gi
     source:
       git:
         ref: master
-        uri: 'https://github.com/thoth-station/s2i-tensorflow-notebook'
+        uri: 'https://github.com/thoth-station/s2i-tensorflow-gpu-notebook'
       type: Git
     strategy:
       sourceStrategy:
