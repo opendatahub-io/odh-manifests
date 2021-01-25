@@ -11,7 +11,8 @@ spec:
       name: jupyterhub-img:latest
   source:
     git:
-      uri: https://github.com/opendatahub-io/jupyterhub-odh
+      uri: https://github.com/vpavlin/jupyterhub-odh
+      ref: mroman-redhat-feature/volume-defining
     type: Git
   strategy:
     sourceStrategy:
