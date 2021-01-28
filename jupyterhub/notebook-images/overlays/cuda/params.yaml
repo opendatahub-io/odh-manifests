@@ -16,3 +16,5 @@ varReference:
   kind: BuildConfig
 - path: spec/strategy/dockerStrategy/from/name
   kind: BuildConfig
+- path: spec/strategy/sourceStrategy/from/name
+  kind: BuildConfig
