@@ -119,5 +119,5 @@ spec:
   - name: kf-manifests
     uri: https://github.com/kubeflow/manifests/archive/v1.2-branch.tar.gz
   - name: manifests
-    uri: https://github.com/opendatahub-io/odh-manifests/tarball/master
-  version: master
+    uri: https://github.com/opendatahub-io/odh-manifests/tarball/v1.0.0
+  version: v1.0.0
