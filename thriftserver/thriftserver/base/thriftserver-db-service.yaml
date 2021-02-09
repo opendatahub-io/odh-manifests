@@ -1,0 +1,24 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: thriftserver-db
+  annotations:
+    template.openshift.io/expose-uri: |
+      postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgres")].port}
+spec:
+  ports:
+    - name: postgres
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+    - name: exporter
+      protocol: TCP
+      port: 9187
+      targetPort: 9187
+  selector:
+    deployment: thriftserver-db
+  type: ClusterIP
+  sessionAffinity: None
+status:
+  loadBalancer: {}

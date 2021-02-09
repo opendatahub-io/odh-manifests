@@ -1,22 +1,39 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-- sa-argo.yaml
-- sa-argo-server.yaml
-- argo-role.yaml
-- argo-server-role.yaml
-- argo-rolebinding.yaml
-- argo-server-binding.yaml
-- workflow-configmap.yaml
-- service-argo-server.yaml
-- service-workflow-controller.yaml
-- deployment-argo-server.yaml
-- deployment-workflow-controller.yaml
-- portal-route.yaml
-- argo-workflow-rbac.yaml
-namespace: opendatahub
+
 commonLabels:
   opendatahub.io/component: "true"
   component.opendatahub.io/name: odhargo
+
 generatorOptions:
   disableNameSuffixHash: true
+
+namespace: opendatahub
+
+resources:
+  - namespace-install.yaml
+  - argo-server-route.yaml
+  - argo-workflow-rbac.yaml
+  - workflow-controller-metrics-route.yaml
+
+patchesStrategicMerge:
+  - workflow-controller-configmap.yaml
+
+images:
+  - name: argoproj/workflow-controller
+    newName: quay.io/argoproj/workflow-controller
+    newTag: v2.12.5
+  - name: argoproj/argocli
+    newName: quay.io/argoproj/argocli
+    newTag: v2.12.5
+
+patchesJson6902:
+  - patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/args/3
+        value: quay.io/argoproj/argoexec:v2.12.5
+    target:
+      group: apps
+      kind: Deployment
+      name: workflow-controller
+      version: v1

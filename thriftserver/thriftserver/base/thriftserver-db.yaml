@@ -1,0 +1,98 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thriftserver-db
+  annotations:
+    template.alpha.openshift.io/wait-for-ready: "true"
+spec:
+  replicas: 1
+  selector:
+    deployment: thriftserver-db
+  template:
+    metadata:
+      labels:
+        deployment: thriftserver-db
+    spec:
+      containers:
+        - name: postgres-exporter
+          image: postgres-exporter
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9187
+          env:
+            - name: DATA_SOURCE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: thriftserver-db-exporter
+                  key: DATA_SOURCE_NAME
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: 9187
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: 9187
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 300Mi
+        - name: postgresql
+          image: postgresql
+          ports:
+            - containerPort: 5432
+          readinessProbe:
+            timeoutSeconds: 1
+            initialDelaySeconds: 5
+            exec:
+              command:
+                - "/usr/libexec/check-container"
+          livenessProbe:
+            timeoutSeconds: 10
+            initialDelaySeconds: 120
+            exec:
+              command:
+                - "/usr/libexec/check-container"
+                - "--live"
+          env:
+            - name: POSTGRESQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: thriftserver-db
+                  key: database-user
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: thriftserver-db
+                  key: database-password
+            - name: POSTGRESQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: thriftserver-db
+                  key: database-name
+          resources:
+            requests:
+              cpu: 300m
+              memory: 500Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          volumeMounts:
+            - name: "postgresql-data"
+              mountPath: "/var/lib/pgsql/data"
+          terminationMessagePath: "/dev/termination-log"
+          imagePullPolicy: IfNotPresent
+          capabilities: {}
+          securityContext:
+            capabilities: {}
+            privileged: false
+      volumes:
+        - name: "postgresql-data"
+          persistentVolumeClaim:
+            claimName: thriftserver-db
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst

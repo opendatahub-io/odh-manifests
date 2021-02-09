@@ -1,0 +1,107 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - hive-site-xml-secret.yaml
+  - hue-ini-secret.yaml
+  - hue-mysql-pvc.yaml
+  - hue-mysql-secret.yaml
+  - hue-mysql-service.yaml
+  - hue-mysql.yaml
+  - hue-mysqld-exporter-secret.yaml
+  - hue-route.yaml
+  - hue-sample-s3-secret.yaml
+  - hue-service.yaml
+  - hue.yaml
+
+commonLabels:
+  opendatahub.io/component: "true"
+  component.opendatahub.io/name: hue
+  component.opendatahub.io/part-of: datacatalog
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: hue-config
+    envs:
+      - params.env
+
+vars:
+  - name: namespace
+    objref:
+      kind: Service
+      apiVersion: v1
+      name: hue
+    fieldref:
+      fieldpath: metadata.namespace
+  - name: storage_class
+    objref:
+      kind: ConfigMap
+      apiVersion: v1
+      name: hue-config
+    fieldref:
+      fieldpath: data.storage_class
+  - name: hue_secret_key
+    objref:
+      kind: ConfigMap
+      apiVersion: v1
+      name: hue-config
+    fieldref:
+      fieldpath: data.hue_secret_key
+  - name: s3_endpoint_url
+    objref:
+      kind: ConfigMap
+      apiVersion: v1
+      name: hue-config
+    fieldref:
+      fieldpath: data.s3_endpoint_url
+  - name: s3_is_secure
+    objref:
+      kind: ConfigMap
+      apiVersion: v1
+      name: hue-config
+    fieldref:
+      fieldpath: data.s3_is_secure
+  - name: s3_credentials_secret
+    objref:
+      kind: ConfigMap
+      apiVersion: v1
+      name: hue-config
+    fieldref:
+      fieldpath: data.s3_credentials_secret
+  - name: database_user
+    objref:
+      kind: Secret
+      apiVersion: v1
+      name: hue-mysql
+    fieldref:
+      fieldpath: stringData.database-user
+  - name: database_password
+    objref:
+      kind: Secret
+      apiVersion: v1
+      name: hue-mysql
+    fieldref:
+      fieldpath: stringData.database-password
+  - name: database_name
+    objref:
+      kind: Secret
+      apiVersion: v1
+      name: hue-mysql
+    fieldref:
+      fieldpath: stringData.database-name
+
+configurations:
+  - params.yaml
+
+images:
+  - name: hue
+    newName: quay.io/opendatahub/hue
+    newTag: "4.8.0"
+  - name: mysql
+    newName: registry.redhat.io/rhel8/mariadb-103
+    newTag: latest
+  - name: mysqld-exporter
+    newName: quay.io/prometheus/mysqld-exporter
+    newTag: latest

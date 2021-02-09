@@ -1,0 +1,89 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thriftserver
+spec:
+  replicas: 1
+  selector:
+    deployment: thriftserver
+  template:
+    metadata:
+      labels:
+        deployment: thriftserver
+    spec:
+      containers:
+        - name: thriftserver
+          image: spark-cluster-image
+          args:
+            - "/opt/spark/bin/spark-class"
+            - "org.apache.spark.deploy.SparkSubmit"
+            - "--class"
+            - "org.apache.spark.sql.hive.thriftserver.HiveThriftServer2"
+            - "--properties-file"
+            - "/etc/spark-properties/thrift-server.conf"
+            - "--master"
+            - "$(SPARK_MASTER)"
+          imagePullPolicy: Always
+          env:
+            - name: SPARK_MASTER
+              valueFrom:
+                configMapKeyRef:
+                  name: thriftserver-config
+                  key: spark_url
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: $(s3_credentials_secret)
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: $(s3_credentials_secret)
+                  key: AWS_SECRET_ACCESS_KEY
+          volumeMounts:
+            - name: spark-conf
+              mountPath: /etc/spark-properties
+            - name: thriftserver-data
+              mountPath: /spark-warehouse
+            - name: thriftserver-hdfs-hive
+              mountPath: /opt/spark/conf
+          resources:
+            limits:
+              cpu: "2"
+              memory: 4Gi
+            requests:
+              cpu: 400m
+              memory: 1Gi
+          ports:
+            - containerPort: 4040
+            - containerPort: 10000
+            - containerPort: 42000
+            - containerPort: 42100
+          livenessProbe:
+            failureThreshold: 4
+            httpGet:
+              path: /api/v1/version
+              port: 4040
+              scheme: HTTP
+            periodSeconds: 30
+            initialDelaySeconds: 300
+            successThreshold: 1
+            timeoutSeconds: 5
+      restartPolicy: Always
+      volumes:
+        - name: thriftserver-hdfs-hive
+          secret:
+            secretName: thriftserver-hdfs-hive
+            items:
+              - key: hdfs-site.xml
+                path: hdfs-site.xml
+        - name: spark-conf
+          secret:
+            secretName: thriftserver-server-conf
+            items:
+              - key: thrift-server.conf
+                path: thrift-server.conf
+        - name: thriftserver-data
+          persistentVolumeClaim:
+            claimName: thriftserver

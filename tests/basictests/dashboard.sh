@@ -17,9 +17,7 @@ function check_resources() {
     os::cmd::try_until_text "oc get route odh-dashboard" "odh-dashboard" $odhdefaulttimeout $odhdefaultinterval
     os::cmd::try_until_text "oc get service odh-dashboard" "odh-dashboard" $odhdefaulttimeout $odhdefaultinterval
     os::cmd::try_until_text "oc get deployment odh-dashboard" "odh-dashboard" $odhdefaulttimeout $odhdefaultinterval
-    os::cmd::try_until_text "oc get pods -l deployment=odh-dashboard --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "odh-dashboard" $odhdefaulttimeout $odhdefaultinterval
-    runningpods=($(oc get pods -l deployment=odh-dashboard --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
-    os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "2"
+    os::cmd::try_until_text "oc get pods -l deployment=odh-dashboard --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}' | wc -w" "2" $odhdefaulttimeout $odhdefaultinterval
 }
 
 function check_ui() {

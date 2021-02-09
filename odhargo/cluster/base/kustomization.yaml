@@ -1,12 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 resources:
-- cronworkflow-crd.yaml
-- workflow-crd.yaml
-- workflowtmp-crd.yaml
+  - crds.yaml
+  - cluster-roles.yaml
 namespace: opendatahub
+
 commonLabels:
   opendatahub.io/component: "true"
   component.opendatahub.io/name: odhargo
+
 generatorOptions:
   disableNameSuffixHash: true
