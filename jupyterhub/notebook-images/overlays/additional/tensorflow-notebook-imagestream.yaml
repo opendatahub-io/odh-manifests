@@ -16,7 +16,7 @@ spec:
       openshift.io/imported-from: quay.io/thoth-station/s2i-tensorflow-notebook
     from:
       kind: DockerImage
-      name: quay.io/thoth-station/s2i-tensorflow-notebook:v0.0.1
+      name: quay.io/thoth-station/s2i-tensorflow-notebook:v0.0.2
     name: "v0.0.1"
     referencePolicy:
       type: Source
