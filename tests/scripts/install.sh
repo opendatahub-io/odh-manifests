@@ -68,13 +68,20 @@ if [ -z "${OPENSHIFT_USER}" ] || [ -z "${OPENSHIFT_PASS}" ]; then
   export OPENSHIFT_PASS=admin
 fi
 
-echo "Creating the following KfDef"
-cat ./kfctl_openshift.yaml > ${ARTIFACT_DIR}/kfctl_openshift.yaml
-oc apply -f ./kfctl_openshift.yaml
-kfctl_result=$?
-if [ "$kfctl_result" -ne 0 ]; then
+if ! [ -z "${SKIP_KFDEF_INSTALL}" ]; then
+  ## SKIP_KFDEF_INSTALL is useful in an instance where the 
+  ## operator install comes with an init container to handle
+  ## the KfDef creation
+  echo "Relying on existing KfDef because SKIP_KFDEF_INSTALL was set"
+else
+  echo "Creating the following KfDef"
+  cat ./kfctl_openshift.yaml > ${ARTIFACT_DIR}/kfctl_openshift.yaml
+  oc apply -f ./kfctl_openshift.yaml
+  kfctl_result=$?
+  if [ "$kfctl_result" -ne 0 ]; then
     echo "The installation failed"
     exit $kfctl_result
+  fi
 fi
 set +x
 popd
