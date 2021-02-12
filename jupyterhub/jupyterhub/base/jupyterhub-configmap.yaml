@@ -5,7 +5,7 @@ metadata:
     app: jupyterhub
   name: jupyterhub-cfg
 data:
-  jupyterhub_config.py: ""
+  jupyterhub_config.py: "c.JupyterHub.authenticate_prometheus = False;"
   jupyterhub_admins: "admin"
   gpu_mode: ""
   singleuser_pvc_size: 2Gi
