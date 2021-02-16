@@ -1,0 +1,10 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: odh-jupyterhub-sli
+  labels:
+    app: grafana
+spec:
+  configMapRef:
+    name: jh-sli-configmap
+    key: jupyterhub-sli-slo.json

@@ -5,8 +5,19 @@ namespace: openshift-operators
 commonLabels:
   opendatahub.io/component: "true"
   component.opendatahub.io/name: grafana
+generatorOptions:
+ disableNameSuffixHash: true
+configMapGenerator:
+- name: jh-sli-configmap
+  files:
+  - dashboards/jupyterhub-sli-slo.json
+- name: jh-usage-configmap
+  files:
+  - dashboards/jupyterhub-usage.json
 resources:
-- datasource.yaml
-- dashboard.yaml
 - argo-dashboard.yaml
+- dashboard.yaml
+- datasource.yaml
 - grafana.yaml
+- jupyterhub-sli-dashboard.yaml
+- jupyterhub-usage-dashboard.yaml

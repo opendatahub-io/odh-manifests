@@ -1,12 +1,16 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+- cluster-metrics-servicemonitor.yaml
+- cluster-monitoring-role.yaml
+- cluster-monitoring-role-binding.yaml
 - kafka-podmonitors.yaml
 - prometheus.yaml
 - route.yaml
 - service-monitors
 - prometheus-monitoring-role.yaml
 - prometheus-monitoring-role-binding.yaml
+- secrets
 
 namespace: opendatahub
 commonLabels:
