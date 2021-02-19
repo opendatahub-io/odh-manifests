@@ -5,7 +5,6 @@ metadata:
 spec:
   selector:
     deployment: odh-dashboard
-  type: LoadBalancer
   ports:
   - protocol: TCP
     targetPort: 8080
