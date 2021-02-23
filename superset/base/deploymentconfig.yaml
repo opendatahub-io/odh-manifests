@@ -9,6 +9,8 @@ metadata:
     component.opendatahub.io/name: superset
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     deploymentconfig: superset
   template:
