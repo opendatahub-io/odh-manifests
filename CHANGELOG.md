@@ -20,5 +20,6 @@
 ## Release 1.0.2 (2021-02-25T14:39:50)
 ### Features
 * Adding optional var SKIP_KFDEF_INSTALL to allow for cases where the KfDef to be tested is created outside of the tests (#331)
+### Improvements
 * Changing Superset deployment to recreate strategy (#317)
 * set imagestream name same as the tag version (#325)
