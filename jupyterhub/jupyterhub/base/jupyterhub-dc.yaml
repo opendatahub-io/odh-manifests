@@ -97,8 +97,9 @@ spec:
     imageChangeParams: 
       automatic: true
       containerNames:
-        -wait-for-database
-        -jupyterhub
+        - wait-for-database
+        - jupyterhub
       from:
         kind: ImageStreamTag
         name: jupyterhub-img:latest
+        
