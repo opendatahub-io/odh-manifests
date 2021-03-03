@@ -1,8 +1,6 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  annotations:
-    kubernetes.io/tls-acme: 'true'
   labels:
     app: jupyterhub
   name: jupyterhub
