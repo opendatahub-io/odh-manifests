@@ -41,6 +41,11 @@ spec:
             secretKeyRef:
               name: jupyterhub
               key: COOKIE_SECRET
+        - name: PROMETHEUS_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: jupyterhub
+              key: PROMETHEUS_API_TOKEN
         - name: APP_SCRIPT
           value: /opt/app-root/builder/run
         - name: GPU_MODE
