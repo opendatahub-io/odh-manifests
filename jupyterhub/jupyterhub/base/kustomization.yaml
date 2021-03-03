@@ -15,6 +15,7 @@ resources:
 - jupyterhub-route.yaml
 - jupyterhub-singleuser-profiles-configmap.yaml
 - jupyterhub-spark-operator-configmap.yaml
+- jupyterhub-groups-configmap.yaml
 
 commonLabels:
   opendatahub.io/component: "true"
@@ -47,5 +48,12 @@ vars:
     apiVersion: v1
   fieldref:
     fieldpath: data.s3_endpoint_url
+- name: jupyterhub_groups_config
+  objref:
+    kind: ConfigMap
+    name: parameters
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.jupyterhub_groups_config
 configurations:
 - params.yaml

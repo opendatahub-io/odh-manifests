@@ -63,6 +63,16 @@ spec:
             configMapKeyRef:
               name: jupyterhub-cfg
               key: singleuser_pvc_size
+        - name: JUPYTERHUB_ADMIN_GROUPS
+          valueFrom:
+            configMapKeyRef:
+              name: $(jupyterhub_groups_config)
+              key: admin_groups
+        - name: JUPYTERHUB_ALLOWED_GROUPS
+          valueFrom:
+            configMapKeyRef:
+              name: $(jupyterhub_groups_config)
+              key: allowed_groups
         image: jupyterhub-img:latest
         name: jupyterhub
         ports:
