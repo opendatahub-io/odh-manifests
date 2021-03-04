@@ -23,3 +23,8 @@
 ### Improvements
 * Changing Superset deployment to recreate strategy (#317)
 * set imagestream name same as the tag version (#325)
+
+## Release 1.0.3 (2021-03-04T14:16:04)
+### Features
+* [JupyterHub] Fix auth for prometheus /metrics endpoint behind auth proxy (#330)
+* Remove tls-acme annotation from JuptyerHub route (#329)
