@@ -16,3 +16,15 @@
 ### Improvements
 * Simplify test for dashboard pods, hopefully eliminating flake (#305)
 * Use airflowui secure route for tests (#300)
+
+## Release 1.0.2 (2021-02-25T14:39:50)
+### Features
+* Adding optional var SKIP_KFDEF_INSTALL to allow for cases where the KfDef to be tested is created outside of the tests (#331)
+### Improvements
+* Changing Superset deployment to recreate strategy (#317)
+* set imagestream name same as the tag version (#325)
+
+## Release 1.0.3 (2021-03-04T14:16:04)
+### Features
+* [JupyterHub] Fix auth for prometheus /metrics endpoint behind auth proxy (#330)
+* Remove tls-acme annotation from JuptyerHub route (#329)

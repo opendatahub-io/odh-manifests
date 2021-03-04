@@ -7,7 +7,10 @@ metadata:
 spec:
   endpoints:
     - port: web # odh-operator, Argo
-    - port: 8080-tcp # Jupyterhub
+    - bearerTokenSecret:
+        key: PROMETHEUS_API_TOKEN
+        name: jupyterhub
+      port: 8080-tcp # Jupyterhub
       path: "/metrics"
   selector:
     matchLabels:
