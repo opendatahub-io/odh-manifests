@@ -84,6 +84,13 @@ spec:
     name: jupyterhub
   - kustomizeConfig:
       overlays:
+        - jupyterhub-deployment-patch
+      repoRef:
+        name: kf-jupyterhub-patch
+        path: jupyterhub/jupyterhub/overrides
+    name: jupyterhub
+  - kustomizeConfig:
+      overlays:
       #- cuda
       - additional
       repoRef:
@@ -120,4 +127,6 @@ spec:
     uri: https://github.com/kubeflow/manifests/archive/v1.2-branch.tar.gz
   - name: manifests
     uri: https://github.com/opendatahub-io/odh-manifests/tarball/master
+  - name: kf-jupyterhub-patch
+    uri: https://github.com/red-hat-data-services/odh-manifests/tarball/master
   version: master
