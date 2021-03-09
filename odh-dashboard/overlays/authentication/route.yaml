@@ -1,0 +1,6 @@
+- op: replace
+  path: /spec/port/targetPort
+  value: 8443
+- op: replace
+  path: /spec/tls/termination
+  value: Reencrypt
