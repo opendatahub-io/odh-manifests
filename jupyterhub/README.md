@@ -21,6 +21,10 @@ HTTP endpoint exposed by your S3 object storage solution which will be made avai
 
 Name of the storage class to be used for PVCs created by JupyterHub component. This requires `storage-class` **overlay** to be enabled as well to work.
 
+#### jupyterhub_groups_config
+
+A ConfigMap containing comma separated lists of groups which would be used as Admin and User groups for JupyterHub. The default ConfgiMap can be found [here](jupyterhub/base/jupyterhub-groups-configmap.yaml).
+
 ##### Examples
 
 ```
