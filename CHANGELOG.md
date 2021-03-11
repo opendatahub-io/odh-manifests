@@ -28,3 +28,9 @@
 ### Features
 * [JupyterHub] Fix auth for prometheus /metrics endpoint behind auth proxy (#330)
 * Remove tls-acme annotation from JuptyerHub route (#329)
+
+## Release 1.0.4 (2021-03-11T14:20:52)
+### Features
+* Update Jupyterhub image to v0.2.2 (#345)
+* Add JH groups configuration CM (#342)
+* Update JH image with prometheus authentication (#339)
