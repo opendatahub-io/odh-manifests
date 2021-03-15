@@ -6,7 +6,9 @@ metadata:
   name: odhservicemonitor
 spec:
   endpoints:
-    - port: web # odh-operator, Argo
+    - port: metrics # Argo
+    - port: http-metrics # Open Data Hub Operator
+    - port: cr-metrics # Open Data Hub Operator
     - bearerTokenSecret:
         key: PROMETHEUS_API_TOKEN
         name: jupyterhub
