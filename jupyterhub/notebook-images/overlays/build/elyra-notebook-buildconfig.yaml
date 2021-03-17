@@ -16,8 +16,8 @@ spec:
   strategy:
     sourceStrategy:
       from:
-        kind: ImageStreamTag
-        name: s2i-minimal-notebook:v0.0.4
+        kind: DockerImage
+        name: quay.io/thoth-station/s2i-minimal-py38-notebook
     type: Source
   triggers:
   - type: ConfigChange
