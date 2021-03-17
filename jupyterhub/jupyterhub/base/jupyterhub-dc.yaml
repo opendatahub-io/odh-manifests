@@ -108,3 +108,13 @@ spec:
         name: config
   triggers:
   - type: ConfigChange
+  - type: ImageChange
+    imageChangeParams: 
+      automatic: true
+      containerNames:
+        - wait-for-database
+        - jupyterhub
+      from:
+        kind: ImageStreamTag
+        name: jupyterhub-img:latest
+        
