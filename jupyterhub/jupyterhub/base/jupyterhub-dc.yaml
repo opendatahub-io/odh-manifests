@@ -36,15 +36,10 @@ spec:
               key: POSTGRESQL_PASSWORD
         - name: JUPYTERHUB_DATABASE_HOST
           value: jupyterhub-db
-        - name: JUPYTERHUB_COOKIE_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: jupyterhub
-              key: COOKIE_SECRET
         - name: PROMETHEUS_API_TOKEN
           valueFrom:
             secretKeyRef:
-              name: jupyterhub
+              name: $(jupyterhub_secret)
               key: PROMETHEUS_API_TOKEN
         - name: APP_SCRIPT
           value: /opt/app-root/builder/run
@@ -73,6 +68,21 @@ spec:
             configMapKeyRef:
               name: $(jupyterhub_groups_config)
               key: allowed_groups
+        - name: JUPYTERHUB_CRYPT_KEY
+          valueFrom:
+            secretKeyRef:
+              name: $(jupyterhub_secret)
+              key: JUPYTERHUB_CRYPT_KEY
+        - name: JPY_COOKIE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: $(jupyterhub_secret)
+              key: JPY_COOKIE_SECRET
+        - name: CONFIGPROXY_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: $(jupyterhub_secret)
+              key: CONFIGPROXY_AUTH_TOKEN
         image: jupyterhub-img:latest
         name: jupyterhub
         ports:
