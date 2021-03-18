@@ -8,3 +8,5 @@ varReference:
   kind: PersistentVolumeClaim
 - path: spec/template/spec/containers/env/valueFrom/configMapKeyRef/name
   kind: DeploymentConfig
+- path: spec/template/spec/containers/env/valueFrom/secretKeyRef/name
+  kind: DeploymentConfig
