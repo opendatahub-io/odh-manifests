@@ -1,3 +1,3 @@
 - op: replace
   path: /spec/template/spec/containers/0/env/4/valueFrom/secretKeyRef/name
-  value: jupyterhub-prometheus-token-secret
+  value: jupyterhub-prometheus-token-secrets
