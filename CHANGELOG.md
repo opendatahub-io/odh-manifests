@@ -34,3 +34,10 @@
 * Update Jupyterhub image to v0.2.2 (#345)
 * Add JH groups configuration CM (#342)
 * Update JH image with prometheus authentication (#339)
+
+## Release 1.0.5 (2021-03-18T13:20:58)
+### Features
+* Add env vars to JH so that we don't lose auth_state on restart (#351)
+* Update Elyra image to v2.0.1 (#297)
+* Added ImageChange trigger to the JupyterHub deployment config (#334)
+* Remove empty operator log artifact from tests runs (#348)
