@@ -179,9 +179,6 @@ class JHStress():
         
     def login(self):
         self.deal_with_privacy_error()
-        elem = self.driver.find_element_by_link_text("Sign in with OpenShift")
-        elem.send_keys(Keys.RETURN)
-        self.deal_with_privacy_error()
 
         if self.check_exists_by_xpath('//a[text()="%s"]' % self.login_provider):
             elem = self.driver.find_element_by_link_text(self.login_provider)
