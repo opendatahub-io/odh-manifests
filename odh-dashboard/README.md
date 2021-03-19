@@ -10,8 +10,10 @@ The Open Data Hub Dashboard component installs a UI which
 For more information, visit the project [GitHub repo](https://github.com/opendatahub-io/odh-dashboard).
 
 ### Folders
-There is one main folder in the Dashboard component
 1. base: contains all the necessary yaml files to install the dashboard
+2. overlays/authentication: Contains the necessary yaml files to install the
+   Open Data Hub Dashboard configured to require users to authenticate to the
+   OpenShift cluster before they can access the service
 
 ##### Installation
 ```
@@ -22,3 +24,13 @@ There is one main folder in the Dashboard component
     name: odh-dashboard
 ```
 
+If you would like to configure the dashboard to require authentication:
+```
+  - kustomizeConfig:
+      overlays:
+        - authentication
+      repoRef:
+        name: manifests
+        path: odh-dashboard
+    name: odh-dashboard
+```
