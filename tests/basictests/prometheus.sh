@@ -20,8 +20,8 @@ function test_prometheus() {
     os::cmd::try_until_text "oc get pods -l k8s-app=prometheus-operator --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "prometheus-operator" $odhdefaulttimeout $odhdefaultinterval
     runningbuspods=($(oc get pods -l k8s-app=prometheus-operator --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
     os::cmd::expect_success_and_text "echo ${#runningbuspods[@]}" "1"
-    os::cmd::try_until_text "oc get pods -l app=prometheus --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "prometheus-prometheus" $odhdefaulttimeout $odhdefaultinterval
-    runningbuspods=($(oc get pods -l app=prometheus --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
+    os::cmd::try_until_text "oc get pods -l app=odh-prometheus --field-selector='status.phase=Running' -o jsonpath='{$.items[*].metadata.name}'" "prometheus-prometheus" $odhdefaulttimeout $odhdefaultinterval
+    runningbuspods=($(oc get pods -l app=odh-prometheus --field-selector="status.phase=Running" -o jsonpath="{$.items[*].metadata.name}"))
     os::cmd::expect_success_and_text "echo ${#runningbuspods[@]}" "1"
     test_promportal
 }
