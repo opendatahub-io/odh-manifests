@@ -109,6 +109,14 @@ spec:
         name: manifests
         path: thriftserver/thriftserver
     name: thriftserver
+  - kustomizeConfig:
+      parameters:
+      - name: s3_endpoint_url
+        value: s3.odh.com
+      repoRef:
+        name: manifests
+        path: trino
+    name: trino
   # strimzi/kafka moved to bottom due to strange slowness in our test cluster
   # moving it down in the order seems to avoid the slowness
   - kustomizeConfig:
