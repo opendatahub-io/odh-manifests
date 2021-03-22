@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: trino-route
+  labels:
+    instance: trino
+    role: trino-coordinator
+spec:
+  to:
+    kind: Service
+    name: trino-service
+  port:
+    targetPort: 8080
+  wildcardPolicy: None

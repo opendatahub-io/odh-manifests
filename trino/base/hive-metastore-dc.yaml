@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hive-metastore
+  labels:
+    instance: presto
+    role: hive-metastore
+spec:
+  selector:
+    matchLabels:
+      instance: presto
+      role: hive-metastore
+  template:
+    metadata:
+      labels:
+        instance: presto
+        role: hive-metastore
+    spec:
+      containers:
+        - resources:
+            requests:
+              cpu: $(hive_metastore_cpu_request)
+              memory: $(hive_metastore_memory_request)
+            limits:
+              cpu: $(hive_metastore_cpu_limit)
+              memory: $(hive_metastore_memory_limit)
+          name: hive-metastore
+          command:
+            - /opt/bin/start-hive-metastore.sh
+          livenessProbe:
+            exec:
+              command:
+                - bash
+                - '-c'
+                - netstat -lpn | grep 9083
+          env:
+            - name: HIVE_METASTORE_JDBC_URL
+              value: >-
+                jdbc:postgresql://trino-db:5432/$(trino_db_database_name)
+            - name: HIVE_METASTORE_DRIVER
+              value: org.postgresql.Driver
+            - name: HIVE_METASTORE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: $(trino_db_secret)
+                  key: database-user
+            - name: HIVE_METASTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: $(trino_db_secret)
+                  key: database-password
+            - name: S3_ENDPOINT
+              value: $(s3_endpoint_url)
+            - name: S3_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: $(s3_credentials_secret)
+                  key: AWS_ACCESS_KEY_ID
+            - name: S3_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: $(s3_credentials_secret)
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: GOOGLE_CLOUD_KEY_FILE_PATH
+            - name: AZURE_WASB_STORAGE_ACCOUNT
+            - name: AZURE_WASB_ACCESS_KEY
+            - name: AZURE_ABFS_STORAGE_ACCOUNT
+            - name: AZURE_ABFS_ACCESS_KEY
+            - name: AZURE_ADL_CLIENT_ID
+            - name: AZURE_ADL_CREDENTIAL
+            - name: AZURE_ADL_REFRESH_URL
+            - name: REGION
+          ports:
+            - containerPort: 9083
+              protocol: TCP
+          image: hive-metastore
