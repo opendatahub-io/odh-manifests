@@ -6,7 +6,7 @@ metadata:
     prometheus: k8s
   namespace: prometheus
 spec:
-  replicas: 1
+  replicas: 2
   serviceAccountName: prometheus-k8s
   securityContext: {}
   serviceMonitorSelector:
