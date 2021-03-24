@@ -25,14 +25,11 @@ spec:
       - image: registry.redhat.io/rhel8/postgresql-96
         env:
         - name: POSTGRESQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: jupyterhub
-              key: POSTGRESQL_USER
+          value: jupyterhub
         - name: POSTGRESQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: jupyterhub
+              name: $(jupyterhub_secret)
               key: POSTGRESQL_PASSWORD
         - name: POSTGRESQL_DATABASE
           value: jupyterhub
