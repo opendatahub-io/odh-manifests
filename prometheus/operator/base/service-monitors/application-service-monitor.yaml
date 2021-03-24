@@ -3,12 +3,10 @@ kind: ServiceMonitor
 metadata:
   labels:
     team: opendatahub
-  name: odhservicemonitor
+  name: odh-application-servicemonitor
 spec:
   endpoints:
     - port: metrics # Argo
-    - port: http-metrics # Open Data Hub Operator
-    - port: cr-metrics # Open Data Hub Operator
     - bearerTokenSecret:
         key: PROMETHEUS_API_TOKEN
         name: jupyterhub

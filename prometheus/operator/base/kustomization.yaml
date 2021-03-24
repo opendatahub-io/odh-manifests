@@ -4,7 +4,7 @@ resources:
 - kafka-podmonitors.yaml
 - prometheus.yaml
 - route.yaml
-- servicemonitor.yaml
+- service-monitors
 - prometheus-monitoring-role.yaml
 - prometheus-monitoring-role-binding.yaml
 
