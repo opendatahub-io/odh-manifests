@@ -32,7 +32,7 @@ spec:
         - name: JUPYTERHUB_DATABASE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: jupyterhub
+              name: $(jupyterhub_secret)
               key: POSTGRESQL_PASSWORD
         - name: JUPYTERHUB_DATABASE_HOST
           value: jupyterhub-db
@@ -101,7 +101,7 @@ spec:
         - name: JUPYTERHUB_DATABASE_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: jupyterhub
+              name: $(jupyterhub_secret)
               key: POSTGRESQL_PASSWORD
         - name: JUPYTERHUB_DATABASE_HOST
           value: jupyterhub-db
