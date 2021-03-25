@@ -41,3 +41,10 @@
 * Update Elyra image to v2.0.1 (#297)
 * Added ImageChange trigger to the JupyterHub deployment config (#334)
 * Remove empty operator log artifact from tests runs (#348)
+
+## Release 1.0.6 (2021-03-25T13:11:07)
+### Features
+* Update Metrics endpoints for ODH operator (#349)
+* Move the JH DeploymentConfig imageChange trigger to an overlay (#360)
+* Update README.md (#354)
+* Add oauth proxy to ODH dashboard (#350)
