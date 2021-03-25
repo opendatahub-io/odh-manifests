@@ -4,10 +4,25 @@ resources:
 - kafka-podmonitors.yaml
 - prometheus.yaml
 - route.yaml
-- servicemonitor.yaml
+- service-monitors
+- prometheus-monitoring-role.yaml
+- prometheus-monitoring-role-binding.yaml
+
 namespace: opendatahub
 commonLabels:
   opendatahub.io/component: "true"
   component.opendatahub.io/name: prometheus
 generatorOptions:
   disableNameSuffixHash: true
+
+vars:
+  - name: namespace
+    objref:
+      kind: Prometheus
+      name: odh-monitoring
+      apiVersion: monitoring.coreos.com/v1
+    fieldref:
+      fieldpath: metadata.namespace
+
+configurations:
+  - params.yaml
