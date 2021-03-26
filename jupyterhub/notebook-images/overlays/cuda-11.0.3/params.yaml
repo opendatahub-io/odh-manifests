@@ -1,0 +1,20 @@
+varReference:
+- path: metadata/labels/*
+  kind: ImageStream
+- path: metadata/name
+  kind: ImageStream
+- path: spec/*
+  kind: ImageStream
+
+- path: metadata/labels/*
+  kind: BuildConfig
+- path: metadata/name
+  kind: BuildConfig
+- path: spec/output/to/name
+  kind: BuildConfig
+- path: spec/source/contextDir
+  kind: BuildConfig
+- path: spec/strategy/dockerStrategy/from/name
+  kind: BuildConfig
+- path: spec/strategy/sourceStrategy/from/name
+  kind: BuildConfig

@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: List
+items:
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    labels:
+      component.opendatahub.io/name: jupyterhub
+      opendatahub.io/component: 'true'
+      opendatahub.io/notebook-image: 'true'
+    name: "s2i-minimal-gpu-cuda-$(cuda_version)-notebook"
+  spec:
+    lookupPolicy:
+      local: true
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    labels:
+      component.opendatahub.io/name: jupyterhub
+      opendatahub.io/component: 'true'
+      opendatahub.io/notebook-image: 'true'
+    name: "s2i-tensorflow-gpu-cuda-$(cuda_version)-notebook"
+  spec:
+    lookupPolicy:
+      local: true
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    labels:
+      component.opendatahub.io/name: jupyterhub
+      opendatahub.io/component: 'true'
+      opendatahub.io/notebook-image: 'true'
+    name: "s2i-pytorch-gpu-cuda-$(cuda_version)-notebook"
+  spec:
+    lookupPolicy:
+      local: true
+- kind: BuildConfig
+  apiVersion: build.openshift.io/v1
+  metadata:
+    name: s2i-minimal-gpu-cuda-$(cuda_version)-notebook
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: 's2i-minimal-gpu-cuda-$(cuda_version)-notebook:latest'
+    strategy:
+      type: Docker
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: '$(cuda_version)-cuda-s2i-thoth-ubi8-py38:latest'
+        noCache: true
+        dockerfilePath: Dockerfile
+    source:
+      type: Git
+      git:
+        ref: python38
+        uri: 'https://github.com/thoth-station/s2i-minimal-notebook'
+    triggers:
+      - type: ConfigChange
+      - type: ImageChange
+    resources:
+      requests:
+        memory: 4Gi
+- kind: BuildConfig
+  apiVersion: build.openshift.io/v1
+  metadata:
+    name: s2i-tensorflow-gpu-cuda-$(cuda_version)-notebook
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: 's2i-tensorflow-gpu-cuda-$(cuda_version)-notebook:latest'
+    strategy:
+      type: Source
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: 's2i-minimal-gpu-cuda-$(cuda_version)-notebook:latest'
+    source:
+      type: Git
+      git:
+        ref: python38
+        uri: 'https://github.com/thoth-station/s2i-tensorflow-gpu-notebook'
+    triggers:
+      - type: ConfigChange
+      - type: ImageChange
+    resources:
+      limits:
+        memory: 8Gi
+      requests:
+        memory: 6Gi
+- kind: BuildConfig
+  apiVersion: build.openshift.io/v1
+  metadata:
+    name: s2i-pytorch-gpu-cuda-$(cuda_version)-notebook
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: 's2i-pytorch-gpu-cuda-$(cuda_version)-notebook:latest'
+    strategy:
+      type: Source
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: 's2i-minimal-gpu-cuda-$(cuda_version)-notebook:latest'
+    source:
+      type: Git
+      git:
+        ref: python38
+        uri: 'https://github.com/thoth-station/s2i-pytorch-notebook'
+    triggers:
+      - type: ConfigChange
+      - type: ImageChange
+    resources:
+      limits:
+        memory: 8Gi
+      requests:
+        memory: 6Gi
