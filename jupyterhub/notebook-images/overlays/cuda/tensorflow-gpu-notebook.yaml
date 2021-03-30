@@ -23,10 +23,10 @@ items:
         name: s2i-minimal-notebook-gpu:3.6
     resources:
       limits:
-        memory: 2Gi
+        memory: 3Gi
     source:
       git:
-        ref: master
+        ref: v0.0.7
         uri: 'https://github.com/thoth-station/s2i-minimal-notebook'
       type: Git
     strategy:
@@ -67,10 +67,10 @@ items:
     resources:
       limits:
         cpu: "2"
-        memory: 5Gi
+        memory: 6Gi
       requests:
         cpu: "1"
-        memory: 2Gi
+        memory: 3Gi
     source:
       git:
         ref: master
