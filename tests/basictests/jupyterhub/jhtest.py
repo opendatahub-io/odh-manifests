@@ -219,7 +219,7 @@ class JHStress():
         image_drop = self.driver.find_element(By.XPATH, '//*[@id="ImageDropdownBtn"]')
         image_drop.send_keys(Keys.RETURN)
 
-        self.driver.implicitly_wait(10)
+        self.driver.implicitly_wait(30)
         image_select = self.driver.find_element_by_id(self.spawner["image"])
         image_select.click()
 
