@@ -11,8 +11,8 @@ JH_LOGIN_PASS=${OPENSHIFT_PASS:-"admin"} #Password used to login to JH
 OPENSHIFT_LOGIN_PROVIDER=${OPENSHIFT_LOGIN_PROVIDER:-"htpasswd-provider"} #OpenShift OAuth provider used for login
 JH_AS_ADMIN=${JH_AS_ADMIN:-"true"} #Expect the user to be Admin in JupyterHub
 
-JUPYTER_IMAGES=(s2i-minimal-notebook:v0.0.7 s2i-scipy-notebook:v0.0.2 s2i-tensorflow-notebook:v0.0.2 s2i-spark-minimal-notebook:py36-spark2.4.5-hadoop2.7.3)
-JUPYTER_NOTEBOOK_FILES=(basic.ipynb basic.ipynb tensorflow.ipynb spark.ipynb)
+JUPYTER_IMAGES=("s2i-spark-minimal-notebook:py36-spark2.4.5-hadoop2.7.3" s2i-minimal-notebook:v0.0.7 s2i-scipy-notebook:v0.0.2 s2i-tensorflow-notebook:v0.0.2)
+JUPYTER_NOTEBOOK_FILES=(spark.ipynb basic.ipynb basic.ipynb tensorflow.ipynb)
 
 os::test::junit::declare_suite_start "$MY_SCRIPT"
 
