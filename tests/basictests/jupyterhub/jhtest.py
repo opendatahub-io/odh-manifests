@@ -76,7 +76,7 @@ class JHStress():
 
     def go_to_admin(self):
         if not self.check_exists_by_xpath("//a[@href='/hub/admin']"):
-            w = WebDriverWait(self.driver, 5)
+            w = WebDriverWait(self.driver, 10)
             cp_elem = w.until(EC.element_to_be_clickable((By.XPATH, "//a[@href='/hub/home']")))
             cp_elem.click()
         admin_elem = self.driver.find_element_by_link_text("Admin")
@@ -180,6 +180,10 @@ class JHStress():
     def login(self):
         self.deal_with_privacy_error()
 
+        if self.check_exists_by_xpath('//*[@id="login-main"]/div/a'):
+            elem = self.driver.find_element_by_xpath('//*[@id="login-main"]/div/a')
+            elem.send_keys(Keys.RETURN)
+
         if self.check_exists_by_xpath('//a[text()="%s"]' % self.login_provider):
             elem = self.driver.find_element_by_link_text(self.login_provider)
             elem.send_keys(Keys.RETURN)
@@ -201,11 +205,9 @@ class JHStress():
         self.driver.implicitly_wait(10)
         add_button_elem = self.driver.find_element(By.XPATH, '//*[@id="root"]/div/header/form/form/button')
         add_button_elem.send_keys(Keys.RETURN)
-        key_elem = self.driver.find_element(By.NAME, 'variable_name')
-        value_elem = self.driver.find_element(By.NAME, 'variable_value')
-        key_elem.clear()
-        key_elem.send_keys(key)
-        value_elem.clear()
+        key_elem = self.driver.find_element(By.ID, 'KeyForm-') # Name should be empty so newly created forms have this id.
+        value_elem = self.driver.find_element(By.ID, 'ValueForm-')
+        key_elem.send_keys(key) # No clearing neccessary.
         value_elem.send_keys(value)
 
     def remove_last_environment_variable(self):
@@ -217,7 +219,7 @@ class JHStress():
         image_drop = self.driver.find_element(By.XPATH, '//*[@id="ImageDropdownBtn"]')
         image_drop.send_keys(Keys.RETURN)
 
-        self.driver.implicitly_wait(10)
+        self.driver.implicitly_wait(30)
         image_select = self.driver.find_element_by_id(self.spawner["image"])
         image_select.click()
 
