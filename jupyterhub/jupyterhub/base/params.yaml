@@ -10,3 +10,5 @@ varReference:
   kind: DeploymentConfig
 - path: spec/template/spec/containers/env/valueFrom/secretKeyRef/name
   kind: DeploymentConfig
+- path: spec/template/spec/initContainers/env/valueFrom/secretKeyRef/name
+  kind: DeploymentConfig
