@@ -11,11 +11,6 @@ spec:
         path: odh-common
     name: odh-common
   - kustomizeConfig:
-      repoRef:
-        name: manifests
-        path: radanalyticsio/spark/cluster
-    name: radanalyticsio-spark-cluster
-  - kustomizeConfig:
       parameters:
         - name: s3_endpoint_url
           value: "s3.odh.com"
