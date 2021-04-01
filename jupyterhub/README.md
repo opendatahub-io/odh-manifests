@@ -25,6 +25,10 @@ Name of the storage class to be used for PVCs created by JupyterHub component. T
 
 A ConfigMap containing comma separated lists of groups which would be used as Admin and User groups for JupyterHub. The default ConfgiMap can be found [here](jupyterhub/base/jupyterhub-groups-configmap.yaml).
 
+#### jupyterhub_secret
+
+A Secret containing configuration values like JupyterHub DB password or COOKIE_SECRET. The default Secret can be found [here](jupyterhub/base/jupyterhub-secret.yaml).
+
 ##### Examples
 
 ```
