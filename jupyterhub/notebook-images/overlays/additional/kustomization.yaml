@@ -6,8 +6,6 @@ resources:
 - minimal-notebook-imagestream.yaml
 - scipy-notebook-imagestream.yaml
 - tensorflow-notebook-imagestream.yaml
-- spark-scipy-notebook-imagestream.yaml
-- elyra-notebook-imagestream.yaml
 
 commonLabels:
   opendatahub.io/component: "true"
