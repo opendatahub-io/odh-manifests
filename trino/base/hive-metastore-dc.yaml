@@ -1,76 +1,148 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: hive-metastore
   labels:
-    instance: presto
-    role: hive-metastore
+    app: hive
+    hive: metastore
+  name: hive-metastore
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      instance: presto
-      role: hive-metastore
+      app: hive
+      hive: metastore
+  serviceName: hive-metastore
   template:
     metadata:
       labels:
-        instance: presto
-        role: hive-metastore
+        app: hive
+        hive: metastore
     spec:
       containers:
-        - resources:
-            requests:
-              cpu: $(hive_metastore_cpu_request)
-              memory: $(hive_metastore_memory_request)
-            limits:
-              cpu: $(hive_metastore_cpu_limit)
-              memory: $(hive_metastore_memory_limit)
-          name: hive-metastore
-          command:
-            - /opt/bin/start-hive-metastore.sh
-          livenessProbe:
-            exec:
-              command:
-                - bash
-                - '-c'
-                - netstat -lpn | grep 9083
-          env:
-            - name: HIVE_METASTORE_JDBC_URL
-              value: >-
-                jdbc:postgresql://trino-db:5432/$(trino_db_database_name)
-            - name: HIVE_METASTORE_DRIVER
-              value: org.postgresql.Driver
-            - name: HIVE_METASTORE_USER
-              valueFrom:
-                secretKeyRef:
-                  name: $(trino_db_secret)
-                  key: database-user
-            - name: HIVE_METASTORE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: $(trino_db_secret)
-                  key: database-password
-            - name: S3_ENDPOINT
-              value: $(s3_endpoint_url)
-            - name: S3_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: $(s3_credentials_secret)
-                  key: AWS_ACCESS_KEY_ID
-            - name: S3_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: $(s3_credentials_secret)
-                  key: AWS_SECRET_ACCESS_KEY
-            - name: GOOGLE_CLOUD_KEY_FILE_PATH
-            - name: AZURE_WASB_STORAGE_ACCOUNT
-            - name: AZURE_WASB_ACCESS_KEY
-            - name: AZURE_ABFS_STORAGE_ACCOUNT
-            - name: AZURE_ABFS_ACCESS_KEY
-            - name: AZURE_ADL_CLIENT_ID
-            - name: AZURE_ADL_CREDENTIAL
-            - name: AZURE_ADL_REFRESH_URL
-            - name: REGION
-          ports:
-            - containerPort: 9083
-              protocol: TCP
-          image: hive-metastore
+      - name: metastore
+        args:
+          - /opt/hive/bin/hive
+          - --service
+          - metastore
+        command:
+          - /hive-scripts/entrypoint.sh
+        env:
+          - name: HIVE_LOGLEVEL
+            value: INFO
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                key: AWS_ACCESS_KEY_ID
+                name: aws-secret
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                key: AWS_SECRET_ACCESS_KEY
+                name: aws-secret
+          - name: S3_BUCKET_NAME
+            valueFrom:
+              secretKeyRef:
+                key: BUCKET
+                name: aws-secret
+          - name: S3_DATA_DIR
+            value: data
+          - name: DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: trino-db-secret
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: trino-db-secret
+          - name: DATABASE_HOST
+            value: trino-db
+          - name: DATABASE_PORT
+            value: 5432
+          - name: DATABASE_NAME
+            value: trino
+          - name: DATABASE_SSLMODE
+            value: accept
+          - name: MY_MEM_REQUEST
+            valueFrom:
+              resourceFieldRef:
+                containerName: metastore
+                resource: requests.memory
+          - name: MY_MEM_LIMIT
+            valueFrom:
+              resourceFieldRef:
+                containerName: metastore
+                resource: limits.memory
+        image: quay.io/cloudservices/ubi-hive:2.3.3-002
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 9083
+            name: meta
+          - containerPort: 8082
+            name: metrics
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 180
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 9083
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8082
+            scheme: HTTP
+          initialDelaySeconds: 180
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+          limits:
+            cpu: 1
+            memory: 1Gi
+        volumeMounts:
+          - mountPath: /hive-config
+            name: hive-config
+          - mountPath: /hive-scripts
+            name: hive-scripts
+          - mountPath: /opt/jmx_exporter/config
+            name: hive-jmx-config
+          - mountPath: /var/lib/hive
+            name: hive-metastore-db-data
+          - mountPath: /hadoop/dfs/name
+            name: namenode-empty
+          - mountPath: /hadoop/dfs/data
+            name: datanode-empty
+          - mountPath: /opt/hadoop/logs
+            name: hadoop-logs
+          - mountPath: /hadoop-config
+            name: hadoop-config
+      volumes:
+        - name: hive-config
+          configMap:
+            name: hive-config
+        - name: hive-scripts
+          configMap:
+            defaultMode: 509
+            name: hive-scripts
+        - name: hive-jmx-config
+          configMap:
+            name: hive-jmx-config
+        - name: namenode-empty
+          emptyDir: {}
+        - name: datanode-empty
+          emptyDir: {}
+        - name: hadoop-logs
+          emptyDir: {}
+        - name: hive-metastore-db-data
+          emptyDir: {}
+        - name: hadoop-config
+          secret:
+            defaultMode: 420
+            secretName: hadoop-config

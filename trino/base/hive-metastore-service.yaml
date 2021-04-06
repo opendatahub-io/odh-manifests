@@ -1,15 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hive-metastore
   labels:
-    instance: presto
-    role: hive-metastore
+    app: hive
+    hive: metastore
+  name: hive-metastore
 spec:
   ports:
-    - protocol: TCP
+    - name: meta
       port: 9083
-      targetPort: 9083
+      targetPort: meta
+    - name: metrics
+      port: 8082
   selector:
-    instance: presto
-    role: hive-metastore
+    app: hive
+    hive: metastore
+  sessionAffinity: None

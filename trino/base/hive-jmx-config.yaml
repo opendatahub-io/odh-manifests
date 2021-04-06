@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: hive
+  name: hive-jmx-config
+data:
+  config.yml: "---\nlowercaseOutputName: true\nlowercaseOutputLabelNames: true\n\
+    attrNameSnakeCase: true\nwhitelistObjectNames:\n  - 'metrics:name=active_calls_*'\n\
+    \  - 'metrics:name=api_*'\n  - 'metrics:name=create_*'\n  - 'metrics:name=delete_*'\n\
+    \  - 'metrics:name=init_*'\n  - 'metrics:name=exec_*'\n  - 'metrics:name=hs2_*'\n\
+    \  - 'metrics:name=open_connections'\n  - 'metrics:name=open_operations'\nrules:\n\
+    \  - pattern: 'metrics<name=(.*)><>Value'\n    name: hive_$1\n    type: GAUGE\n\
+    \  - pattern: 'metrics<name=(.*)><>Count'\n    name: hive_$1_count\n    type:\
+    \ GAUGE\n  - pattern: 'metrics<name=(.*)><>(\\d+)thPercentile'\n    name: hive_$1\n\
+    \    type: GAUGE\n    labels:\n      quantile: \"0.$2\"\n"
