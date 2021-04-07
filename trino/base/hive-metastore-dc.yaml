@@ -28,7 +28,7 @@ spec:
           - /hive-scripts/entrypoint.sh
         env:
           - name: HIVE_LOGLEVEL
-            value: INFO
+            value: "INFO"
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
@@ -45,7 +45,7 @@ spec:
                 key: BUCKET
                 name: aws-secret
           - name: S3_DATA_DIR
-            value: data
+            value: "data"
           - name: DATABASE_USER
             valueFrom:
               secretKeyRef:
@@ -57,13 +57,13 @@ spec:
                 key: database-password
                 name: trino-db-secret
           - name: DATABASE_HOST
-            value: trino-db
+            value: "trino-db"
           - name: DATABASE_PORT
-            value: 5432
+            value: "5432"
           - name: DATABASE_NAME
-            value: trino
+            value: "trino"
           - name: DATABASE_SSLMODE
-            value: allow
+            value: "allow"
           - name: MY_MEM_REQUEST
             valueFrom:
               resourceFieldRef:
