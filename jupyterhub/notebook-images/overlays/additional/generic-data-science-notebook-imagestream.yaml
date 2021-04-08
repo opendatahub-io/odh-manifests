@@ -1,0 +1,22 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    opendatahub.io/notebook-image: "true"
+  annotations:
+    opendatahub.io/notebook-image-url: "https://github.com/thoth-station/s2i-generic-data-science-notebook"
+    opendatahub.io/notebook-image-name: "Generic Data Scient Notebook Image"
+    opendatahub.io/notebook-image-desc: "Jupyter notebook image with a set of data science libraries that advanced AI/ML notebooks will use as a base image to provide a standard for libraries avialable in all notebooks"
+  name: s2i-generic-data-science-notebook
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+  - annotations:
+      openshift.io/imported-from: quay.io/thoth-station/s2i-generic-data-science-notebook
+    from:
+      kind: DockerImage
+      name: quay.io/thoth-station/s2i-generic-data-science-notebook:v0.0.2
+    name: "v0.0.2"
+    referencePolicy:
+      type: Source
