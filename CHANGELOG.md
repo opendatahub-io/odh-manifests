@@ -48,3 +48,13 @@
 * Move the JH DeploymentConfig imageChange trigger to an overlay (#360)
 * Update README.md (#354)
 * Add oauth proxy to ODH dashboard (#350)
+
+## Release 1.0.7 (2021-04-01T13:12:44)
+### Features
+* Use secret param in JH DB for postgres pass (#362)
+* Update JSP to 0.2.2, add secrets to the role (#361)
+* point to tag reference instead of master branch (#367)
+
+## Release 1.0.8 (2021-04-08T14:52:18)
+### Features
+* Add generic data science notebook to JH deployment (#381)
