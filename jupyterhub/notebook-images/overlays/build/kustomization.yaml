@@ -4,6 +4,7 @@ bases:
 - ../../base
 resources:
 - minimal-notebook-buildconfig.yaml
+- generic-data-science-notebook-buildconfig.yaml
 - scipy-notebook-buildconfig.yaml
 - tensorflow-notebook-buildconfig.yaml
 

@@ -4,6 +4,7 @@ bases:
 - ../../base
 resources:
 - minimal-notebook-imagestream.yaml
+- generic-data-science-notebook-imagestream.yaml
 - scipy-notebook-imagestream.yaml
 - tensorflow-notebook-imagestream.yaml
 
