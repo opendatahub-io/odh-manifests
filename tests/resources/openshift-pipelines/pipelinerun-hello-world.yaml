@@ -1,0 +1,7 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: odh-test-hello-world-
+spec:
+  pipelineRef:
+    name: odh-test-hello-world
