@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: odh-test-hello-world
+spec:
+  params:
+    - name: subject
+      description: name of person to greet
+      default: ODH
+      type: string
+  steps:
+    - name: hello-world
+      image: registry.access.redhat.com/ubi8/ubi
+      command:
+        - echo
+      args:
+        - "$(params.subject), Hello World!"
