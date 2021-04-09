@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+- ../../base
+resources:
+- cuda-ubi8-build-chain.yaml
+- gpu-notebook.yaml
+
+configMapGenerator:
+- name: parameters
+  env: params.env
+generatorOptions:
+  disableNameSuffixHash: true
+
+vars:
+- name: cuda_version
+  objref:
+    kind: ConfigMap
+    name: parameters
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.cuda_version
+configurations:
+- params.yaml
