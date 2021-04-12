@@ -8,7 +8,7 @@ items:
       component.opendatahub.io/name: jupyterhub
       opendatahub.io/component: 'true'
       opendatahub.io/notebook-image: 'true'
-    name: "s2i-minimal-gpu-cuda-$(cuda_version)-notebook"
+    name: "minimal-gpu"
   spec:
     lookupPolicy:
       local: true
@@ -19,7 +19,7 @@ items:
       component.opendatahub.io/name: jupyterhub
       opendatahub.io/component: 'true'
       opendatahub.io/notebook-image: 'true'
-    name: "s2i-tensorflow-gpu-cuda-$(cuda_version)-notebook"
+    name: "tensorflow-gpu"
   spec:
     lookupPolicy:
       local: true
@@ -30,7 +30,7 @@ items:
       component.opendatahub.io/name: jupyterhub
       opendatahub.io/component: 'true'
       opendatahub.io/notebook-image: 'true'
-    name: "s2i-pytorch-gpu-cuda-$(cuda_version)-notebook"
+    name: "pytorch-gpu"
   spec:
     lookupPolicy:
       local: true
@@ -42,7 +42,7 @@ items:
     output:
       to:
         kind: ImageStreamTag
-        name: 's2i-minimal-gpu-cuda-$(cuda_version)-notebook:latest'
+        name: 'minimal-gpu:py3.8-cuda-$(cuda_version)'
     strategy:
       type: Docker
       dockerStrategy:
@@ -70,13 +70,13 @@ items:
     output:
       to:
         kind: ImageStreamTag
-        name: 's2i-tensorflow-gpu-cuda-$(cuda_version)-notebook:latest'
+        name: 'tensorflow-gpu:py3.8-cuda-$(cuda_version)'
     strategy:
       type: Source
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: 's2i-minimal-gpu-cuda-$(cuda_version)-notebook:latest'
+          name: 'minimal-gpu:py3.8-cuda-$(cuda_version)'
     source:
       type: Git
       git:
@@ -98,13 +98,13 @@ items:
     output:
       to:
         kind: ImageStreamTag
-        name: 's2i-pytorch-gpu-cuda-$(cuda_version)-notebook:latest'
+        name: 'pytorch-gpu:py3.8-cuda-$(cuda_version)'
     strategy:
       type: Source
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: 's2i-minimal-gpu-cuda-$(cuda_version)-notebook:latest'
+          name: 'minimal-gpu:py3.8-cuda-$(cuda_version)'
     source:
       type: Git
       git:
