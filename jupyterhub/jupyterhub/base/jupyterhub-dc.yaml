@@ -1,6 +1,9 @@
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
+  annotations:
+      app.openshift.io/connects-to: >-
+        [{"apiVersion":"apps.openshift.io/v1","kind":"DeploymentConfig","name":"jupyterhub-db"}]
   labels:
     app: jupyterhub
   name: jupyterhub
