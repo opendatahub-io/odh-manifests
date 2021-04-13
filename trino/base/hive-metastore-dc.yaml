@@ -29,21 +29,25 @@ spec:
         env:
           - name: HIVE_LOGLEVEL
             value: "INFO"
+          - name: S3_ENDPOINT
+            value: $(s3_endpoint_url)
+          - name: S3_ENDPOINT_URL_PREFIX
+            value: $(s3_endpoint_url_prefix)
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
                 key: AWS_ACCESS_KEY_ID
-                name: aws-secret
+                name: $(s3_credentials_secret)
           - name: AWS_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
                 key: AWS_SECRET_ACCESS_KEY
-                name: aws-secret
+                name: $(s3_credentials_secret)
           - name: S3_BUCKET_NAME
             valueFrom:
               secretKeyRef:
                 key: BUCKET
-                name: aws-secret
+                name: $(s3_credentials_secret)
           - name: S3_DATA_DIR
             value: "data"
           - name: DATABASE_USER

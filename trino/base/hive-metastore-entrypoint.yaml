@@ -67,6 +67,8 @@ data:
 
     # insert S3 bucket URI from env vars
     cat /hive-config/hive-site.xml | sed \
+      -e "s#XXX_S3ENDPOINT_URL_PREFIX_XXX#${S3_ENDPOINT_URL_PREFIX}#" \
+      -e "s#XXX_S3LOCATION_XXX#${S3_ENDPOINT}#" \
       -e "s#XXX_S3ENDPOINT_XXX#${S3_BUCKET_NAME}/${S3_DATA_DIR}#" \
       -e "s#XXX_DATABASE_USER_XXX#${DATABASE_USER}#" \
       -e "s#XXX_DATABASE_PASSWORD_XXX#${DATABASE_PASSWORD}#" \

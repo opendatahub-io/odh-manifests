@@ -44,13 +44,16 @@ spec:
                   name: $(trino_db_secret)
                   key: database-password
             - name: POSTGRESQL_DATABASE
-              value: $(trino_db_database_name)
+              valueFrom:
+                secretKeyRef:
+                  name: $(trino_db_secret)
+                  key: database-name
           resources:
             limits:
               cpu: 1
               memory: "2Gi"
             requests:
-              cpu: 1
+              cpu: 300m
               memory: "1Gi"
           volumeMounts:
             - name: "postgresql-data"

@@ -42,6 +42,13 @@ vars:
       apiVersion: v1
     fieldref:
       fieldpath: data.s3_endpoint_url
+  - name: s3_endpoint_url_prefix
+    objref:
+      name: trino-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.s3_endpoint_url_prefix
   - name: s3_credentials_secret
     objref:
       kind: ConfigMap
@@ -63,13 +70,6 @@ vars:
       kind: ConfigMap
     fieldref:
       fieldpath: data.trino_db_secret
-  - name: trino_db_database_name
-    objref:
-      name: trino-config
-      apiVersion: v1
-      kind: ConfigMap
-    fieldref:
-      fieldpath: data.trino_db_database_name
   - name: hive_metastore_cpu_request
     objref:
       name: trino-config
@@ -126,6 +126,13 @@ vars:
       kind: ConfigMap
     fieldref:
       fieldpath: data.trino_memory_limit
+  - name: trino_image
+    objref:
+      name: trino-config
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.trino_image
 
 configurations:
   - params.yaml

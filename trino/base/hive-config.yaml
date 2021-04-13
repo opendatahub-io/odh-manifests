@@ -167,7 +167,8 @@ data:
     \    <value>false</value>\n  </property>\n  <property>\n    <name>hive.metastore.schema.verification</name>\n\
     \    <value>false</value>\n  </property>\n  <property>\n    <name>hive.default.fileformat</name>\n\
     \    <value>Parquet</value>\n  </property>\n  <property>\n    <name>hive.metastore.warehouse.dir</name>\n\
-    \    <value>s3a://XXX_S3ENDPOINT_XXX/</value>\n  </property>\n        <property>\n\
+    \    <value>s3a://XXX_S3ENDPOINT_XXX/</value>\n  </property>\n        <property> <name>fs.s3a.endpoint</name>\n\
+    \    <value>XXX_S3ENDPOINT_URL_PREFIX_XXXXXX_S3LOCATION_XXX/</value>\n  </property>\n <property> \n\
     \  <name>hive.metastore.db.type</name>\n  <value>POSTGRES</value>\n  <description>\n\
     \    Expects one of [derby, oracle, mysql, mssql, postgres].\n    Type of database\
     \ used by the metastore. Information schema &amp; JDBCStorageHandler depend\

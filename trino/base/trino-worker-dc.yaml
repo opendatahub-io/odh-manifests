@@ -75,6 +75,6 @@ spec:
               mountPath: /etc/trino
             - name: trino-catalogs-volume
               mountPath: /etc/trino/catalog
-          image: trino
+          image: $(trino_image)
           args:
             - --config=/etc/trino/config-worker.properties
