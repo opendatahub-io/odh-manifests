@@ -111,6 +111,8 @@ spec:
           limits:
             memory: 1Gi
       serviceAccountName: jupyterhub-hub
+      imagePullSecrets:
+      - name: addon-managed-odh-pullsecret
       volumes:
       - configMap:
           defaultMode: 420

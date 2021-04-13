@@ -46,3 +46,5 @@ spec:
           periodSeconds: 30
           successThreshold: 1
           failureThreshold: 3
+      imagePullSecrets:
+      - name: addon-managed-odh-pullsecret
