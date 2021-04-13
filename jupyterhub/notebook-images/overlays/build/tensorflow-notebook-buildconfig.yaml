@@ -11,7 +11,8 @@ spec:
       name: s2i-tensorflow-notebook:local-build
   source:
     git:
-      uri: https://github.com/thoth-station/s2i-minimal-notebook
+      uri: https://github.com/thoth-station/s2i-tensorflow-notebook
+      ref: v0.0.2
     type: Git
   strategy:
     sourceStrategy:
