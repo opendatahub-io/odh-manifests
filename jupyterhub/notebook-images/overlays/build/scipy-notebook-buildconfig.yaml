@@ -12,6 +12,7 @@ spec:
   source:
     git:
       uri: https://github.com/thoth-station/s2i-scipy-notebook
+      ref: v0.0.2
     type: Git
   strategy:
     sourceStrategy:

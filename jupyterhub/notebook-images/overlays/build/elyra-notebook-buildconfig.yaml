@@ -8,16 +8,22 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: s2i-lab-elyra:v0.0.1
+      name: s2i-lab-elyra:v0.0.7
   source:
     git:
       uri: https://github.com/opendatahub-io/s2i-lab-elyra
+      ref: v0.0.7
     type: Git
   strategy:
     sourceStrategy:
       from:
         kind: DockerImage
         name: quay.io/thoth-station/s2i-minimal-py38-notebook
+      env:
+      - name: "ENABLE_PIPENV"
+        value: "1"
+      - name: THAMOS_RUNTIME_ENVIRONMENT
+        value: ""
     type: Source
   triggers:
   - type: ConfigChange

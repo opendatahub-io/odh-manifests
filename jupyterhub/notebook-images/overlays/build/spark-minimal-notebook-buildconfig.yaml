@@ -12,6 +12,7 @@ spec:
   source:
     git:
       uri: https://github.com/thoth-station/s2i-minimal-notebook
+      ref: v0.0.7
     type: Git
   strategy:
     sourceStrategy:
@@ -21,14 +22,6 @@ spec:
         name: quay.io/odh-jupyterhub/s2i-spark-container:spark2.4.5-1
       env:
       - name: "ENABLE_PIPENV"
-        value: "1"
-      - name: "THOTH_DRY_RUN"
-        value: "1"
-      - name: "THOTH_ADVISE"
-        value: "0"
-      - name: "THOTH_PROVENANCE_CHECK"
-        value: "0"
-      - name: "THOTH_ERROR_FALLBACK"
         value: "1"
     type: Source
   triggers:
