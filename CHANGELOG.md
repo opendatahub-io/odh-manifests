@@ -58,3 +58,18 @@
 ## Release 1.0.8 (2021-04-08T14:52:18)
 ### Features
 * Add generic data science notebook to JH deployment (#381)
+
+## Release 1.0.9 (2021-04-15T13:38:02)
+### Features
+* Update s2i-lab-elyra notebook image to v0.0.7 (#380)
+* Add JupyterHub monitoring dashboards and required cluster metrics (#316)
+* :turtle: configure buildconfig ref based on tags for stability (#384)
+* :scissors: trim the gpu image names for proper image-pull (#389)
+* add annotation (#383)
+* Add OpenShift Pipelines component (#337)
+* include new ubi8 cuda-11.0.3 supporting python3.8 notebooks (#368)
+### Bug Fixes
+* Update chromedriver version to fix selenium-based tests
+* Update JH image to fix GPU setting and CI issue (#392)
+### Improvements
+* :clipboard: annotation set with image name and python dependency details (#390)
