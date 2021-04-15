@@ -41,6 +41,10 @@ If you'd like to run a single test instead of all tests, you can
 set the TESTS_REGEX variable `TESTS_REGEX=<name of the test to run>`.  That will
 only run the test that you specify instead of all of the tests.  example: `make run TESTS_REGEX=grafana`
 
+If you have a local instance already running the operator and you'd like to skip that part
+of the install process, you can set `SKIP_OPERATOR_INSTALL=true` and that will bypass installation
+of the operator, but will still install the authentication for the jupyterhub tests.
+
 For other possible configurations, you can look in the Makefile.  There are a set of
 variables at the top that you could change to meet the needs of your particular test run.
 
