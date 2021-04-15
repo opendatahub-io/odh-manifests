@@ -18,7 +18,7 @@ spec:
       openshift.io/imported-from: quay.io/thoth-station/s2i-generic-data-science-notebook
     from:
       kind: DockerImage
-      name: quay.io/thoth-station/s2i-generic-data-science-notebook:v0.0.2
-    name: "v0.0.2"
+      name: quay.io/thoth-station/s2i-generic-data-science-notebook:v0.0.3
+    name: "v0.0.3"
     referencePolicy:
       type: Source
