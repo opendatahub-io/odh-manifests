@@ -54,12 +54,12 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: database-user
-                name: trino-db-secret
+                name: $(trino_db_secret)
           - name: DATABASE_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: database-password
-                name: trino-db-secret
+                name: $(trino_db_secret)
           - name: DATABASE_HOST
             value: "trino-db"
           - name: DATABASE_PORT
