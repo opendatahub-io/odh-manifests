@@ -5,8 +5,10 @@ commonLabels:
   app.kubernetes.io/part-of: odh-dashboard
 resources:
 - role.yaml
+- cluster-role.yaml
 - service-account.yaml
 - role-binding.yaml
+- cluster-role-binding.yaml
 - deployment.yaml
 - routes.yaml
 - service.yaml
