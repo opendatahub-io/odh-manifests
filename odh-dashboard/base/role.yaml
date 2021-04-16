@@ -19,3 +19,35 @@ rules:
       - get
       - list
       - watch
+  - apiGroups:
+      - ''
+    verbs:
+      - create
+      - delete
+      - get
+      - patch
+      - update
+      - watch
+    resources:
+      - configmaps
+      - secrets
+  - apiGroups:
+      - batch
+    verbs:
+      - create
+      - delete
+      - get
+      - patch
+      - update
+      - watch
+    resources:
+      - cronjobs
+      - jobs
+  - apiGroups:
+      - image.openshift.io
+    verbs:
+      - create
+      - get
+      - patch
+    resources:
+      - imagestreams
