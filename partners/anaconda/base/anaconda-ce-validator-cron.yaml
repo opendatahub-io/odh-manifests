@@ -1,0 +1,34 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: anaconda-ce-periodic-validator
+  namespace: redhat-ods-applications
+  labels:
+    opendatahub.io/modified: "false"
+spec:
+  schedule: "0 0 * * *"
+  concurrencyPolicy: "Replace"
+  startingDeadlineSeconds: 200
+  suspend: true
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            parent: "anaconda-ce-periodic-validator"
+        spec:
+          serviceAccount: "odh-dashboard"
+          containers:
+          - name: anaconda-ce-validator
+            image: quay.io/modh/anaconda-validator:764e6ef
+            volumeMounts:
+                - name: secret-volume
+                  mountPath: /etc/secret-volume
+                  readOnly: true
+          volumes:
+            - name: secret-volume
+              secret:
+                secretName: anaconde-ce-access
+          restartPolicy: Never
