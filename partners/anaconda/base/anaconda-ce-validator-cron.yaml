@@ -30,5 +30,5 @@ spec:
           volumes:
             - name: secret-volume
               secret:
-                secretName: anaconde-ce-access
+                secretName: anaconda-ce-access
           restartPolicy: Never
