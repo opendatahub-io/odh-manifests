@@ -4,9 +4,9 @@ metadata:
   name: seldon-operator-certified
   namespace: opendatahub
 spec:
-  channel: alpha
+  channel: stable
   installPlanApproval: Automatic
   name: seldon-operator-certified
   source: certified-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: seldon-operator.v1.2.0
+  startingCSV: seldon-operator.v1.7.0
