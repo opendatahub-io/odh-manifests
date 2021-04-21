@@ -15,7 +15,7 @@ spec:
       serviceAccount: odh-dashboard
       containers:
       - name: odh-dashboard
-        image: quay.io/modh/odh-dashboard:latest
+        image: quay.io/modh/odh-dashboard:v1.0.10
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
