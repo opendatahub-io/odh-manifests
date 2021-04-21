@@ -1,3 +1,4 @@
+---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
@@ -5,6 +6,6 @@ metadata:
   namespace: openshift-operators
 spec:
   name: strimzi-kafka-operator
-  channel: "strimzi-0.19.x"
+  channel: "strimzi-0.22.x"
   source: community-operators
   sourceNamespace: openshift-marketplace
