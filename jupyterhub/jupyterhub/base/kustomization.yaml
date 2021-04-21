@@ -12,6 +12,7 @@ resources:
 - jupyterhub-serviceaccount.yaml
 - jupyterhub-role.yaml
 - jupyterhub-rolebinding.yaml
+- jupyterhub-nodereader-rolebinding.yaml
 - jupyterhub-route.yaml
 - jupyterhub-singleuser-profiles-configmap.yaml
 - jupyterhub-singleuser-profiles-sizes-configmap.yaml
