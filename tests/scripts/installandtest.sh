@@ -26,6 +26,10 @@ if [ -z "${SKIP_INSTALL}" ]; then
     $HOME/peak/install.sh
     echo "Sleeping for 5 min to let the KfDef install settle"
     sleep 5m
+    # Save the list of events and pods that are running prior to the test run
+    oc get events --sort-by='{.lastTimestamp}' > ${ARTIFACT_DIR}/pretest-${ODHPROJECT}.events.txt
+    oc get pods -o yaml -n ${ODHPROJECT} > ${ARTIFACT_DIR}/pretest-${ODHPROJECT}.pods.yaml
+    oc get pods -o yaml -n openshift-operators > ${ARTIFACT_DIR}/pretest-openshift-operators.pods.yaml
 fi
 
 success=1
@@ -38,6 +42,9 @@ fi
 
 echo "Saving the dump of the pods logs in the artifacts directory"
 oc get pods -o yaml -n ${ODHPROJECT} > ${ARTIFACT_DIR}/${ODHPROJECT}.pods.yaml
+oc get pods -o yaml -n openshift-operators > ${ARTIFACT_DIR}/openshift-operators.pods.yaml
+echo "Saving the events in the artifacts directory"
+oc get events --sort-by='{.lastTimestamp}' > ${ARTIFACT_DIR}/${ODHPROJECT}.events.txt
 echo "Saving the logs from the opendatahub-operator pod in the artifacts directory"
 oc logs -n openshift-operators $(oc get pods -n openshift-operators -l name=opendatahub-operator -o jsonpath="{$.items[*].metadata.name}") > ${ARTIFACT_DIR}/opendatahub-operator.log 2> /dev/null || echo "No logs for openshift-operators/opendatahub-operator"
 
