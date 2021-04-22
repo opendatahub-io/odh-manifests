@@ -1,23 +1,17 @@
-
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 namespace: openshift-operators
+
 commonLabels:
   opendatahub.io/component: "true"
   component.opendatahub.io/name: grafana
-generatorOptions:
- disableNameSuffixHash: true
-configMapGenerator:
-- name: jh-sli-configmap
-  files:
-  - dashboards/jupyterhub-sli-slo.json
-- name: jh-usage-configmap
-  files:
-  - dashboards/jupyterhub-usage.json
+
+bases:
+  - ./argo-dashboards/
+  - ./jupyterhub-dashboards/
+  - ./kafka-dashboards/
+
 resources:
-- argo-dashboard.yaml
-- dashboard.yaml
 - datasource.yaml
 - grafana.yaml
-- jupyterhub-sli-dashboard.yaml
-- jupyterhub-usage-dashboard.yaml
