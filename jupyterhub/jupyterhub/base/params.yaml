@@ -1,6 +1,8 @@
 varReference:
 - path: roleRef/namespace
   kind: RoleBinding
+- path: subjects/namespace
+  kind: ClusterRoleBinding
   apiGroup: authorization.openshift.io
 - path: data
   kind: ConfigMap
