@@ -20,3 +20,13 @@ spec:
     name: "v0.0.7"
     referencePolicy:
       type: Source
+  - annotations:
+      openshift.io/imported-from: quay.io/thoth-station/s2i-lab-elyra
+    from:
+      kind: DockerImage
+      name: quay.io/thoth-station/s2i-lab-elyra:latest
+    name: "latest"
+    importPolicy:
+      scheduled: true
+    referencePolicy:
+      type: Source
