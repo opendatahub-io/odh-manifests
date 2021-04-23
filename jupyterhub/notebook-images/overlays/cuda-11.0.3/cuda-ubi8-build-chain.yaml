@@ -9,12 +9,14 @@ items:
       local: true
     tags:
     - name: latest
+      annotations: null
       from:
         kind: DockerImage
-        name: "nvcr.io/nvidia/cuda:$(cuda_version)-cudnn8-devel-ubi8"
+        name: 'nvcr.io/nvidia/cuda:$(cuda_version)-cudnn8-devel-ubi8'
+      generation: 2
       importPolicy: {}
       referencePolicy:
-        type: Local
+        type: Source
 - kind: ImageStream
   apiVersion: image.openshift.io/v1
   metadata:
@@ -22,6 +24,13 @@ items:
   spec:
     lookupPolicy:
       local: true
+    tags:
+      - name: latest
+        annotations: null
+        generation: 1
+        importPolicy: {}
+        referencePolicy:
+          type: Local
 - kind: ImageStream
   apiVersion: image.openshift.io/v1
   metadata:
@@ -29,6 +38,13 @@ items:
   spec:
     lookupPolicy:
       local: true
+    tags:
+      - name: latest
+        annotations: null
+        generation: 1
+        importPolicy: {}
+        referencePolicy:
+          type: Local
 - kind: ImageStream
   apiVersion: image.openshift.io/v1
   metadata:
@@ -36,6 +52,13 @@ items:
   spec:
     lookupPolicy:
       local: true
+    tags:
+      - name: latest
+        annotations: null
+        generation: 1
+        importPolicy: {}
+        referencePolicy:
+          type: Local
 - kind: ImageStream
   apiVersion: image.openshift.io/v1
   metadata:
@@ -43,109 +66,144 @@ items:
   spec:
     lookupPolicy:
       local: true
+    tags:
+      - name: latest
+        annotations: null
+        generation: 1
+        importPolicy: {}
+        referencePolicy:
+          type: Local
 - kind: BuildConfig
   apiVersion: build.openshift.io/v1
   metadata:
     name: "$(cuda_version)-cuda-s2i-core-ubi8"
   spec:
-    triggers:
-      - imageChange: {}
-        type: ImageChange
-    source:
-      type: Git
-      git:
-        uri: "https://github.com/sclorg/s2i-base-container"
-        ref: "master"
-      contextDir: "core/"
-    strategy:
-      type: Docker
-      dockerStrategy:
-        noCache: true
-        dockerfilePath: "Dockerfile.rhel8"
-        from:
-          kind: ImageStreamTag
-          name: nvidia-cuda-$(cuda_version):latest
+    nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: $(cuda_version)-cuda-s2i-core-ubi8:latest
+        name: '$(cuda_version)-cuda-s2i-core-ubi8:latest'
+    resources: {}
+    completionDeadlineSeconds: 1800
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 1
+    strategy:
+      type: Docker
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: 'nvidia-cuda-$(cuda_version):latest'
+        noCache: true
+        dockerfilePath: Dockerfile.rhel8
+    postCommit: {}
+    source:
+      type: Git
+      git:
+        uri: 'https://github.com/sclorg/s2i-base-container'
+        ref: master
+      contextDir: core
+    triggers:
+      - type: ImageChange
+        imageChange: {}
+    runPolicy: SerialLatestOnly
 - kind: BuildConfig
   apiVersion: build.openshift.io/v1
   metadata:
     name: "$(cuda_version)-cuda-s2i-base-ubi8"
   spec:
-    triggers:
-      - imageChange: {}
-        type: ImageChange
-    source:
-      type: Git
-      git:
-        uri: "https://github.com/sclorg/s2i-base-container"
-        ref: "master"
-      contextDir: "base/"
-    strategy:
-      type: Docker
-      dockerStrategy:
-        noCache: true
-        dockerfilePath: "Dockerfile.rhel8"
-        from:
-          kind: ImageStreamTag
-          name: $(cuda_version)-cuda-s2i-core-ubi8:latest
+    nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: $(cuda_version)-cuda-s2i-base-ubi8:latest
+        name: '$(cuda_version)-cuda-s2i-base-ubi8:latest'
+    resources: {}
+    completionDeadlineSeconds: 1800
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 1
+    strategy:
+      type: Docker
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: '$(cuda_version)-cuda-s2i-core-ubi8:latest'
+        noCache: true
+        dockerfilePath: Dockerfile.rhel8
+    postCommit: {}
+    source:
+      type: Git
+      git:
+        uri: 'https://github.com/sclorg/s2i-base-container'
+        ref: master
+      contextDir: base
+    triggers:
+      - type: ImageChange
+        imageChange: {}
+    runPolicy: SerialLatestOnly
 - kind: BuildConfig
   apiVersion: build.openshift.io/v1
   metadata:
     name: "$(cuda_version)-cuda-s2i-py38-ubi8"
   spec:
-    triggers:
-      - imageChange: {}
-        type: ImageChange
-    source:
-      type: Git
-      git:
-        uri: "https://github.com/sclorg/s2i-python-container"
-        ref: "master"
-      contextDir: "3.8/"
-    strategy:
-      type: Docker
-      dockerStrategy:
-        noCache: true
-        dockerfilePath: "Dockerfile.rhel8"
-        from:
-          kind: ImageStreamTag
-          name: $(cuda_version)-cuda-s2i-base-ubi8:latest
+    nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: $(cuda_version)-cuda-s2i-py38-ubi8:latest
+        name: '$(cuda_version)-cuda-s2i-py38-ubi8:latest'
+    resources: {}
+    completionDeadlineSeconds: 1800
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 1
+    strategy:
+      type: Docker
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: '$(cuda_version)-cuda-s2i-base-ubi8:latest'
+        noCache: true
+        dockerfilePath: Dockerfile.rhel8
+    postCommit: {}
+    source:
+      type: Git
+      git:
+        uri: 'https://github.com/sclorg/s2i-python-container'
+        ref: master
+      contextDir: '3.8'
+    triggers:
+      - type: ImageChange
+        imageChange: {}
+    runPolicy: SerialLatestOnly
 - kind: BuildConfig
   apiVersion: build.openshift.io/v1
   metadata:
     name: "$(cuda_version)-cuda-s2i-thoth-ubi8-py38"
   spec:
-    triggers:
-      - imageChange: {}
-        type: ImageChange
-    source:
-      type: Git
-      git:
-        uri: "https://github.com/thoth-station/s2i-thoth"
-        ref: "v0.26.0"
-      contextDir: "ubi8-py38/"
-    strategy:
-      type: Docker
-      dockerStrategy:
-        noCache: true
-        dockerfilePath: "Dockerfile"
-        from:
-          kind: ImageStreamTag
-          name: "$(cuda_version)-cuda-s2i-py38-ubi8:latest"
+    nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: "$(cuda_version)-cuda-s2i-thoth-ubi8-py38:latest"
+        name: '$(cuda_version)-cuda-s2i-thoth-ubi8-py38:latest'
+    resources: {}
+    completionDeadlineSeconds: 1800
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 1
+    strategy:
+      type: Docker
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: '$(cuda_version)-cuda-s2i-py38-ubi8:latest'
+        noCache: true
+        dockerfilePath: Dockerfile
+    postCommit: {}
+    source:
+      type: Git
+      git:
+        uri: 'https://github.com/thoth-station/s2i-thoth'
+        ref: v0.26.0
+      contextDir: ubi8-py38
+    triggers:
+      - type: ImageChange
+        imageChange: {}
+    runPolicy: SerialLatestOnly
 kind: List
 metadata: {}

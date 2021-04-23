@@ -72,10 +72,17 @@ items:
   metadata:
     name: s2i-minimal-gpu-cuda-$(cuda_version)-notebook
   spec:
+    nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
         name: 'minimal-gpu:py3.8-cuda-$(cuda_version)'
+    resources:
+      requests:
+        memory: 4Gi
+    completionDeadlineSeconds: 1800
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 1
     strategy:
       type: Docker
       dockerStrategy:
@@ -84,70 +91,81 @@ items:
           name: '$(cuda_version)-cuda-s2i-thoth-ubi8-py38:latest'
         noCache: true
         dockerfilePath: Dockerfile
+    postCommit: {}
     source:
       type: Git
       git:
-        ref: python38
         uri: 'https://github.com/thoth-station/s2i-minimal-notebook'
+        ref: python38
     triggers:
-      - type: ConfigChange
       - type: ImageChange
-    resources:
-      requests:
-        memory: 4Gi
+        imageChange: {}
+    runPolicy: SerialLatestOnly
 - kind: BuildConfig
   apiVersion: build.openshift.io/v1
   metadata:
     name: s2i-tensorflow-gpu-cuda-$(cuda_version)-notebook
   spec:
+    nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
         name: 'tensorflow-gpu:py3.8-cuda-$(cuda_version)'
+    resources:
+      limits:
+        memory: 8Gi
+      requests:
+        memory: 6Gi
+    completionDeadlineSeconds: 1800
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 1
     strategy:
       type: Source
       sourceStrategy:
         from:
           kind: ImageStreamTag
           name: 'minimal-gpu:py3.8-cuda-$(cuda_version)'
+    postCommit: {}
     source:
       type: Git
       git:
-        ref: python38
         uri: 'https://github.com/thoth-station/s2i-tensorflow-gpu-notebook'
+        ref: python38
     triggers:
-      - type: ConfigChange
       - type: ImageChange
-    resources:
-      limits:
-        memory: 8Gi
-      requests:
-        memory: 6Gi
+        imageChange: {}
+    runPolicy: SerialLatestOnly
 - kind: BuildConfig
   apiVersion: build.openshift.io/v1
   metadata:
     name: s2i-pytorch-gpu-cuda-$(cuda_version)-notebook
   spec:
+    nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
         name: 'pytorch-gpu:py3.8-cuda-$(cuda_version)'
+    resources:
+      limits:
+        memory: 8Gi
+      requests:
+        memory: 6Gi
+    completionDeadlineSeconds: 1800
+    successfulBuildsHistoryLimit: 1
+    failedBuildsHistoryLimit: 1
     strategy:
       type: Source
       sourceStrategy:
         from:
           kind: ImageStreamTag
           name: 'minimal-gpu:py3.8-cuda-$(cuda_version)'
+    postCommit: {}
     source:
       type: Git
       git:
-        ref: python38
         uri: 'https://github.com/thoth-station/s2i-pytorch-notebook'
+        ref: python38
     triggers:
-      - type: ConfigChange
       - type: ImageChange
-    resources:
-      limits:
-        memory: 8Gi
-      requests:
-        memory: 6Gi
+        imageChange: {}
+    runPolicy: SerialLatestOnly
