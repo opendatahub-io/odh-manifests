@@ -1,0 +1,149 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- aws-secret.yaml
+- trino-db-secret.yaml
+- trino-db-pvc.yaml
+- trino-db-dc.yaml
+- trino-db-service.yaml
+- hive-metastore-dc.yaml
+- hive-metastore-service.yaml
+- hive-metastore-entrypoint.yaml
+- hive-db-secret.yaml
+- hadoop-config.yaml
+- hive-config.yaml
+- hive-jmx-config.yaml
+- trino-config-secret.yaml
+- trino-catalog-secret.yaml
+- trino-coordinator-dc.yaml
+- trino-service.yaml
+- trino-route.yaml
+- trino-worker-dc.yaml
+
+commonLabels:
+  opendatahub.io/component: "true"
+  component.opendatahub.io/name: "trino"
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: trino-config
+    envs:
+      - params.env
+
+vars:
+  - name: s3_endpoint_url
+    objref:
+      name: trino-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.s3_endpoint_url
+  - name: s3_endpoint_url_prefix
+    objref:
+      name: trino-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.s3_endpoint_url_prefix
+  - name: s3_credentials_secret
+    objref:
+      kind: ConfigMap
+      apiVersion: v1
+      name: trino-config
+    fieldref:
+      fieldpath: data.s3_credentials_secret
+  - name: trino_environment
+    objref:
+      kind: ConfigMap
+      apiVersion: v1
+      name: trino-config
+    fieldref:
+      fieldpath: data.trino_environment
+  - name: trino_db_secret
+    objref:
+      name: trino-config
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.trino_db_secret
+  - name: hive_metastore_cpu_request
+    objref:
+      name: trino-config
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.hive_metastore_cpu_request
+  - name: hive_metastore_cpu_limit
+    objref:
+      name: trino-config
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.hive_metastore_cpu_limit
+  - name: hive_metastore_memory_request
+    objref:
+      name: trino-config
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.hive_metastore_memory_request
+  - name: hive_metastore_memory_limit
+    objref:
+      name: trino-config
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.hive_metastore_memory_limit
+  - name: trino_cpu_request
+    objref:
+      name: trino-config
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.trino_cpu_request
+  - name: trino_cpu_limit
+    objref:
+      name: trino-config
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.trino_cpu_limit
+  - name: trino_memory_request
+    objref:
+      name: trino-config
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.trino_memory_request
+  - name: trino_memory_limit
+    objref:
+      name: trino-config
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.trino_memory_limit
+  - name: trino_image
+    objref:
+      name: trino-config
+      apiVersion: v1
+      kind: ConfigMap
+    fieldref:
+      fieldpath: data.trino_image
+
+configurations:
+  - params.yaml
+
+images:
+  - name: postgresql
+    newName: registry.redhat.io/rhel8/postgresql-96
+    newTag: latest
+  - name: hive-metastore
+    newName: quay.io/cloudservices/ubi-hive
+    newTag: 2.3.3-002
+  - name: trino
+    newName: quay.io/opendatahub/trino
+    newTag: latest

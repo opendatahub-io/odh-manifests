@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: trino-db
+  labels:
+    app: trino
+  annotations:
+    template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgresql")].port}
+spec:
+  ports:
+    - name: postgresql
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    deployment: trino-db

@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trino-db
+  labels:
+    app: trino
+  annotations:
+    template.alpha.openshift.io/wait-for-ready: "true"
+spec:
+  selector:
+    matchLabels:
+      deployment: trino-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        deployment: trino-db
+    spec:
+      containers:
+        - name: postgresql
+          image: postgresql
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+                - "/usr/libexec/check-container"
+          livenessProbe:
+            exec:
+              command:
+                - "/usr/libexec/check-container"
+                - "--live"
+          env:
+            - name: POSTGRESQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: $(trino_db_secret)
+                  key: database-user
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: $(trino_db_secret)
+                  key: database-password
+            - name: POSTGRESQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: $(trino_db_secret)
+                  key: database-name
+          resources:
+            limits:
+              cpu: 1
+              memory: "2Gi"
+            requests:
+              cpu: 300m
+              memory: "1Gi"
+          volumeMounts:
+            - name: "postgresql-data"
+              mountPath: "/var/lib/pgsql/data"
+          terminationMessagePath: "/dev/termination-log"
+          imagePullPolicy: IfNotPresent
+      volumes:
+        - name: "postgresql-data"
+          persistentVolumeClaim:
+            claimName: trino-db-volume

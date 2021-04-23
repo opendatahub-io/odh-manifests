@@ -1,0 +1,24 @@
+---
+varReference:
+  - path: stringData/config-worker.properties
+    kind: Secret
+  - path: stringData/hive.properties
+    kind: Secret
+  - path: stringData/node.properties
+    kind: Secret
+  - path: metadata/annotations/volume.beta.kubernetes.io\/storage-class
+    kind: PersistentVolumeClaim
+  - path: spec/template/spec/containers[]/env[]/valueFrom/secretKeyRef/name
+    kind: Deployment
+  - path: spec/template/spec/containers[]/resources/requests/cpu
+    kind: Deployment
+  - path: spec/template/spec/containers[]/resources/limits/cpu
+    kind: Deployment
+  - path: spec/template/spec/containers[]/resources/requests/memory
+    kind: Deployment
+  - path: spec/template/spec/containers[]/resources/limits/memory
+    kind: Deployment
+  - path: spec/template/spec/containers[]/image
+    kind: Deployment
+  - path: spec/template/spec/containers[]/env[]/valueFrom/secretKeyRef/name
+    kind: StatefulSet

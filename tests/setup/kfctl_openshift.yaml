@@ -109,6 +109,22 @@ spec:
         name: manifests
         path: thriftserver/thriftserver
     name: thriftserver
+  - kustomizeConfig:
+      parameters:
+      - name: s3_endpoint_url
+        value: s3.odh.com
+      - name: trino_cpu_limit
+        value: 500m
+      - name: hive_metastore_cpu_limit
+        value: 500m
+      - name: trino_memory_request
+        value: 250Mi
+      - name: trino_memory_limit
+        value: 1Gi
+      repoRef:
+        name: manifests
+        path: trino
+    name: trino
   # strimzi/kafka moved to bottom due to strange slowness in our test cluster
   # moving it down in the order seems to avoid the slowness
   - kustomizeConfig:

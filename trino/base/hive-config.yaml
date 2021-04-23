@@ -1,0 +1,189 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hive-config
+data:
+  hive-exec-log4j2.properties: 'status = INFO
+
+    name = HiveLog4j2
+
+    packages = org.apache.hadoop.hive.ql.log
+
+
+    # list of properties
+
+    property.hive.log.level = INFO
+
+    property.hive.root.logger = console
+
+    property.hive.log.dir = ${sys:java.io.tmpdir}/${sys:user.name}
+
+    property.hive.log.file = hive.log
+
+
+    # list of all appenders
+
+    appenders = console
+
+
+    # console appender
+
+    appender.console.type = Console
+
+    appender.console.name = console
+
+    appender.console.target = SYSTEM_ERR
+
+    appender.console.layout.type = PatternLayout
+
+    appender.console.layout.pattern = %d{yy/MM/dd HH:mm:ss} [%t]: %p %c{2}: %m%n
+
+
+    # list of all loggers
+
+    loggers = NIOServerCnxn, ClientCnxnSocketNIO, DataNucleus, Datastore, JPOX
+
+
+    logger.NIOServerCnxn.name = org.apache.zookeeper.server.NIOServerCnxn
+
+    logger.NIOServerCnxn.level = WARN
+
+
+    logger.ClientCnxnSocketNIO.name = org.apache.zookeeper.ClientCnxnSocketNIO
+
+    logger.ClientCnxnSocketNIO.level = WARN
+
+
+    logger.DataNucleus.name = DataNucleus
+
+    logger.DataNucleus.level = ERROR
+
+
+    logger.Datastore.name = Datastore
+
+    logger.Datastore.level = ERROR
+
+
+    logger.JPOX.name = JPOX
+
+    logger.JPOX.level = ERROR
+
+
+    # root logger
+
+    rootLogger.level = ${sys:hive.log.level}
+
+    rootLogger.appenderRefs = root
+
+    rootLogger.appenderRef.root.ref = ${sys:hive.root.logger}
+
+    '
+  hive-log4j2.properties: 'status = INFO
+
+    name = HiveLog4j2
+
+    packages = org.apache.hadoop.hive.ql.log
+
+
+    # list of properties
+
+    property.hive.log.level = INFO
+
+    property.hive.root.logger = console
+
+    property.hive.log.dir = ${sys:java.io.tmpdir}/${sys:user.name}
+
+    property.hive.log.file = hive.log
+
+
+    # list of all appenders
+
+    appenders = console
+
+
+    # console appender
+
+    appender.console.type = Console
+
+    appender.console.name = console
+
+    appender.console.target = SYSTEM_ERR
+
+    appender.console.layout.type = PatternLayout
+
+    appender.console.layout.pattern = %d{yy/MM/dd HH:mm:ss} [%t]: %p %c{2}: %m%n
+
+
+    # list of all loggers
+
+    loggers = NIOServerCnxn, ClientCnxnSocketNIO, DataNucleus, Datastore, JPOX
+
+
+    logger.NIOServerCnxn.name = org.apache.zookeeper.server.NIOServerCnxn
+
+    logger.NIOServerCnxn.level = WARN
+
+
+    logger.ClientCnxnSocketNIO.name = org.apache.zookeeper.ClientCnxnSocketNIO
+
+    logger.ClientCnxnSocketNIO.level = WARN
+
+
+    logger.DataNucleus.name = DataNucleus
+
+    logger.DataNucleus.level = ERROR
+
+
+    logger.Datastore.name = Datastore
+
+    logger.Datastore.level = ERROR
+
+
+    logger.JPOX.name = JPOX
+
+    logger.JPOX.level = ERROR
+
+
+    # root logger
+
+    rootLogger.level = ${sys:hive.log.level}
+
+    rootLogger.appenderRefs = root
+
+    rootLogger.appenderRef.root.ref = ${sys:hive.root.logger}
+
+    '
+  hive-site.xml: "<configuration>\n  <property>\n    <name>hive.server2.enable.doAs</name>\n\
+    \    <value>false</value>\n  </property>\n  <property>\n    <name>hive.server2.use.SSL</name>\n\
+    \    <value>false</value>\n  </property>\n  <property>\n    <name>hive.server2.authentication</name>\n\
+    \    <value>NOSASL</value>\n  </property>\n  <property>\n    <name>hive.metastore.metrics.enabled</name>\n\
+    \    <value>true</value>\n  </property>\n  <property>\n    <name>hive.server2.metrics.enabled</name>\n\
+    \    <value>true</value>\n  </property>\n  <property>\n    <name>hive.service.metrics.reporter</name>\n\
+    \    <value>JMX</value>\n  </property>\n  <property>\n    <name>hive.server2.thrift.bind.host</name>\n\
+    \    <value>0.0.0.0</value>\n  </property>\n  <property>\n    <name>hive.metastore.thrift.bind.host</name>\n\
+    \    <value>0.0.0.0</value>\n  </property>\n  <property>\n    <name>hive.metastore.uris</name>\n\
+    \    <value>thrift://hive-metastore-0:9083,thrift://hive-metastore-1:9083,thrift://hive-metastore-2:9083</value>\n\
+    \  </property>\n  <property>\n    <name>datanucleus.schema.autoCreateAll</name>\n\
+    \    <value>false</value>\n  </property>\n  <property>\n    <name>hive.metastore.schema.verification</name>\n\
+    \    <value>false</value>\n  </property>\n  <property>\n    <name>hive.default.fileformat</name>\n\
+    \    <value>Parquet</value>\n  </property>\n  <property>\n    <name>hive.metastore.warehouse.dir</name>\n\
+    \    <value>s3a://XXX_S3ENDPOINT_XXX/</value>\n  </property>\n        <property> <name>fs.s3a.endpoint</name>\n\
+    \    <value>XXX_S3ENDPOINT_URL_PREFIX_XXXXXX_S3LOCATION_XXX/</value>\n  </property>\n <property> \n\
+    \  <name>hive.metastore.db.type</name>\n  <value>POSTGRES</value>\n  <description>\n\
+    \    Expects one of [derby, oracle, mysql, mssql, postgres].\n    Type of database\
+    \ used by the metastore. Information schema &amp; JDBCStorageHandler depend\
+    \ on it.\n  </description>\n  </property>\n  <property>\n    <name>javax.jdo.option.ConnectionUserName</name>\n\
+    \    <value>XXX_DATABASE_USER_XXX</value>\n    <description>Username to use\
+    \ against metastore database</description>\n  </property>\n  <property>\n  \
+    \  <name>javax.jdo.option.ConnectionPassword</name>\n    <value>XXX_DATABASE_PASSWORD_XXX</value>\n\
+    \    <description>password to use against metastore database</description>\n\
+    \  </property>\n  <property>\n    <name>javax.jdo.option.ConnectionURL</name>\n\
+    \    <value>jdbc:XXX_DATABASE_CONNECT_URL_XXX</value>\n    <description>\n \
+    \     JDBC connect string for a JDBC metastore.\n      To use SSL to encrypt/authenticate\
+    \ the connection, provide database-specific SSL flag in the connection URL.\n\
+    \      For example, jdbc:postgresql://myhost/db?ssl=true for postgres database.\n\
+    \    </description>\n  </property>\n  <property>\n    <name>javax.jdo.option.ConnectionDriverName</name>\n\
+    \    <value>org.postgresql.Driver</value>\n    <description>Driver class name\
+    \ for a JDBC metastore</description>\n  </property>\n  <property>\n    <name>hive.cluster.delegation.token.store.class</name>\n\
+    \    <value>org.apache.hadoop.hive.thrift.DBTokenStore</value>\n  </property>\n\
+    </configuration>\n"

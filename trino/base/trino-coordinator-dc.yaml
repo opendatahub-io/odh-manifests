@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trino-coordinator
+  labels:
+    instance: trino
+    role: trino-coordinator
+spec:
+  selector:
+    matchLabels:
+      instance: trino
+      role: trino-coordinator
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        instance: trino
+        role: trino-coordinator
+    spec:
+      volumes:
+        - name: trino-config-volume
+          secret:
+            secretName: trino-config
+            defaultMode: 420
+            items:
+              - key: config-coordinator.properties
+                path: config-coordinator.properties
+              - key: jvm.config
+                path: jvm.config
+              - key: log.properties
+                path: log.properties
+              - key: node.properties
+                path: node.properties
+        - name: trino-catalogs-volume
+          secret:
+            secretName: trino-catalog
+            defaultMode: 420
+            items:
+              - key: hive.properties
+                path: hive.properties
+      containers:
+        - resources:
+            requests:
+              cpu: $(trino_cpu_request)
+              memory: $(trino_memory_request)
+            limits:
+              cpu: $(trino_cpu_limit)
+              memory: $(trino_memory_limit)
+          name: trino-coordinator
+          command:
+            - /usr/lib/trino/bin/run-trino
+          env:
+            - name: POD_ID
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.uid
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: $(s3_credentials_secret)
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: $(s3_credentials_secret)
+                  key: AWS_SECRET_ACCESS_KEY
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: trino-config-volume
+              mountPath: /etc/trino
+            - name: trino-catalogs-volume
+              mountPath: /etc/trino/catalog
+          image: $(trino_image)
+          args:
+            - --config=/etc/trino/config-coordinator.properties
