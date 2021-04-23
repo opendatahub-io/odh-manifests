@@ -22,7 +22,7 @@ spec:
           serviceAccount: "odh-dashboard"
           containers:
           - name: anaconda-ce-validator
-            image: quay.io/modh/anaconda-validator:764e6ef
+            image: quay.io/modh/anaconda-validator:latest
             volumeMounts:
                 - name: secret-volume
                   mountPath: /etc/secret-volume
