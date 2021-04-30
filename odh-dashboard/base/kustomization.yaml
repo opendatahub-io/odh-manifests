@@ -12,3 +12,4 @@ resources:
 - deployment.yaml
 - routes.yaml
 - service.yaml
+- rhodsquickstartcrd.yaml
