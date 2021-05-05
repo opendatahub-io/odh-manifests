@@ -83,3 +83,8 @@
 ### Improvements
 * refactor into folders (#400)
 * Split the JSP configmap into profiles and sizes (#398)
+
+## Release 1.0.11 (2021-05-05T15:53:51)
+### Features
+* Update elyra notebook image to v0.0.8 (#419)
+* Add Trino kustomize manifests (#373)
