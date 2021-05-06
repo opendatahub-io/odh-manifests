@@ -73,3 +73,18 @@
 * Update JH image to fix GPU setting and CI issue (#392)
 ### Improvements
 * :clipboard: annotation set with image name and python dependency details (#390)
+
+## Release 1.0.10 (2021-04-22T13:31:08)
+### Features
+* Image details set in annotation for gpu images (#408)
+* Update Strimzi Kafka Operator Subscription to v0.22.x Update Kafka CR (#405)
+* Update JupyterHub to v0.2.8 (#406)
+* Update OpenShift Pipelines starting version to v1.3.1 (#402)
+### Improvements
+* refactor into folders (#400)
+* Split the JSP configmap into profiles and sizes (#398)
+
+## Release 1.0.11 (2021-05-05T15:53:51)
+### Features
+* Update elyra notebook image to v0.0.8 (#419)
+* Add Trino kustomize manifests (#373)
