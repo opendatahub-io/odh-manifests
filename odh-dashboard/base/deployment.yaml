@@ -15,7 +15,7 @@ spec:
       serviceAccount: odh-dashboard
       containers:
       - name: odh-dashboard
-        image: quay.io/opendatahub/odh-dashboard:v1.0
+        image: quay.io/modh/odh-dashboard:v1.0.11
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -46,3 +46,5 @@ spec:
           periodSeconds: 30
           successThreshold: 1
           failureThreshold: 3
+      imagePullSecrets:
+      - name: addon-managed-odh-pullsecret
