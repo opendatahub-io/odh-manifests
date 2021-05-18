@@ -2,10 +2,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: superset-data
-  namespace: opendatahub
   labels:
-    opendatahub.io/component: "true"
-    component.opendatahub.io/name: superset
+    app: superset
 spec:
   accessModes:
     - ReadWriteOnce

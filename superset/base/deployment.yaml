@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: superset
+  labels:
+    app: superset
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+    deployment: superset
+  template:
+    metadata:
+      labels:
+        app: superset
+        deployment: superset
+    spec:
+      initContainers:
+      - name: superset-init
+        image: $(SUPERSET_IMAGE)
+        command: ['sh', '-c', "sleep 30; superset-init --username $(SUPERSET_ADMIN_USER) --firstname $(SUPERSET_ADMIN_FNAME) --lastname $(SUPERSET_ADMIN_LNAME) --email $(SUPERSET_ADMIN_EMAIL) --password $(SUPERSET_ADMIN_PASSWORD)"]
+        imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /etc/superset
+            name: superset-config
+      containers:
+      - name: superset
+        envFrom:
+          - secretRef:
+              name: superset
+        image: $(SUPERSET_IMAGE)
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8088
+            protocol: TCP
+        volumeMounts:
+          - mountPath: /etc/superset
+            name: superset-config
+        resources:
+          requests:
+            cpu: $(SUPERSET_CPU_REQUESTS)
+            memory: $(SUPERSET_MEMORY_REQUESTS)
+          limits:
+            cpu: $(SUPERSET_CPU_LIMITS)
+            memory: $(SUPERSET_MEMORY_LIMITS)
+      volumes:
+        - name: superset-config
+          secret:
+            secretName: superset-config
+            defaultMode: 420
+            items:
+              - key: superset_config.py
+                path: superset_config.py

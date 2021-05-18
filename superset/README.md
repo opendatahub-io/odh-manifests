@@ -1,12 +1,10 @@
 # Apache Superset
 
 Apache Superset component installs Apache Superset tool which provides a portal for business intelligence. It provides tools for exploring and visualizing datasets and creating business intelligence dashboards. Superset can also connect to SQL databases for data access. For more information please visit [Apache Superset](https://superset.incubator.apache.org/)  
- 
+
 ### Folders
 There is one main folder in the Superset component
 1. base: contains all the necessary yaml files to install Superset
-
-
 
 ### Installation
 To install Superset add the following to the `kfctl` yaml file.
@@ -27,7 +25,5 @@ By default the user and password to the Superset portal is admin/admin. You can 
 
 ### Superset Database Initialization
 
-Prior to running, Superset's database must be initialized. This is handled via the `superset-db-init` Kubernetes
-job. Upon deployment, this job will be created and run once. There will likely be a brief period of time that
-the Superset container will fail before the initialization completes. Once this is done, the Superset pod should
-start running without intervention.
+Prior to running, Superset's database must be initialized. This is handled via the `superset-init` initContainer. Once this is done, the Superset pod should
+start running without intervention. If the database is already initialized the initContainer just checks if everything is as expected and finishes with success.

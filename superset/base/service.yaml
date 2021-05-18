@@ -2,11 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: superset
-  namespace: opendatahub
   labels:
     app: superset
-    opendatahub.io/component: "true"
-    component.opendatahub.io/name: superset
 spec:
   ports:
     - name: 8088-tcp
@@ -14,5 +11,5 @@ spec:
       protocol: TCP
       targetPort: 8088
   selector:
-    deploymentconfig: superset
+    deployment: superset
   type: ClusterIP
