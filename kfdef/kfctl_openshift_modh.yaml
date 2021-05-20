@@ -10,20 +10,12 @@ spec:
         name: manifests
         path: odh-common
     name: odh-common
+  #Note: AI Library components requires seldon do be deployed first, make sure to place seldon before AIlibrary
   - kustomizeConfig:
       repoRef:
         name: manifests
         path: odhseldon/cluster
     name: odhseldon
-  - kustomizeConfig:
-      parameters:
-      # Note: The admin username is admin
-      - name: SUPERSET_ADMIN_PASSWORD
-        value: admin
-      repoRef:
-        name: manifests
-        path: superset
-    name: superset
   - kustomizeConfig:
       parameters:
       - name: namespace
@@ -50,11 +42,6 @@ spec:
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: radanalyticsio/spark/cluster
-    name: radanalyticsio-spark-cluster
-  - kustomizeConfig:
-      repoRef:
-        name: manifests
         path: prometheus/cluster
     name: prometheus-cluster
   - kustomizeConfig:
@@ -72,29 +59,12 @@ spec:
     name: jupyterhub
   - kustomizeConfig:
       overlays:
-        - jupyterhub-deployment-patch
-      repoRef:
-        name: kf-jupyterhub-patch
-        path: jupyterhub/jupyterhub/overrides
-    name: jupyterhub
-  - kustomizeConfig:
-      overlays:
       #- cuda
       - additional
       repoRef:
         name: manifests
         path: jupyterhub/notebook-images
     name: notebook-images
-  - kustomizeConfig:
-      repoRef:
-        name: manifests
-        path: airflow/operator
-    name: airflow-operator
-  - kustomizeConfig:
-      repoRef:
-        name: manifests
-        path: airflow/cluster
-    name: airflow-cluster
   - kustomizeConfig:
       repoRef:
         name: manifests
@@ -105,16 +75,7 @@ spec:
         name: manifests
         path: odhargo/odhargo
     name: odhargo
-  - kustomizeConfig:
-      repoRef:
-        name: manifests
-        path: odh-dashboard
-    name: odh-dashboard
   repos:
-  - name: kf-manifests
-    uri: https://github.com/kubeflow/manifests/archive/v1.2-branch.tar.gz
   - name: manifests
-    uri: https://github.com/opendatahub-io/odh-manifests/tarball/master
-  - name: kf-jupyterhub-patch
     uri: https://github.com/red-hat-data-services/odh-manifests/tarball/master
   version: master

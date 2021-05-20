@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rhods-jupyterhub-ui
+  labels:
+    jupyterhub: singleuser-profiles
+data:
+  jupyterhub-singleuser-profiles.yaml: |
+      ui:
+        gpuConfig:
+          enabled: true
+          type: dropdown
+          gpuDropdown:
+            start: 0
+        envVarConfig:
+          enabled: true
+          categories:
+          - name: AWS
+            variables:
+            - name: AWS_ACCESS_KEY_ID
+              type: password
+            - name: AWS_SECRET_ACCESS_KEY
+              type: password
