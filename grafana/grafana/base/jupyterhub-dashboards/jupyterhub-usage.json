@@ -325,10 +325,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "(sum(rate(container_cpu_usage_seconds_total{namespace=\"$namespace\", container!=\"POD\", pod=~\"jupyterhub-nb.*\"}[5m])) by(pod,container))*100",
+          "expr": "(sum(rate(container_cpu_usage_seconds_total{namespace=\"$namespace\", container=\"notebook\", pod=~\"jupyterhub-nb.*\"}[5m])) by(pod,container))*100",
           "hide": false,
           "interval": "",
-          "legendFormat": "{{container}} in {{pod}}",
+          "legendFormat": "{{{{pod}}",
           "refId": "A"
         }
       ],
@@ -352,7 +352,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:1401",
           "format": "none",
           "label": null,
           "logBase": 1,
@@ -361,7 +360,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:1402",
           "format": "percent",
           "label": null,
           "logBase": 1,
@@ -455,7 +453,7 @@
           "refId": "A"
         },
         {
-          "expr": "(sum(rate(container_cpu_usage_seconds_total{container!=\"POD\", namespace=\"$namespace\", pod=~\"jupyterhub-nb-$user_id\"}[5m])))*100",
+          "expr": "(sum(rate(container_cpu_usage_seconds_total{container=\"notebook\", namespace=\"$namespace\", pod=~\"jupyterhub-nb-$user_id\"}[5m])))*100",
           "hide": false,
           "interval": "",
           "legendFormat": "pod usage",
@@ -469,7 +467,7 @@
           "refId": "C"
         },
         {
-          "expr": "rate(container_cpu_cfs_throttled_seconds_total{container!=\"POD\", namespace=\"$namespace\", pod=~\"jupyterhub-nb-$user_id\", prometheus_replica=\"prometheus-k8s-0\"}[5m])",
+          "expr": "rate(container_cpu_cfs_throttled_seconds_total{container=\"notebook\", namespace=\"$namespace\", pod=~\"jupyterhub-nb-$user_id\", prometheus_replica=\"prometheus-k8s-0\"}[5m])",
           "hide": false,
           "interval": "",
           "legendFormat": "pod throttle",
@@ -496,7 +494,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:239",
           "format": "none",
           "label": null,
           "logBase": 1,
@@ -505,7 +502,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:240",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -605,7 +601,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(container_memory_working_set_bytes{container!=\"\", namespace=\"$namespace\", pod=~\"jupyterhub-nb.*\"}) by(pod)",
+          "expr": "sum(container_memory_working_set_bytes{container=\"notebook\", namespace=\"$namespace\", pod=~\"jupyterhub-nb.*\"}) by(pod)",
           "interval": "",
           "legendFormat": "{{pod}}",
           "refId": "A"
@@ -631,7 +627,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:549",
           "format": "decbytes",
           "label": null,
           "logBase": 1,
@@ -640,7 +635,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:550",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -732,7 +726,7 @@
           "refId": "A"
         },
         {
-          "expr": "sum(container_memory_working_set_bytes{container!=\"\", namespace=\"$namespace\", pod=~\"jupyterhub-nb-$user_id\"})",
+          "expr": "sum(container_memory_working_set_bytes{container=\"notebook\", namespace=\"$namespace\", pod=~\"jupyterhub-nb-$user_id\"})",
           "hide": false,
           "interval": "",
           "legendFormat": "pod memory usage",
@@ -765,7 +759,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:239",
           "format": "decbytes",
           "label": null,
           "logBase": 1,
@@ -774,7 +767,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:240",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -886,6 +878,6 @@
   },
   "timezone": "",
   "title": "JupyterHub Usage",
-  "uid": "YuYfkHYMk",
-  "version": 1
+  "uid": "24cc5f554da78f3ca60a40f190f7e23203f7d847",
+  "version": 6
 }
