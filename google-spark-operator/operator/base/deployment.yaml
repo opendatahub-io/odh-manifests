@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: spark-operator
+    app.kubernetes.io/name: spark-operator
+    app.kubernetes.io/version: v1beta2-1.2.3-3.1.1
+  name: spark-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: spark-operator
+      app.kubernetes.io/name: spark-operator
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "10254"
+        prometheus.io/scrape: "true"
+      labels:
+        app.kubernetes.io/instance: spark-operator
+        app.kubernetes.io/name: spark-operator
+    spec:
+      containers:
+        - name: sparkoperator
+          image: gcr.io/spark-operator/spark-operator:v1beta2-1.2.3-3.1.1
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            {}
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: /etc/webhook-certs
+          ports:
+            - name: metrics
+              containerPort: 10254
+              protocol: TCP
+          args:
+            - -v=2
+            - -namespace=
+            - -ingress-url-format=
+            - -controller-threads=10
+            - -resync-interval=30
+            - -logtostderr
+            - -enable-batch-scheduler=false
+            - -label-selector-filter=
+            - -enable-metrics=true
+            - -metrics-labels=app_type
+            - -metrics-port=10254
+            - -metrics-endpoint=/metrics
+            - -metrics-prefix=
+            - -enable-webhook=true
+            - -webhook-svc-namespace=$(namespace)
+            - -webhook-port=8443
+            - -webhook-svc-name=spark-operator-webhook
+            - -webhook-config-name=spark-operator-webhook-config
+            - -webhook-namespace-selector=
+            - -enable-resource-quota-enforcement=true
+      serviceAccountName: spark-operator
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: spark-webhook-certs
+            defaultMode: 420
