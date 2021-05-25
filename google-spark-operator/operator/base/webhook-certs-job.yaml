@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: main
-          image: 'gcr.io/spark-operator/spark-operator:v1beta2-1.2.3-3.1.1'
+          image: 'quay.io/opendatahub/google-spark-operator:v1beta2-1.2.3-3.1.1'
           command:
             - /usr/bin/gencerts.sh
             - '-n'
