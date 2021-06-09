@@ -6,7 +6,6 @@ resources:
 - jupyterhub-db-pvc.yaml
 - jupyterhub-db-dc.yaml
 - jupyterhub-db-service.yaml
-- jupyterhub-img-imagestream.yaml
 - jupyterhub-dc.yaml
 - jupyterhub-service.yaml
 - jupyterhub-serviceaccount.yaml

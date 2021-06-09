@@ -4,9 +4,18 @@ bases:
 - ../../base
 resources:
 - jupyterhub-imagestream.yaml
+- jupyterhub-img-imagestream.yaml
 - jupyterhub-buildconfig.yaml
 - jupyterhub-dh-buildconfig.yaml
 
 commonLabels:
   opendatahub.io/component: "true"
   component.opendatahub.io/name: jupyterhub
+
+patchesJson6902:
+  - path: jupyterhub-dc.yaml
+    target:
+      group: apps.openshift.io
+      version: v1
+      kind: DeploymentConfig
+      name: jupyterhub

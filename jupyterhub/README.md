@@ -59,10 +59,6 @@ Contains build manifests for JupyterHub images.
 
 Customizes JupyterHub to use a specific `StorageClass` for PVCs, see `storage_class` parameter.
 
-#### trigger-imagechange
-
-Adds an `imageChange` trigger to the JupyterHub DeploymentConfig to enable automatic redeployment of the JupterHub server when the `jupyterhub-img` `ImagestreamTag` is updated
-
 ## Notebook Images
 
 Contains manifests for Jupyter notebook images compatible with JupyterHub on OpenShift.
