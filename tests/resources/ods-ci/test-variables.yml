@@ -1,0 +1,15 @@
+BROWSER:
+  NAME: headlesschrome
+  # List of Chrome options - https://peter.sh/experiments/chromium-command-line-switches/
+  # --disable-dev-shm-usage  and --no-sandbox are required for running chromedriver in a container
+  OPTIONS: add_argument("--ignore-certificate-errors");add_argument("window-size=1920,1024");add_argument("--disable-dev-shm-usage");add_argument("--no-sandbox")
+OCP_CONSOLE_URL: "http://console-openshift-console.apps.my-cluster.test.redhat.com/"
+ODH_DASHBOARD_URL: "http://odh-dashboard-opendatahub.apps.my-cluster.test.redhat.com/"
+TEST_USER:
+  AUTH_TYPE: htpasswd-provider
+  USERNAME: admin
+  PASSWORD: admin
+OCP_ADMIN_USER:
+  AUTH_TYPE: "htpasswd-provider"
+  USERNAME: admin
+  PASSWORD: admin

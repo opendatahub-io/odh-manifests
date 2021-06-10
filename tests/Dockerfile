@@ -3,6 +3,7 @@ FROM centos:centos8
 ARG CHROMEDRIVER_VER=90.0.4430.24
 ARG ORG=opendatahub-io
 ARG BRANCH=master
+ARG ODS_CI_BRANCH=master
 
 ENV HOME /root
 WORKDIR /root
@@ -24,6 +25,8 @@ RUN curl -o /usr/local/bin/jq http://stedolan.github.io/jq/download/linux64/jq &
 RUN mkdir -p $HOME/src && \
     cd $HOME/src && \
     git clone --depth=1 --branch ${BRANCH} https://github.com/${ORG}/odh-manifests && \
+    # Clone ods-ci repo for the JupyterHub webUI tests
+    git clone --depth=1 --branch ${ODS_CI_BRANCH} https://github.com/red-hat-data-services/ods-ci && \
     chmod -R 777 $HOME/src
 
 ADD https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.6/linux/oc.tar.gz $HOME/peak/ 

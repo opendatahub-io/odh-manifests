@@ -10,9 +10,7 @@ JH_LOGIN_USER=${OPENSHIFT_USER:-"admin"} #Username used to login to JH
 JH_LOGIN_PASS=${OPENSHIFT_PASS:-"admin"} #Password used to login to JH
 OPENSHIFT_LOGIN_PROVIDER=${OPENSHIFT_LOGIN_PROVIDER:-"htpasswd-provider"} #OpenShift OAuth provider used for login
 JH_AS_ADMIN=${JH_AS_ADMIN:-"true"} #Expect the user to be Admin in JupyterHub
-
-JUPYTER_IMAGES=("s2i-spark-minimal-notebook:py36-spark2.4.5-hadoop2.7.3" s2i-minimal-notebook:v0.0.7 s2i-scipy-notebook:v0.0.2 s2i-tensorflow-notebook:v0.0.2 s2i-generic-data-science-notebook:v0.0.2)
-JUPYTER_NOTEBOOK_FILES=(spark.ipynb basic.ipynb basic.ipynb tensorflow.ipynb basic.ipynb)
+ODS_CI_REPO_ROOT=${ODS_CI_REPO_ROOT:-"${HOME}/src/ods-ci"}
 
 os::test::junit::declare_suite_start "$MY_SCRIPT"
 
@@ -29,29 +27,18 @@ function test_jupyterhub() {
     os::cmd::expect_success_and_text "echo ${#runningpods[@]}" "1"
 }
 
-function test_start_notebook() {
-    local notebook_name=$1
-    local notebook_file=$2
-    local user=$3
-    local size=${4-Small}
-
-    header "Testing Jupyter Notebook ${notebook_name} Execution (Size: ${size})"
+function test_ods_ci() {
+    header "Running ODS-CI automation"
 
     os::cmd::expect_success "oc project ${ODHPROJECT}"
-    route="https://"$(oc get route jupyterhub -o jsonpath='{.spec.host}')
-    os::cmd::expect_success "JH_HEADLESS=true JH_USER_NAME=${user} JH_LOGIN_USER=${JH_LOGIN_USER} JH_LOGIN_PASS=${JH_LOGIN_PASS} OPENSHIFT_LOGIN_PROVIDER=${OPENSHIFT_LOGIN_PROVIDER} \
-    JH_NOTEBOOKS=${notebook_file} JH_NOTEBOOK_IMAGE=${notebook_name} JH_AS_ADMIN=${JH_AS_ADMIN} \
-    JH_URL=${route} JH_NOTEBOOK_SIZE=${size} \
-    python3 ${MY_DIR}/jupyterhub/jhtest.py"
-}
-
-function test_notebooks() {
-    for index in ${!JUPYTER_IMAGES[*]}; do
-        test_start_notebook ${JUPYTER_IMAGES[$index]} testing-notebooks/${JUPYTER_NOTEBOOK_FILES[$index]} jh-test${index}
-    done
+    ODH_JUPYTERHUB_URL="https://"$(oc get route jupyterhub -o jsonpath='{.spec.host}')
+    pushd ${HOME}/src/ods-ci
+    #TODO: Add a test that will iterate over all of the notebook using the notebooks in https://github.com/opendatahub-io/testing-notebooks
+    os::cmd::expect_success "run_robot_test.sh --test-artifact-dir ${ARTIFACT_DIR} --test-case ${MY_DIR}/../resources/ods-ci/test-odh-jupyterlab-notebook.robot --test-variables-file ${MY_DIR}/../resources/ods-ci/test-variables.yml --test-variable 'ODH_JUPYTERHUB_URL:${ODH_JUPYTERHUB_URL}' --test-variable RESOURCE_PATH:${PWD}/tests/Resources"
+    popd
 }
 
 test_jupyterhub
-test_notebooks
+test_ods_ci
 
 os::test::junit::declare_suite_end
