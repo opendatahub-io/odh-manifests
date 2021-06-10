@@ -3,18 +3,165 @@ kind: Kustomization
 resources:
 - service-account.yaml
 - pvc.yaml
-- configmap.yaml
-- deploymentconfig.yaml
-- db-init-job.yaml
+- secret-superset.yaml
+- deployment.yaml
 - service.yaml
 - route.yaml
+- secret.yaml
+- supersetdb-deployment.yaml
+- supersetdb-pvc.yaml
+- supersetdb-secret.yaml
+- supersetdb-service.yaml
+
+commonLabels:
+  opendatahub.io/component: "true"
+  component.opendatahub.io/name: superset
+
 namespace: opendatahub
-images:
-- name: quay.io/aiops/superset
-  newTag: v0.30
-  newName: quay.io/aiops/superset
-secretGenerator:
-- name: superset-secret
-  env: params.env
+
+configMapGenerator:
+  - name: superset-config
+    envs:
+      - params.env
+
+vars:
+  - name: SUPERSET_ADMIN_PASSWORD
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_ADMIN_PASSWORD
+  - name: SUPERSET_ADMIN_USER
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_ADMIN_USER
+  - name: SUPERSET_ADMIN_FNAME
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_ADMIN_FNAME
+  - name: SUPERSET_ADMIN_LNAME
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_ADMIN_LNAME
+  - name: SUPERSET_ADMIN_EMAIL
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_ADMIN_EMAIL
+  - name: SUPERSET_VOLUME_SIZE
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_VOLUME_SIZE
+  - name: SUPERSET_SECRET_KEY
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_SECRET_KEY
+  - name: SUPERSET_DB_USERNAME
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_DB_USERNAME
+  - name: SUPERSET_DB_PASSWORD
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_DB_PASSWORD
+  - name: LOG_LEVEL
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.LOG_LEVEL
+  - name: SUPERSET_MEMORY_REQUESTS
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_MEMORY_REQUESTS
+  - name: SUPERSET_MEMORY_LIMITS
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_MEMORY_LIMITS
+  - name: SUPERSET_CPU_REQUESTS
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_CPU_REQUESTS
+  - name: SUPERSET_CPU_LIMITS
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_CPU_LIMITS
+  - name: SUPERSET_DB_MEMORY_REQUESTS
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_DB_MEMORY_REQUESTS
+  - name: SUPERSET_DB_MEMORY_LIMITS
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_DB_MEMORY_LIMITS
+  - name: SUPERSET_DB_CPU_REQUESTS
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_DB_CPU_REQUESTS
+  - name: SUPERSET_DB_CPU_LIMITS
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_DB_CPU_LIMITS
+  - name: SUPERSET_IMAGE
+    objref:
+      name: superset-config
+      kind: ConfigMap
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.SUPERSET_IMAGE
+
+
+configurations:
+  - params.yaml
+
 generatorOptions:
   disableNameSuffixHash: true
