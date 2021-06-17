@@ -55,7 +55,7 @@ items:
       type: Git
       git:
         uri: "https://github.com/sclorg/s2i-base-container"
-        ref: "master"
+        ref: "d777ab3"
       contextDir: "core/"
     strategy:
       type: Docker
@@ -81,7 +81,7 @@ items:
       type: Git
       git:
         uri: "https://github.com/sclorg/s2i-base-container"
-        ref: "master"
+        ref: "d777ab3"
       contextDir: "base/"
     strategy:
       type: Docker
@@ -107,7 +107,7 @@ items:
       type: Git
       git:
         uri: "https://github.com/sclorg/s2i-python-container"
-        ref: "master"
+        ref: "4d85c35"
       contextDir: "3.8/"
     strategy:
       type: Docker
@@ -133,7 +133,7 @@ items:
       type: Git
       git:
         uri: "https://github.com/thoth-station/s2i-thoth"
-        ref: "v0.26.0"
+        ref: "v0.28.0"
       contextDir: "ubi8-py38/"
     strategy:
       type: Docker
