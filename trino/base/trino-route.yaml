@@ -12,3 +12,6 @@ spec:
   port:
     targetPort: 8080
   wildcardPolicy: None
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
