@@ -19,3 +19,12 @@ rules:
       - get
       - list
       - watch
+  - apiGroups:
+      - build.openshift.io
+    verbs:
+      - get
+      - list
+      - watch
+    resources:
+      - builds
+      - buildconfigs
