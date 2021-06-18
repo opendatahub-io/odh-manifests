@@ -46,7 +46,7 @@ HTTP endpoint exposed by your S3 object storage solution which will be made avai
 
 #### s3_credentials_secret
 
-Along with `s3_endpoint_url` this parameter configures the Trino's access to S3 object storage. Setting this parameter to any name of local Openshift/Kubernetes Secret resource name would allow Thift Server to consume S3 credentials from it. The secret of choice must contain `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` keys. If not set, credentials from [`aws-secret`](base/aws-secret.yaml) will be used instead.
+Along with `s3_endpoint_url` this parameter configures the Trino's access to S3 object storage. Setting this parameter to any name of local Openshift/Kubernetes Secret resource name would allow Thift Server to consume S3 credentials from it. The secret of choice must contain `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `BUCKET` variables. If not set, credentials from [`aws-secret`](base/aws-secret.yaml) will be used instead.
 
 #### trino_environment
 
