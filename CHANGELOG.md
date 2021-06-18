@@ -88,3 +88,18 @@
 ### Features
 * Update elyra notebook image to v0.0.8 (#419)
 * Add Trino kustomize manifests (#373)
+
+## Release 1.1.0 (2021-06-18T19:42:19)
+### Features
+* support for pre-commit and python-editor (#437)
+* Update JupyterHub to v0.3.0 with new spawner UI and bump s2i-generic-notebook to v0.0.3 (#435)
+* Upgrade superset to 1.1.0 (#426)
+* feat(prometheus): Upgrade operator to 0.47.0 (#399)
+* update seldon operator to 1.7.0 (#397)
+### Improvements
+* switch to rhods based base repo for cuda builds (#438)
+* Updated jupyter deployment config to avoid Imagestream changes (#429)
+* Update JH dashboard (#425)
+* Update JH dashboard jsons (#418)
+* Add builds and buildconfigs read permissions to odh-dashboard role (#440)
+* include minimal python 3.8 with default jlab and git plugin (#407)
