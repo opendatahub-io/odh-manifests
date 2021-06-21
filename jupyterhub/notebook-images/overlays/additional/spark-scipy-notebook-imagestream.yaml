@@ -3,6 +3,8 @@ kind: ImageStream
 metadata:
   labels:
     opendatahub.io/notebook-image: "true"
+  annotations:
+    opendatahub.io/notebook-image-name: "Minimal Python with Apache Spark and SciPy"
   name: s2i-spark-scipy-notebook
 spec:
   lookupPolicy:
