@@ -12,7 +12,7 @@ spec:
       name: jupyterhub:latest
   source:
     git:
-      ref: v3.5.1
+      ref: v3.5.3
       uri: https://github.com/opendatahub-io/jupyterhub-quickstart.git
     type: Git
   strategy:
