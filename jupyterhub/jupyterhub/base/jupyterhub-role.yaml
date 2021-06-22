@@ -7,6 +7,15 @@ metadata:
 rules:
 - apiGroups:
   - ''
+  - build.openshift.io
+  resources:
+  - builds
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ''
   - image.openshift.io
   resources:
   - imagestreams
