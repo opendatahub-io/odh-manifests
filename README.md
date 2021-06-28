@@ -36,4 +36,4 @@ The two ways to deploy are:
 2. Following  [Kubeflow Operator](https://github.com/kubeflow/kfctl/blob/master/operator.md) deployment instructions and then using a KFDef from this repository as the custom resource.
 
 ## Issues
-To file issues please visit [Open Dat Hub Jira](https://issues.redhat.com/projects/ODH/issues/ODH-380?filter=allopenissues) project. 
+To submit issues please visit [Open Dat Hub Jira](https://issues.redhat.com/projects/ODH/issues/ODH-380?filter=allopenissues) project. 
