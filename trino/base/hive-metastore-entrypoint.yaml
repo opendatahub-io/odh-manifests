@@ -25,6 +25,9 @@ data:
     }
     set -e
 
+    # Create the warehouse dir
+    mkdir -p /opt/hive/warehouse
+
     # if the s3-compatible ca bundle is mounted in, add to the root Java truststore.
     if [ -a /s3-compatible-ca/ca-bundle.crt ]; then
       echo "Adding /s3-compatible-ca/ca-bundle.crt to $JAVA_HOME/lib/security/cacerts"
