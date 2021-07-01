@@ -34,3 +34,6 @@ The two ways to deploy are:
 
 1. Using `kfctl` and follow the documentation at [Kubeflow.org](https://www.kubeflow.org/docs/openshift/). The only change is to use this repository instead of Kubeflow manifests.
 2. Following  [Kubeflow Operator](https://github.com/kubeflow/kfctl/blob/master/operator.md) deployment instructions and then using a KFDef from this repository as the custom resource.
+
+## Issues
+To submit issues please visit the [Open Data Hub Jira](https://issues.redhat.com/projects/ODH/issues/ODH-380?filter=allopenissues) project. 
