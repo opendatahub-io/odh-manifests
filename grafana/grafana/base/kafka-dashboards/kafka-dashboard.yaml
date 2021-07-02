@@ -25,12 +25,13 @@ spec:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 0,
-      "id": 9,
+      "id": 25,
+      "iteration": 1624569415465,
       "links": [],
       "panels": [
         {
           "cacheTimeout": null,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "fieldConfig": {
             "defaults": {
               "custom": {},
@@ -104,7 +105,7 @@ spec:
         },
         {
           "cacheTimeout": null,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "fieldConfig": {
             "defaults": {
               "custom": {},
@@ -178,7 +179,7 @@ spec:
         },
         {
           "cacheTimeout": null,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "fieldConfig": {
             "defaults": {
               "custom": {},
@@ -252,7 +253,7 @@ spec:
         },
         {
           "cacheTimeout": null,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "fieldConfig": {
             "defaults": {
               "custom": {},
@@ -331,7 +332,7 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "editable": true,
           "error": false,
           "fieldConfig": {
@@ -433,7 +434,7 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "editable": true,
           "error": false,
           "fieldConfig": {
@@ -535,7 +536,7 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "editable": true,
           "error": false,
           "fieldConfig": {
@@ -634,7 +635,7 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "editable": true,
           "error": false,
           "fieldConfig": {
@@ -736,7 +737,7 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "editable": true,
           "error": false,
           "fieldConfig": {
@@ -836,7 +837,7 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "editable": true,
           "error": false,
           "fieldConfig": {
@@ -936,7 +937,7 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -1032,7 +1033,7 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -1127,7 +1128,7 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "opendatahub",
+          "datasource": "$datasource",
           "fieldConfig": {
             "defaults": {
               "custom": {}
@@ -1224,7 +1225,27 @@ spec:
         "kafka"
       ],
       "templating": {
-        "list": []
+        "list": [
+          {
+            "current": {
+              "selected": true,
+              "text": "default",
+              "value": "default"
+            },
+            "hide": 0,
+            "includeAll": false,
+            "label": "Datasource",
+            "multi": false,
+            "name": "datasource",
+            "options": [],
+            "query": "prometheus",
+            "queryValue": "",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "type": "datasource"
+          }
+        ]
       },
       "time": {
         "from": "now-6h",
@@ -1256,5 +1277,6 @@ spec:
       },
       "timezone": "browser",
       "title": "Kafka Overview",
-      "version": 1
+      "uid": "80de0e219205a33a2d87820f1ce335b6805ddbfc",
+      "version": 3
     }
