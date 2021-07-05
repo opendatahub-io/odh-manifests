@@ -3,9 +3,10 @@ kind: Route
 metadata:
   labels:
     app: jupyterhub
+    type: sharded
   name: jupyterhub
 spec:
-  host: ''
+  host: jupyterhub-ppe-dha-data-poc.dhanonprod.apps-nonprod.nabocpclu01.dohms.gov.ae
   port:
     targetPort: 8080-tcp
   tls:
