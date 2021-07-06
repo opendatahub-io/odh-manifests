@@ -109,3 +109,12 @@ rules:
   - delete
   - deletecollection
   - watch
+- apiGroups:
+  - build.openshift.io
+  resources:
+    - builds
+    - buildconfigs
+  verbs:
+    - get
+    - list
+    - watch
