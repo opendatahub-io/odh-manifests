@@ -13,7 +13,7 @@ spec:
     local: true
   tags:
   - annotations:
-      opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.3"}]'
+      opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.6"}]'
       opendatahub.io/notebook-python-dependencies: '[{"name":"Boto3","version":"1.17.11"},{"name":"Kafka-Python","version":"2.0.2"},{"name":"Matplotlib","version":"3.1.3"},{"name":"Numpy","version":"1.20.3"},{"name":"Pandas","version":"1.2.4"},{"name":"Scipy","version":"1.6.3"}]'
       openshift.io/imported-from: quay.io/thoth-station/s2i-generic-data-science-notebook
     from:

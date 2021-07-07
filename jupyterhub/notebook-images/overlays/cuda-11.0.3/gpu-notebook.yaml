@@ -18,7 +18,7 @@ items:
       local: true
     tags:
     - annotations:
-        opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.3"},{"name":"CUDA","version":"11.0.3"}]'
+        opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.6"},{"name":"CUDA","version":"11.0.3"}]'
         opendatahub.io/notebook-python-dependencies: '[{"name":"JupyterLab","version":"3.0.14"},{"name":"Notebook","version":"6.3.0"}]'
       name: "py3.8-cuda-11.0.3"
       referencePolicy:
@@ -40,7 +40,7 @@ items:
       local: true
     tags:
     - annotations:
-        opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.3"},{"name":"TensorFlow","version":"==2.4.1"},{"name":"CUDA","version":"11.0.3"}]'
+        opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.6"},{"name":"TensorFlow","version":"==2.4.1"},{"name":"CUDA","version":"11.0.3"}]'
         opendatahub.io/notebook-python-dependencies: '[{"name":"TensorFlow","version":"==2.4.1"},{"name":"Tensorboard","version":"2.4.1"},{"name":"Boto3","version":"1.17.11"},{"name":"Kafka-Python","version":"2.0.2"},{"name":"Matplotlib","version":"3.1.3"},{"name":"Numpy","version":"1.19.5"},{"name":"Pandas","version":"0.25.3"},{"name":"Scipy","version":"1.6.2"}]'
       name: "py3.8-cuda-11.0.3"
       referencePolicy:
@@ -62,7 +62,7 @@ items:
       local: true
     tags:
     - annotations:
-        opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.3"},{"name":"PyTorch","version":"==1.8.1"},{"name":"CUDA","version":"11.0.3"}]'
+        opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.6"},{"name":"PyTorch","version":"==1.8.1"},{"name":"CUDA","version":"11.0.3"}]'
         opendatahub.io/notebook-python-dependencies: '[{"name":"PyTorch","version":"==1.8.1"},{"name":"Tensorboard","version":"1.15.0"},{"name":"Boto3","version":"1.17.11"},{"name":"Kafka-Python","version":"2.0.2"},{"name":"Matplotlib","version":"3.4.1"},{"name":"Numpy","version":"1.20.2"},{"name":"Pandas","version":"1.2.3"},{"name":"Scipy","version":"1.6.2"}]'
       name: "py3.8-cuda-11.0.3"
       referencePolicy:
