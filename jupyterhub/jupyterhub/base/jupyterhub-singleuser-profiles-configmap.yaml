@@ -24,7 +24,7 @@ data:
         - 's2i-spark-minimal-notebook:py36-spark2.4.5-hadoop2.7.3'
         env:
           - name: PYSPARK_SUBMIT_ARGS
-            value: '--conf spark.cores.max=2 --conf spark.executor.instances=2 --conf spark.executor.memory=1G --conf spark.executor.cores=1 --conf spark.driver.memory=2G --packages com.amazonaws:aws-java-sdk:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3 pyspark-shell'
+            value: '--conf spark.cores.max=2 --conf spark.executor.instances=2 --conf spark.executor.memory=1G --conf spark.executor.cores=1 --conf spark.driver.memory=2G --packages com.amazonaws:aws-java-sdk:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3,io.xskipper:xskipper-core_2.11:1.1.1 pyspark-shell'
           - name: PYSPARK_DRIVER_PYTHON
             value: 'jupyter'
           - name: PYSPARK_DRIVER_PYTHON_OPTS
