@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+commonLabels:
+  app.kubernetes.io/name: sparkoperator
+  kustomize.component: spark-operator
+images:
+- name: gcr.io/spark-operator/spark-operator
+  newName: gcr.io/spark-operator/spark-operator
+  newTag: v1beta2-1.2.3-3.1.1
+kind: Kustomization
+resources:
+- operator-sa.yaml
+- spark-sa.yaml
+- role.yaml
+- clusterrole.yaml
+- clusterrolebinding.yaml
+- rolebinding.yaml
+- webhook-certs-job.yaml
+- webhook-svc.yaml
+- deployment.yaml
+- sparkoperator.k8s.io_sparkapplications.yaml
+- sparkoperator.k8s.io_scheduledsparkapplications.yaml
+vars:
+  - name: namespace
+    objref:
+      kind: ServiceAccount
+      apiVersion: v1
+      name: spark-operator
+    fieldref:
+      fieldpath: metadata.namespace
+configurations:
+- params.yaml

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: spark-operator
+  labels:
+    app.kubernetes.io/instance: spark-operator
+    app.kubernetes.io/name: spark-operator
+    app.kubernetes.io/version: v1beta2-1.2.3-3.1.1
