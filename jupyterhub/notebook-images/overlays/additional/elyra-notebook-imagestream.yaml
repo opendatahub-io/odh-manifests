@@ -13,10 +13,12 @@ spec:
     local: true
   tags:
   - annotations:
+      opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.6"}]'
+      opendatahub.io/notebook-python-dependencies: '[{"name":"elyra","version":"2.2.4"}]'
       openshift.io/imported-from: quay.io/thoth-station/s2i-lab-elyra
     from:
       kind: DockerImage
-      name: quay.io/thoth-station/s2i-lab-elyra:v0.0.8
-    name: "v0.0.8"
+      name: quay.io/thoth-station/s2i-lab-elyra:v0.0.9
+    name: "v0.0.9"
     referencePolicy:
       type: Source

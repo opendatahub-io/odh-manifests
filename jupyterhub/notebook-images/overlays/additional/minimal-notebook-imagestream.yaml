@@ -13,22 +13,22 @@ spec:
     local: true
   tags:
   - annotations:
-      opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.3"}]'
-      opendatahub.io/notebook-python-dependencies: '[{"name":"JupyterLab","version": "3.0.14"}, {"name": "Notebook","version": "6.3.0"}]'
+      opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.8.6"}]'
+      opendatahub.io/notebook-python-dependencies: '[{"name":"JupyterLab","version": "3.0.16"}, {"name": "Notebook","version": "6.4.0"}]'
       openshift.io/imported-from: quay.io/thoth-station/s2i-minimal-py38-notebook
     from:
       kind: DockerImage
-      name: quay.io/thoth-station/s2i-minimal-py38-notebook:v0.0.14
-    name: "v0.0.14"
+      name: quay.io/thoth-station/s2i-minimal-py38-notebook:v0.0.15
+    name: "v0.0.15"
     referencePolicy:
       type: Source
   - annotations:
       opendatahub.io/notebook-software: '[{"name":"Python","version":"v3.6.8"}]'
-      opendatahub.io/notebook-python-dependencies: '[{"name":"JupyterLab","version": "2.2.4"}, {"name": "Notebook","version": "6.2.0"}]'
+      opendatahub.io/notebook-python-dependencies: '[{"name":"JupyterLab","version": "3.0.14"}, {"name": "Notebook","version": "6.3.0"}]'
       openshift.io/imported-from: quay.io/thoth-station/s2i-minimal-notebook
     from:
       kind: DockerImage
-      name: quay.io/thoth-station/s2i-minimal-notebook:v0.0.7
-    name: "v0.0.7"
+      name: quay.io/thoth-station/s2i-minimal-notebook:v0.0.15
+    name: "v0.0.15"
     referencePolicy:
       type: Source

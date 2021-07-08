@@ -8,11 +8,11 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: s2i-lab-elyra:v0.0.7
+      name: s2i-lab-elyra:v0.0.9
   source:
     git:
       uri: https://github.com/opendatahub-io/s2i-lab-elyra
-      ref: v0.0.7
+      ref: v0.0.9
     type: Git
   strategy:
     sourceStrategy:
