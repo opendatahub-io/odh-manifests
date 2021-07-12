@@ -1,0 +1,12 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+- ../../base
+#resources:
+patchesJson6902:
+- target:
+    kind: ConfigMap
+    version: v1
+    name: odh-jupyterhub-sizes
+  path: jupyterhub-singleuser-profiles-sizes-configmap.yaml
