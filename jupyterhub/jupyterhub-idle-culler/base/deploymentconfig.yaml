@@ -1,0 +1,38 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: jupyterhub-idle-culler
+spec:
+  selector:
+    app: jupyterhub-idle-culler
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jupyterhub-idle-culler
+    spec:
+      containers:
+        - name: jupyterhub-idle-culler
+          image: jupyterhub-idle-culler:latest
+          env:
+            - name: JUPYTERHUB_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: jupyterhub-api-token
+                  key: token
+          ports:
+            - containerPort: 8080
+          command:
+            - jupyterhub-idle-culler
+            - --timeout=259200  # 3 days
+            - --url=jupyterhub:8080/hub/api
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - jupyterhub-idle-culler
+        from:
+          kind: ImageStreamTag
+          name: jupyterhub-idle-culler:latest

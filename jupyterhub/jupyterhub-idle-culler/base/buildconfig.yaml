@@ -1,0 +1,17 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: jupyterhub-idle-culler
+spec:
+  source:
+    dockerfile: |
+      FROM quay.io/thoth-station/s2i-thoth-ubi8-py36:v0.27.0
+      RUN pip install jupyterhub-idle-culler==1.1 pycurl==7.43.0.6
+  strategy:
+    dockerStrategy: {}
+  output:
+    to:
+      kind: ImageStreamTag
+      name: jupyterhub-idle-culler:latest
+  triggers:
+  - type: ConfigChange
